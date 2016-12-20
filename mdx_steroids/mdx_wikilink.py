@@ -23,6 +23,7 @@ from markdown.inlinepatterns import Pattern ### Changed to absolute
 from markdown.util import etree ### Changed to absolute
 import re
 
+__version__ = '0.4.0'
 
 def build_url(label, base, end):
     """ Build a url from the label, a base, and an end. """

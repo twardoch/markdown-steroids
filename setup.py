@@ -3,11 +3,11 @@ from os import path
 
 setup(
     name='mdx_steroids',
-    version='0.2.0',
+    version='0.4.0',
     author='Adam Twardoch',
     author_email='adam+github@twardoch.com',
     url = 'https://github.com/twardoch/markdown-steroids/',
-    description='Small collecion of Python Markdown extensions',
+    description='Small collection of Python Markdown extensions',
     long_description=open('README.md').read(),
     download_url='https://github.com/twardoch/markdown-steroids/archive/master.zip',
     license=open('LICENSE').read(),

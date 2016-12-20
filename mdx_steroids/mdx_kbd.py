@@ -33,6 +33,8 @@ from markdown.inlinepatterns import Pattern  ### Changed to absolute
 from markdown.util import etree  ### Changed to absolute
 import re
 
+__version__ = '0.4.0'
+
 RE_CONTENT = r"((?:[^\|]|(?<!\|)\|(?=[^\W_]|\|))+?)"
 RE_KBD = r"(\|{2})(?!\s)%s(?<!\s)\|{2}" % RE_CONTENT
 

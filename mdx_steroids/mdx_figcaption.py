@@ -30,10 +30,12 @@ from markdown.util import etree
 import re
 
 import logging
+
+__version__ = '0.4.0'
+
 logger = logging.getLogger('MARKDOWN')
 
 FIGURES = [IMAGE_LINK_RE, IMAGE_REFERENCE_RE]
-
 
 class FigcaptionProcessor(BlockProcessor):
     """ Process figure captions."""
@@ -98,7 +100,6 @@ class FigcaptionExtension(Extension):
         md.parser.blockprocessors.add('figcaption',
                                       FigcaptionProcessor(md.parser),
                                       '<ulist')
-
 
 def makeExtension(configs={}):
     return FigcaptionExtension(configs=configs)
