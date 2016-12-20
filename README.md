@@ -6,8 +6,6 @@ A small collection of Python Markdown extensions
 
 Extension for [Python-Markdown](https://pypi.python.org/pypi/Markdown) to parse images with captions inside a figure element.
 
-### Usage
-
 Markdown:
 
 ```markdown
@@ -33,8 +31,6 @@ Output:
 ## mdx_steroids.mdx_wikilink
 
 Extension for [Python-Markdown](https://pypi.python.org/pypi/Markdown) to parse wikilinks in the style of the  [Gollum](https://github.com/gollum/gollum) wiki and the [Github Wiki system](https://help.github.com/articles/about-github-wikis/). It will convert links such as `[[Page name]]` to `[Page name](Page-name.md)` (it expects the linked files to be in the same folder).
-
-### Usage
 
 Markdown in Github wiki:
 ```
