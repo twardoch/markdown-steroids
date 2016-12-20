@@ -46,13 +46,17 @@ Output after further processing:
 <p>The Sketchboard is a good place for working with scanned images. You will find all the details about working with images in the <a class="wikilink" href="../Importing-artwork/">Importing artwork</a> and <a class="wikilink" href="../Bitmap-Images/">Bitmap Images</a> sections.</p>
 ```
 
+## mdx_steroids.mdx_kbd
+
+Extension for [Python-Markdown](https://pypi.python.org/pypi/Markdown) to convert syntax for user keyboard entry: `||Cmd+K||` into `<kbd>Cmd+K</kbd>`. 
+
 # Installation
 
 ```
 pip install --user --upgrade  git+https://github.com/twardoch/markdown-steroids.git
 ```
 
-### Usage in MkDocs
+# Usage in MkDocs
 
 In your `mkdocs.yaml` include:
 
