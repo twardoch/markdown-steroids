@@ -2,7 +2,7 @@
 
 A small collection of Python Markdown extensions
 
-## mdx_steroids.mdx_figcaption
+## [mdx_steroids.mdx_figcaption](./blob/master/mdx_steroids/mdx_figcaption.py)
 
 Extension for [Python-Markdown](https://pypi.python.org/pypi/Markdown) to parse images with captions inside a figure element.
 
@@ -28,7 +28,11 @@ Output:
     </figure>
 ```
 
-## mdx_steroids.mdx_wikilink
+## [mdx_steroids.mdx_kbd](blob/master/mdx_steroids/mdx_kbd.py)
+
+Extension for [Python-Markdown](https://pypi.python.org/pypi/Markdown) to convert syntax for user keyboard entry: `||Cmd+K||` into `<kbd>Cmd+K</kbd>`. 
+
+## [mdx_steroids.mdx_wikilink](blob/master/mdx_steroids/mdx_wikilink.py)
 
 Extension for [Python-Markdown](https://pypi.python.org/pypi/Markdown) to parse wikilinks in the style of the  [Gollum](https://github.com/gollum/gollum) wiki and the [Github Wiki system](https://help.github.com/articles/about-github-wikis/). It will convert links such as `[[Page name]]` to `[Page name](Page-name.md)` (it expects the linked files to be in the same folder).
 
@@ -41,10 +45,6 @@ Output after further processing:
 ```html
 <p>The Sketchboard is a good place for working with scanned images. You will find all the details about working with images in the <a class="wikilink" href="../Importing-artwork/">Importing artwork</a> and <a class="wikilink" href="../Bitmap-Images/">Bitmap Images</a> sections.</p>
 ```
-
-## mdx_steroids.mdx_kbd
-
-Extension for [Python-Markdown](https://pypi.python.org/pypi/Markdown) to convert syntax for user keyboard entry: `||Cmd+K||` into `<kbd>Cmd+K</kbd>`. 
 
 # Installation
 
