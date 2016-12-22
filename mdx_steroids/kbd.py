@@ -77,7 +77,7 @@ class MDXKbd(Pattern):
             pattern ():
             config ():
         """
-        super(Kbd, self).__init__(pattern)
+        super(MDXKbd, self).__init__(pattern)
         self.config = config
 
     def processLabel(self, label):
