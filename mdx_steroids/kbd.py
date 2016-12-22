@@ -1,48 +1,41 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 """
-Mark.
+mdx_steroids.kbd
+================
+Python Markdown extension.
+Input:
+    ||keyboard intput||
+Output:
+    <kbd>keyboard input</kbd>
 
-mdx_steroids.mdx_kbd
-Really simple plugin to add support for
-<kbd>test</kbd> tags as ||test||
-
-MIT license.
-
-Copyright (c) 2014 - 2015 Isaac Muse <isaacmuse@gmail.com>
-
-Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
-documentation files (the "Software"), to deal in the Software without restriction, including without limitation
-the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software,
-and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all copies or substantial portions
-of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED
-TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
-THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
-CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
-DEALINGS IN THE SOFTWARE.
+Copyright (c) 2016 Adam Twardoch <adam+github@twardoch.com>
+Based on original code
+Copyright (c) 2014-2015 Isaac Muse <isaacmuse@gmail.com>
+License: [BSD 3-clause](https://opensource.org/licenses/BSD-3-Clause)
 """
 
 from __future__ import absolute_import
 from __future__ import unicode_literals
-from markdown.extensions import Extension  ### Changed to absolute
-from markdown.inlinepatterns import Pattern  ### Changed to absolute
-from markdown.util import etree  ### Changed to absolute
+
 import re
 
-__version__ = '0.4.0'
+from markdown.extensions import Extension
+from markdown.inlinepatterns import Pattern
+from markdown.util import etree
+
+__version__ = '0.4.1'
 
 RE_CONTENT = r"((?:[^\|]|(?<!\|)\|(?=[^\W_]|\|))+?)"
 RE_KBD = r"(\|{2})(?!\s)%s(?<!\s)\|{2}" % RE_CONTENT
+
 
 def mreplacer(*key_values):
     replace_dict = dict(key_values)
     replacement_function = lambda match: replace_dict[match.group(0)]
     pattern = re.compile("|".join([re.escape(k) for k, v in key_values]), re.M)
     return lambda string: pattern.sub(replacement_function, string)
+
 
 def mreplace(string, *key_values):
     key_values = (
@@ -76,12 +69,22 @@ def mreplace(string, *key_values):
     )
     return mreplacer(*key_values)(string)
 
-class Kbd(Pattern):
+
+class MDXKbd(Pattern):
     def __init__(self, pattern, config):
+        """
+        Args:
+            pattern ():
+            config ():
+        """
         super(Kbd, self).__init__(pattern)
         self.config = config
 
     def processLabel(self, label):
+        """
+        Args:
+            label ():
+        """
         if self.config['repl_mac']:
             ol = re.split(r"(?<!\\)(?:\\\\)*[\+\-]", label)
             nl = map(mreplace, ol)
@@ -89,6 +92,10 @@ class Kbd(Pattern):
             return u"\u2009".join(nl)
 
     def handleMatch(self, m):
+        """
+        Args:
+            m ():
+        """
         if m.group(3).strip():
             html_class = self.config['html_class']
             label = m.group(3).strip()
@@ -101,22 +108,33 @@ class Kbd(Pattern):
             kbd = label
         return kbd
 
-class KbdExtension(Extension):
+
+class MDXKbdExtension(Extension):
     def __init__(self, *args, **kwargs):
+        """
+        Args:
+            *args ():
+            **kwargs ():
+        """
         self.config = {
-            'repl_mac':   [True, "Replace macOS symbols"],
+            'repl_mac'  : [True, "Replace macOS symbols"],
             'html_class': ['kbd', 'CSS hook. Leave blank for none.'],
         }
 
-        super(KbdExtension, self).__init__(*args, **kwargs)
+        super(MDXKbdExtension, self).__init__(*args, **kwargs)
 
     def extendMarkdown(self, md, md_globals):
         self.md = md
 
-        #WIKILINK_RE = r'\|\|([\w0-9_ -]+)\]\]'
-        kbdPattern = Kbd(RE_KBD, self.getConfigs())
+        # WIKILINK_RE = r'\|\|([\w0-9_ -]+)\]\]'
+        kbdPattern = MDXKbd(RE_KBD, self.getConfigs())
         kbdPattern.md = md
-        md.inlinePatterns.add('kbd', kbdPattern, "<not_strong")
+        md.inlinePatterns.add(
+            'kbd',
+            kbdPattern,
+            '<not_strong'
+        )
+
 
 def makeExtension(*args, **kwargs):
-    return KbdExtension(*args, **kwargs)
+    return MDXKbdExtension(*args, **kwargs)

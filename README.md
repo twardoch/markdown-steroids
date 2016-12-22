@@ -3,7 +3,7 @@
 A small collection of Python Markdown extensions
 
 
-## [mdx_steroids.mdx_figcaption](mdx_steroids/mdx_figcaption.py)
+## [mdx_steroids.figcaption](mdx_steroids/figcaption.py)
 
 Extension for [Python-Markdown](https://pypi.python.org/pypi/Markdown) to parse images with captions inside a figure element.
 
@@ -30,12 +30,12 @@ Output:
 ```
 
 
-## [mdx_steroids.mdx_kbd](mdx_steroids/mdx_kbd.py)
+## [mdx_steroids.kbd](mdx_steroids/kbd.py)
 
 Extension for [Python-Markdown](https://pypi.python.org/pypi/Markdown) to convert syntax for user keyboard entry: `||Cmd+K||` into `<kbd>Cmd+K</kbd>`. 
 
 
-## [mdx_steroids.mdx_wikilink](mdx_steroids/mdx_wikilink.py)
+## [mdx_steroids.wikilink](mdx_steroids/wikilink.py)
 
 Extension for [Python-Markdown](https://pypi.python.org/pypi/Markdown) to parse wikilinks in the style of the  [Gollum](https://github.com/gollum/gollum) wiki and the [Github Wiki system](https://help.github.com/articles/about-github-wikis/). It will convert links such as `[[Page name]]` to `[Page name](Page-name.md)` (it expects the linked files to be in the same folder).
 
@@ -62,12 +62,15 @@ In your `mkdocs.yaml` include:
 
 ```yaml
 markdown_extensions:
-  - mdx_steroids.mdx_figcaption
-  - mdx_steroids.mdx_wikilink
-  - mdx_steroids.mdx_kbd
+  - mdx_steroidsfigcaption
+  - mdx_steroids.wikilink
+  - mdx_steroids.kbd
 ```
 
-### License
+### Copyright and License
 
-* Copyright © 2016 by [Adam Twardoch](https://github.com/twardoch)
-* Licensed under the BSD 3-Clause License.
+* Copyright © 2016 [Adam Twardoch](https://github.com/twardoch)
+* Copyright © 2008 [Waylan Limberg](http://achinghead.com) 
+* Copyright © 2008-2014 The Python Markdown Project
+* Copyright © 2014-2015 Isaac Muse <isaacmuse@gmail.com> 
+* License: [BSD 3-Clause License](./LICENSE)

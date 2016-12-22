@@ -1,50 +1,51 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 """
-#figcaption
-
-A simple example:
-
-    ![](http://lorempixel.com/350/150/)
+mdx_steroids.figcaption
+=======================
+Python Markdown extension.
+Input:
+    ![](https://avatars2.githubusercontent.com/u/519108)
     :   Lorem ipsum dolor sit amet, consectetur adipiscing elit.
         Praesent at consequat magna, faucibus ornare eros. Nam et
         mattis urna. Cras sodales, massa id gravida
-
-Outputs:
-
+Output:
     <figure>
-        <img alt="" src="http://lorempixel.com/350/150/" />
+        <img alt="" src="https://avatars2.githubusercontent.com/u/519108" />
         <figcaption>
             <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.
             Praesent at consequat magna, faucibus ornare eros. Nam et
             mattis urna. Cras sodales, massa id gravida</p>
         </figcaption>
     </figure>
+
+Copyright (c) 2016 Adam Twardoch <adam+github@twardoch.com>
+Based on original code
+Copyright (c) 2008 [Waylan Limberg](http://achinghead.com)
+Copyright (c) 2008-2014 The Python Markdown Project
+License: [BSD 3-clause](https://opensource.org/licenses/BSD-3-Clause)
 """
 
 from __future__ import unicode_literals
-from markdown import Extension
-from markdown.inlinepatterns import IMAGE_LINK_RE, IMAGE_REFERENCE_RE
-from markdown.blockprocessors import BlockProcessor
-from markdown.util import etree
+
 import re
 
-import logging
+from markdown import Extension
+from markdown.blockprocessors import BlockProcessor
+from markdown.inlinepatterns import IMAGE_LINK_RE, IMAGE_REFERENCE_RE
+from markdown.util import etree
 
-__version__ = '0.4.0'
-
-logger = logging.getLogger('MARKDOWN')
+__version__ = '0.4.1'
 
 FIGURES = [IMAGE_LINK_RE, IMAGE_REFERENCE_RE]
 
-class FigcaptionProcessor(BlockProcessor):
-    """ Process figure captions."""
 
+class MDXFigcaptionProcessor(BlockProcessor):
     RE = re.compile(r'(^|\n)[ ]{0,3}:[ ]{1,3}(?P<caption>.*?)(\n|$)')
     FIGURES_RE = re.compile('|'.join(f for f in FIGURES))
     NO_INDENT_RE = re.compile(r'^[ ]{0,3}[^ :]')
 
-    def test(self, parent, block):
+    def check(self, parent, block):
         return bool(self.RE.search(block))
 
     def run(self, parent, blocks):
@@ -56,9 +57,9 @@ class FigcaptionProcessor(BlockProcessor):
 
         # Get elements
         elements = raw_block[:m.start()]
-        test_elements = self.FIGURES_RE.search(elements)
+        check_elements = self.FIGURES_RE.search(elements)
 
-        if not test_elements:
+        if not check_elements:
             # This is not a figure item.
             blocks.insert(0, raw_block)
             return False
@@ -90,16 +91,14 @@ class FigcaptionProcessor(BlockProcessor):
             blocks.insert(0, theRest)
 
 
-class FigcaptionExtension(Extension):
-    """ Add definition lists to Markdown. """
-
+class MDXFigcaptionExtension(Extension):
     def extendMarkdown(self, md, md_globals):
-        """ Add an instance of FigcaptionProcessor to BlockParser. """
+        md.parser.blockprocessors.add(
+            'figcaption',
+            MDXFigcaptionProcessor(md.parser),
+            '<ulist'
+        )
 
-        # def_list = 'def_list' in md.registeredExtensions
-        md.parser.blockprocessors.add('figcaption',
-                                      FigcaptionProcessor(md.parser),
-                                      '<ulist')
 
 def makeExtension(configs={}):
-    return FigcaptionExtension(configs=configs)
+    return MDXFigcaptionExtension(configs=configs)
