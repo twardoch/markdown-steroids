@@ -29,7 +29,6 @@ class MDXReplaceImageSrcTreeprocessor(Treeprocessor):
     def find_replace(self, path):
         return path.replace(self.config["find"], self.config["replace"])
 
-
 class MDXReplaceImageSrcExtension(Extension):
     def __init__(self, *args, **kwargs):
         self.config = {
