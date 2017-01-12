@@ -62,7 +62,7 @@ In your `mkdocs.yaml` include:
 
 ```yaml
 markdown_extensions:
-  - mdx_steroidsfigcaption
+  - mdx_steroids.figcaption
   - mdx_steroids.wikilink
   - mdx_steroids.kbd
 ```
