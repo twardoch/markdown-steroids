@@ -88,7 +88,6 @@ class MDXKbd(Pattern):
         if self.config['repl_mac']:
             ol = re.split(r"(?<!\\)(?:\\\\)*[\+\-]", label)
             nl = map(mreplace, ol)
-            print(ol, nl)
             return u"\u2009".join(nl)
 
     def handleMatch(self, m):
