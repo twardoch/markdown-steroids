@@ -3,51 +3,177 @@
 A small collection of Python Markdown extensions
 
 
-## [mdx_steroids.figcaption](mdx_steroids/figcaption.py)
+## steroids.wikilink
 
-Extension for [Python-Markdown](https://pypi.python.org/pypi/Markdown) to parse images with captions inside a figure element.
+The `steroids.wikilink` extension parses wikilinks in the style of the  [Gollum](https://github.com/gollum/gollum) wiki and the [Github Wiki system](https://help.github.com/articles/about-github-wikis/). It will convert links such as `[[Page name]]` to `[Page name](/Page-name/)`. You can specify the start, end and separator strings.
 
-Markdown:
+### Installation
 
-```markdown
-    ![](http://lorempixel.com/350/150/)
-    :   Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-        Praesent at consequat magna, faucibus ornare eros. Nam et
-        mattis urna. Cras sodales, massa id gravida
+```bash
+pip install --user --upgrade git+https://github.com/twardoch/markdown-steroids.git
 ```
 
-Output:
+### Docs
 
-```html
-    <figure>
-        <img alt="" src="http://lorempixel.com/350/150/" />
-        <figcaption>
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-            Praesent at consequat magna, faucibus ornare eros. Nam et
-            mattis urna. Cras sodales, massa id gravida</p>
-        </figcaption>
-    </figure>
+* https://github.com/twardoch/markdown-steroids
+
+### Options
+
+```yaml
+  steroids.wikilink:
+    base_url       : '/'                  # String to append to beginning or URL.
+    end_url        : '/'                  # String to append to end of URL.
+    html_class     : 'wikilink'           # CSS hook. Leave blank for none.
+    space_sep      : '-'                  # String that replaces the space, "-" by default.
+    build_url      : build_url            # Alternative callable formats URL from label.
 ```
 
+### Example
 
-## [mdx_steroids.kbd](mdx_steroids/kbd.py)
+---
 
-Extension for [Python-Markdown](https://pypi.python.org/pypi/Markdown) to convert syntax for user keyboard entry: `||Cmd+K||` into `<kbd>Cmd+K</kbd>`. 
+This is a [[Wiki Link]] of some sorts. 
+
+---
+
+#### Input Markdown
+
+````markdown
+This is a [[Wiki Link]] of some sorts. 
+````
+
+#### Output HTML
+
+````html
+<p>This is a <a class="wikilink" href="/Wiki-Link/">Wiki Link</a> of some sorts.</p>
+````
 
 
-## [mdx_steroids.wikilink](mdx_steroids/wikilink.py)
 
-Extension for [Python-Markdown](https://pypi.python.org/pypi/Markdown) to parse wikilinks in the style of the  [Gollum](https://github.com/gollum/gollum) wiki and the [Github Wiki system](https://help.github.com/articles/about-github-wikis/). It will convert links such as `[[Page name]]` to `[Page name](Page-name.md)` (it expects the linked files to be in the same folder).
+## steroids.kbd
 
-Markdown in Github wiki:
+The `steroids.kbd` extension converts syntax for user keyboard entry: `||Cmd+K||` into `<kbd>Cmd+K</kbd>`.
+
+### Installation
+
+```bash
+pip install --user --upgrade git+https://github.com/twardoch/markdown-steroids.git
 ```
-The Sketchboard is a good place for working with scanned images. You will find all the details about working with images in the [[Importing artwork]] and [[Bitmap Images]] sections.
+
+### Docs
+
+* https://github.com/twardoch/markdown-steroids
+
+### Options
+
+```yaml
+  steroids.kbd:
+    repl_mac       : false                # Replace macOS symbols
+    html_class     : 'kbd'                # CSS hook. Leave blank for none
 ```
 
-Output after further processing:
-```html
-<p>The Sketchboard is a good place for working with scanned images. You will find all the details about working with images in the <a class="wikilink" href="../Importing-artwork/">Importing artwork</a> and <a class="wikilink" href="../Bitmap-Images/">Bitmap Images</a> sections.</p>
+### Example
+
+---
+
+||Cmd+K||
+
+---
+
+#### Input Markdown
+
+````markdown
+||Cmd+K||
+````
+
+#### Output HTML
+
+````html
+<kbd class="kbd">Cmd+K</kbd>
+````
+
+
+## steroids.replimgsrc
+
+The `steroids.replimgsrc` extension finds and replaces portions of an image URL. 
+
+### Installation
+
+```bash
+pip install --user --upgrade git+https://github.com/twardoch/markdown-steroids.git
 ```
+
+### Docs
+
+* https://github.com/twardoch/markdown-steroids/
+
+### Options
+
+```yaml
+  steroids.replimgsrc: 
+    find           : 'https://github.com/repo/blob/master/images/'
+    replace        : '../img/'
+```
+
+### Example
+
+---
+
+
+
+---
+
+#### Input Markdown
+
+````markdown
+````
+
+#### Output HTML
+
+````html
+````
+
+
+## steroids.absimgsrc
+
+The `steroids.absimgsrc` replaces relative image URLs with absolute ones. 
+
+### Installation
+
+```bash
+pip install --user --upgrade git+https://github.com/twardoch/markdown-steroids.git
+```
+
+### Docs
+
+* https://github.com/twardoch/markdown-steroids/
+
+### Options
+
+```yaml
+  steroids.absimgsrc: 
+    base_url       : 'https://github.com/repo/blob/master/images/' 
+    # Base URL to which the relative paths will be appended
+```
+
+### Example
+
+---
+
+
+
+---
+
+#### Input Markdown
+
+````markdown
+````
+
+#### Output HTML
+
+````html
+````
+
 
 
 # Installation
@@ -56,15 +182,24 @@ Output after further processing:
 pip install --user --upgrade  git+https://github.com/twardoch/markdown-steroids.git
 ```
 
-# Usage in MkDocs
+
+
+## Usage in MkDocs
 
 In your `mkdocs.yaml` include:
 
 ```yaml
+steroids.wikilinks
 markdown_extensions:
-  - mdx_steroids.figcaption
-  - mdx_steroids.wikilink
-  - mdx_steroids.kbd
+- steroids.kbd:
+    repl_mac       : false                # Replace macOS symbols
+    html_class     : 'kbd'                # CSS hook. Leave blank for none
+- steroids.replimgsrc: 
+    find           : 'https://github.com/repo/blob/master/images/'
+    replace        : '../img/'
+- steroids.absimgsrc: 
+    base_url       : 'https://github.com/repo/blob/master/images/' 
+    # Base URL to which the relative paths will be appended
 ```
 
 ### Copyright and License

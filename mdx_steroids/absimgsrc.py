@@ -1,16 +1,53 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 """
-mdx_steroids.absimgsrc
-======================
-Python Markdown extension.
+## steroids.absimgsrc
+
+The `steroids.absimgsrc` replaces relative image URLs with absolute ones. 
+
+### Installation
+
+```bash
+pip install --user --upgrade git+https://github.com/twardoch/markdown-steroids.git
+```
+
+### Docs
+
+* https://github.com/twardoch/markdown-steroids/
+
+### Options
+
+```yaml
+  steroids.absimgsrc: 
+    base_url       : 'https://github.com/repo/blob/master/images/' 
+    # Base URL to which the relative paths will be appended
+```
+
+### Example
+
+---
+
+
+
+---
+
+#### Input Markdown
+
+````markdown
+````
+
+#### Output HTML
+
+````html
+````
+
 Copyright (c) 2016 Adam Twardoch <adam+github@twardoch.com>
 License: [BSD 3-clause](https://opensource.org/licenses/BSD-3-Clause)
 """
 from __future__ import absolute_import
 from __future__ import unicode_literals
 
-__version__ = '0.4.1'
+__version__ = '0.4.4'
 
 try:
     from urllib.parse import urljoin

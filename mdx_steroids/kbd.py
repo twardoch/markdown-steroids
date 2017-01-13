@@ -1,13 +1,47 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 """
-mdx_steroids.kbd
-================
-Python Markdown extension.
-Input:
-    ||keyboard intput||
-Output:
-    <kbd>keyboard input</kbd>
+## steroids.kbd
+
+The `steroids.kbd` extension converts syntax for user keyboard entry: `||Cmd+K||` into `<kbd>Cmd+K</kbd>`.
+
+### Installation
+
+```bash
+pip install --user --upgrade git+https://github.com/twardoch/markdown-steroids.git
+```
+
+### Docs
+
+* https://github.com/twardoch/markdown-steroids
+
+### Options
+
+```yaml
+  steroids.kbd:
+    repl_mac       : false                # Replace macOS symbols
+    html_class     : 'kbd'                # CSS hook. Leave blank for none
+```
+
+### Example
+
+---
+
+||Cmd+K||
+
+---
+
+#### Input Markdown
+
+````markdown
+||Cmd+K||
+````
+
+#### Output HTML
+
+````html
+<kbd class="kbd">Cmd+K</kbd>
+````
 
 Copyright (c) 2016 Adam Twardoch <adam+github@twardoch.com>
 Based on original code
@@ -24,7 +58,7 @@ from markdown.extensions import Extension
 from markdown.inlinepatterns import Pattern
 from markdown.util import etree
 
-__version__ = '0.4.1'
+__version__ = '0.4.4'
 
 RE_CONTENT = r"((?:[^\|]|(?<!\|)\|(?=[^\W_]|\|))+?)"
 RE_KBD = r"(\|{2})(?!\s)%s(?<!\s)\|{2}" % RE_CONTENT
@@ -89,6 +123,8 @@ class MDXKbd(Pattern):
             ol = re.split(r"(?<!\\)(?:\\\\)*[\+\-]", label)
             nl = map(mreplace, ol)
             return u"\u2009".join(nl)
+        else: 
+            return label
 
     def handleMatch(self, m):
         """
@@ -116,7 +152,7 @@ class MDXKbdExtension(Extension):
             **kwargs ():
         """
         self.config = {
-            'repl_mac'  : [True, "Replace macOS symbols"],
+            'repl_mac'  : [False, "Replace macOS symbols"],
             'html_class': ['kbd', 'CSS hook. Leave blank for none.'],
         }
 

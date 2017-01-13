@@ -1,16 +1,53 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 """
-mdx_steroids.replimgsrc
-======================
-Python Markdown extension.
+## steroids.replimgsrc
+
+The `steroids.replimgsrc` extension finds and replaces portions of an image URL. 
+
+### Installation
+
+```bash
+pip install --user --upgrade git+https://github.com/twardoch/markdown-steroids.git
+```
+
+### Docs
+
+* https://github.com/twardoch/markdown-steroids/
+
+### Options
+
+```yaml
+  steroids.replimgsrc: 
+    find           : 'https://github.com/repo/blob/master/images/'
+    replace        : '../img/'
+```
+
+### Example
+
+---
+
+
+
+---
+
+#### Input Markdown
+
+````markdown
+````
+
+#### Output HTML
+
+````html
+````
+
 Copyright (c) 2016 Adam Twardoch <adam+github@twardoch.com>
 License: [BSD 3-clause](https://opensource.org/licenses/BSD-3-Clause)
 """
 from __future__ import absolute_import
 from __future__ import unicode_literals
 
-__version__ = '0.4.1'
+__version__ = '0.4.4'
 
 from markdown import Extension
 from markdown.treeprocessors import Treeprocessor
