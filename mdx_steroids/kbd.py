@@ -27,14 +27,14 @@ pip install --user --upgrade git+https://github.com/twardoch/markdown-steroids.g
 
 ---
 
-||Cmd+K||
+++Cmd+K++
 
 ---
 
 #### Input Markdown
 
 ````markdown
-||Cmd+K||
+++Cmd+K++
 ````
 
 #### Output HTML
@@ -57,12 +57,13 @@ import re
 from markdown.extensions import Extension
 from markdown.inlinepatterns import Pattern
 from markdown.util import etree
+from pymdownx import util
 
-__version__ = '0.4.4'
+__version__ = '0.4.5'
 
-RE_CONTENT = r"((?:[^\|]|(?<!\|)\|(?=[^\W_]|\|))+?)"
-RE_KBD = r"(\|{2})(?!\s)%s(?<!\s)\|{2}" % RE_CONTENT
-
+RE_KBD_CONTENT = r'((?:[^\+]|(?<!\+)\+(?=[^\W_]|\+))+?)'
+RE_KBD = r'(\+{2})(?!\s)%s(?<!\s)\+{2}' % RE_KBD_CONTENT
+RE_NOT_KBD = r'((^| )(\+)( |$))'
 
 def mreplacer(*key_values):
     replace_dict = dict(key_values)
@@ -119,12 +120,12 @@ class MDXKbd(Pattern):
         Args:
             label ():
         """
+        ol = re.split(r"(?<!\\)(?:\\\\)*[\+]", label)
         if self.config['repl_mac']:
-            ol = re.split(r"(?<!\\)(?:\\\\)*[\+\-]", label)
             nl = map(mreplace, ol)
-            return u"\u2009".join(nl)
         else: 
-            return label
+            nl = ol
+        return u"+".join(nl)
 
     def handleMatch(self, m):
         """
@@ -161,7 +162,8 @@ class MDXKbdExtension(Extension):
     def extendMarkdown(self, md, md_globals):
         self.md = md
 
-        # WIKILINK_RE = r'\|\|([\w0-9_ -]+)\]\]'
+        #util.escape_chars(md, ['+'])
+
         kbdPattern = MDXKbd(RE_KBD, self.getConfigs())
         kbdPattern.md = md
         md.inlinePatterns.add(
@@ -169,6 +171,10 @@ class MDXKbdExtension(Extension):
             kbdPattern,
             '<not_strong'
         )
+        md.inlinePatterns.add(
+            'not_kbd', 
+            SimpleTextPattern(RE_NOT_KBD), 
+            "<kbd")
 
 
 def makeExtension(*args, **kwargs):
