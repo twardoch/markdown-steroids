@@ -1,11 +1,83 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-"""KBD."""
+
+"""KBD.
+
+## steroids.kbd
+
+The `steroids.kbd` extension converts syntax for user keyboard entry: 
+`++Cmd+K++` into `<kbd class="kbd key-command">Cmd</kbd>+<kbd class="kbd key-k">K</kbd>`.
+
+This is a temporary location of the extension. Its canonical place will be: 
+https://github.com/facelessuser/pymdown-extensions/
+with the development version residing at: 
+https://github.com/facelessuser/pymdown-extensions/blob/kbd/pymdownx/kbd.py
+
+### Installation
+
+```bash
+pip install --user --upgrade git+https://github.com/twardoch/markdown-steroids.git
+```
+
+### Docs
+
+* https://github.com/twardoch/markdown-steroids
+
+### Options
+
+```yaml
+  steroids.kbd:
+    separator      : ''                   # Provide a separator - Default: "+"
+    wrap_kbd       : false                # Wrap kbds in another kbd according to HTML5 spec - Default: False
+    classes        : 'kbd'                # Provide classes for the kbd elements - Default: kbd
+```
+
+### Example
+
+---
+
+++Cmd+K++
+
+---
+
+#### Input Markdown
+
+````markdown
+++Cmd+K++
+````
+
+#### Output HTML
+
+````html
+<kbd class="kbd key-command">Cmd</kbd>+<kbd class="kbd key-k">K</kbd>
+```
+
+MIT license.
+
+Copyright (c) 2017 Isaac Muse <isaacmuse@gmail.com>
+Copyright (c) 2017 Adam Twardoch <adam+github@twardoch.com>
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
+documentation files (the "Software"), to deal in the Software without restriction, including without limitation
+the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software,
+and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+The above copyright notice and this permission notice shall be included in all copies or substantial portions
+of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED
+TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
+THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
+CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+DEALINGS IN THE SOFTWARE.
+"""
+
 from __future__ import unicode_literals
 from markdown import Extension
 from markdown.inlinepatterns import Pattern
 from pymdownx import util
 import re
+
+__version__ = '0.5.0'
 
 RE_KBD = r'\+{2}((?:[A-Za-z\d_]+\+)*?[A-Za-z\d_]+)\+{2}'
 RE_NORMALIZE = re.compile(r'((?<=[a-z\d])[A-Z])')
@@ -106,18 +178,20 @@ KEY_MAP = {
     "help"             : "Help",
     "print-screen"     : "Print Screen",
     "scroll-lock"      : "Scroll Lock",
+    "enter"            : "Enter",
+    "return"           : "Return",
 
     # Numeric keypad
-    "num-0"            : "Num 0",
-    "num-1"            : "Num 1",
-    "num-2"            : "Num 2",
-    "num-3"            : "Num 3",
-    "num-4"            : "Num 4",
-    "num-5"            : "Num 5",
-    "num-6"            : "Num 6",
-    "num-7"            : "Num 7",
-    "num-8"            : "Num 8",
-    "num-9"            : "Num 9",
+    "num0"             : "Num 0",
+    "num1"             : "Num 1",
+    "num2"             : "Num 2",
+    "num3"             : "Num 3",
+    "num4"             : "Num 4",
+    "num5"             : "Num 5",
+    "num6"             : "Num 6",
+    "num7"             : "Num 7",
+    "num8"             : "Num 8",
+    "num9"             : "Num 9",
     "num-asterisk"     : "Num *",
     "num-clear"        : "Num Clear",
     "num-delete"       : "Num Del",
@@ -173,14 +247,6 @@ KEY_MAP = {
     "f24"              : "F24",
 
     # Extra keys
-    "abnt-c1"          : "Abnt C1",
-    "abnt-c2"          : "Abnt C2",
-    "accept"           : "Accept",
-    "app1"             : "App 1",
-    "app2"             : "App 2",
-    "attn"             : "Attn",
-    "auto"             : "Auto",
-    "ax"               : "Ax",
     "backtab"          : "Back Tab",
     "browser-back"     : "Browser Back",
     "browser-favorites": "Browser Favorites",
@@ -191,19 +257,6 @@ KEY_MAP = {
     "browser-stop"     : "Browser Stop",
     "context-menu"     : "Context Menu",
     "copy"             : "Copy",
-    "cr-sel"           : "Cr Sel",
-    "cu-sel"           : "Cu Sel",
-    "enlw"             : "Enlw",
-    "er-eof"           : "Er Eof",
-    "ex-sel"           : "Ex Sel",
-    "execute"          : "Execute",
-    "final"            : "Final",
-    "finish"           : "Finish",
-    "ico-00"           : "Ico 00",
-    "ico-clear"        : "Ico Clr",
-    "ico-help"         : "Ico Hlp",
-    "jump"             : "Jump",
-    "left-button"      : "Left Button",
     "mail"             : "Mail",
     "media"            : "Media",
     "media-next-track" : "Next Track",
@@ -212,45 +265,28 @@ KEY_MAP = {
     "media-play-pause" : "Play/Pause",
     "media-prev-track" : "Previous Track",
     "media-stop"       : "Stop",
-    "middle-button"    : "Middle Button",
-    "no-name"          : "No Name",
-    "pa1"              : "Pa1",
-    "pa2"              : "Pa2",
-    "pa3"              : "Pa3",
-    "packet"           : "Packet",
     "print"            : "Print",
-    "process"          : "Process",
     "reset"            : "Reset",
-    "right-button"     : "Right Button",
     "select"           : "Select",
     "sleep"            : "Sleep",
     "volume-down"      : "Volume Down",
     "volume-mute"      : "Mute",
     "volume-up"        : "Volume Up",
-    "ws-ctrl"          : "Ws Ctrl",
-    "x-button1"        : "X Button 1",
-    "x-button2"        : "X Button 2",
     "zoom"             : "Zoom",
 
-    # Japanese
-    "jp-convert"       : "Convert",
-    "jp-jisho"         : "Jisho",
-    "jp-loya"          : "Loya",
-    "jp-masshou"       : "Mashu",
-    "jp-mode-change"   : "Mode Change",
-    "jp-roya"          : "Roya",
-    "jp-touroku"       : "Touroku",
-    "jp-junja"         : "Junja",
-    "jp-kana"          : "Kana",
-    "jp-kanji"         : "Kanji",
-    "jp-non-convert"   : "Non Convert",
-
+    # Mouse
+    "left-button"      : "Left Button",
+    "middle-button"    : "Middle Button",
+    "right-button"     : "Right Button",
+    "x-button1"        : "X Button 1",
+    "x-button2"        : "X Button 2"
 }
 
 KEY_ALIAS = {
     "add"              : "num-plus",
     "apps"             : "context-menu",
     "back"             : "backspace",
+    "bk-sp"            : "backspace",
     "bksp"             : "backspace",
     "bktab"            : "backtab",
     "cancel"           : "break",
@@ -259,11 +295,9 @@ KEY_ALIAS = {
     "close-bracket"    : "bracket-right",
     "clr"              : "clear",
     "cmd"              : "command",
-    "convert"          : "jp-convert",
     "cplk"             : "caps-lock",
-    "crsel"            : "cr-sel",
     "ctrl"             : "control",
-    "cusel"            : "cu-sel",
+    "dbl-quote"        : "double-quote",
     "dblquote"         : "double-quote",
     "decimal"          : "num-separator",
     "del"              : "delete",
@@ -271,10 +305,8 @@ KEY_ALIAS = {
     "dn"               : "arrow-down",
     "down"             : "arrow-down",
     "end"              : "end",
-    "ereof"            : "er-eof",
     "esc"              : "escape",
     "exclamation"      : "exclam",
-    "exsel"            : "ex-sel",
     "favorites"        : "browser-favorites",
     "fn"               : "function",
     "forward"          : "browser-forward",
@@ -282,21 +314,16 @@ KEY_ALIAS = {
     "greater-than"     : "greater",
     "gt"               : "greater",
     "hyphen"           : "minus",
-    "ico00"            : "ico-00",
-    "icoclear"         : "ico-clear",
-    "icohelp"          : "ico-help",
     "ins"              : "insert",
-    "jisho"            : "jp-jisho",
-    "junja"            : "jp-junja",
-    "kana"             : "jp-kana",
-    "kanji"            : "jp-kanji",
+    "l-alt"            : "left-alt",
     "lalt"             : "left-alt",
-    "launch-app1"      : "app1",
-    "launch-app2"      : "app2",
     "launch-mail"      : "mail",
     "launch-media"     : "media",
+    "l-button"         : "left-button",
     "lbutton"          : "left-button",
+    "l-control"        : "left-control",
     "lcontrol"         : "left-control",
+    "l-ctrl"           : "left-control",
     "lctrl"            : "left-control",
     "left"             : "arrow-left",
     "left-ctrl"        : "left-control",
@@ -304,64 +331,63 @@ KEY_ALIAS = {
     "left-win"         : "left-windows",
     "less-greater-than": "less-greater",
     "less-than"        : "less",
+    "l-menu"           : "left-alt",
     "lmenu"            : "left-alt",
-    "loya"             : "jp-loya",
+    "l-shift"          : "left-shift",
     "lshift"           : "left-shift",
     "lt"               : "less",
     "lt-gt"            : "less-greater",
+    "l-win"            : "left-windows",
     "lwin"             : "left-windows",
-    "masshou"          : "jp-masshou",
+    "m-button"         : "middle-button",
     "mbutton"          : "middle-button",
     "menu"             : "alt",
-    "mode-change"      : "jp-mode-change",
-    "modechange"       : "jp-mode-change",
     "multiply"         : "num-asterisk",
     "mute"             : "volume-mute",
     "next"             : "page-down",
     "next-track"       : "media-next-track",
-    "non-convert"      : "jp-non-convert",
-    "noname"           : "no-name",
     "num-del"          : "num-delete",
     "num-equalsign"    : "num-equal",
-    "num0"             : "num-0",
-    "num1"             : "num-1",
-    "num2"             : "num-2",
-    "num3"             : "num-3",
-    "num4"             : "num-4",
-    "num5"             : "num-5",
-    "num6"             : "num-6",
-    "num7"             : "num-7",
-    "num8"             : "num-8",
-    "num9"             : "num-9",
+    "num-lk"           : "num-lock",
     "numlk"            : "num-lock",
+    "num-lock"         : "num-lock",
     "numlock"          : "num-lock",
     "open-brace"       : "brace-left",
     "open-bracket"     : "bracket-left",
     "page-dn"          : "page-down",
     "page-up"          : "page-up",
     "pause"            : "media-pause",
+    "pg-dn"            : "page-down",
     "pgdn"             : "page-down",
+    "pg-up"            : "page-up",
     "pgup"             : "page-up",
     "play"             : "media-play",
     "play-pause"       : "media-play-pause",
     "prev-track"       : "media-prev-track",
     "printscreen"      : "print-screen",
     "prior"            : "page-up",
+    "prt-sc"           : "print-screen",
     "prtsc"            : "print-screen",
     "question-mark"    : "question",
+    "r-alt"            : "right-alt",
     "ralt"             : "right-alt",
+    "r-button"         : "right-button",
     "rbutton"          : "right-button",
+    "r-control"        : "right-control",
     "rcontrol"         : "right-control",
+    "r-ctrl"           : "right-control",
     "rctrl"            : "right-control",
     "refresh"          : "browser-refresh",
-    "return"           : "num-enter",
+    "num-return"       : "num-enter",
     "right"            : "arrow-right",
     "right-ctrl"       : "right-control",
     "right-menu"       : "right-alt",
     "right-win"        : "right-windows",
+    "r-menu"           : "right-alt",
     "rmenu"            : "right-alt",
-    "roya"             : "jp-roya",
+    "r-shift"          : "right-shift",
     "rshift"           : "right-shift",
+    "r-win"            : "right-windows",
     "rwin"             : "right-windows",
     "scroll"           : "scroll-lock",
     "search"           : "browser-search",
@@ -370,13 +396,11 @@ KEY_ALIAS = {
     "stop"             : "media-stop",
     "subtract"         : "num-minus",
     "tabulator"        : "tab",
-    "touroku"          : "jp-touroku",
     "up"               : "arrow-up",
     "vol-down"         : "volume-down",
     "vol-mute"         : "volume-mute",
     "vol-up"           : "volume-up",
     "win"              : "windows",
-    "wsctrl"           : "ws-ctrl",
     "xbutton1"         : "x-button1",
     "xbutton2"         : "x-button2",
     "zoom"             : "zoom",
