@@ -150,5 +150,4 @@ class KeysExtension(Extension):
 
 def makeExtension(*args, **kwargs):
     """Return extension."""
-
     return KeysExtension(*args, **kwargs)

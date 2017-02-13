@@ -82,6 +82,7 @@ setup(
     # requirements files see:
     # https://packaging.python.org/en/latest/requirements.html
     install_requires=[
-        'markdown>=2.6.7',
+        'markdown>=2.6.8',
+        'mako>=1.0.6',
     ],
 )
