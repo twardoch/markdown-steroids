@@ -52,7 +52,7 @@ class MakoPreprocessor(Preprocessor):
         self.encoding = config['encoding']
 
     def run(self, lines):
-        md = "\n".join(lines)
+        md = u"\n".join(lines)
         mako_lookup = TemplateLookup(directories=[self.base_path])
         mako_tpl = Template(md, input_encoding=self.encoding, lookup=mako_lookup)
         mako_result = mako_tpl.render(**self.config)
