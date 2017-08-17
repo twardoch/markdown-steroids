@@ -7,7 +7,7 @@ from bs4 import BeautifulSoup
 
 class KillTagsPostprocessor(Postprocessor):
     def kill_tags(self, html, tags):
-        soup = BeautifulSoup(html, "html5lib")
+        soup = BeautifulSoup(html, "lxml")
         for tag in tags:
             if soup.find_all(tag):
                 for t in soup.find_all(tag):
