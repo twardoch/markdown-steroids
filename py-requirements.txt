@@ -1,3 +1,5 @@
 Markdown>=2.6.8
-mako>=1.0.6
-pymdown-extensions>=3.1.0
+mako>=1.0.7
+pymdown-extensions>=3.5.0
+beautifulsoup4>=4.6.0
+html5lib>=0.9
