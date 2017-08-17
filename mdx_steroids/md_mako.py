@@ -23,6 +23,7 @@ __version__ = '0.5.0'
 
 import os.path
 import io
+import re
 from markdown.extensions import Extension
 from markdown.preprocessors import Preprocessor
 from mako.template import Template
@@ -30,6 +31,11 @@ from mako.lookup import TemplateLookup
 
 
 class MakoPreprocessor(Preprocessor):
+    MD_HEAD_BEFORE_MAKO = u'##'
+    RE_MD_HEAD_BEFORE_MAKO = re.compile(u'^' + MD_HEAD_BEFORE_MAKO)
+    MD_HEAD_AFTER_MAKO = u'3fHkslFJ39Z'
+    RE_MD_HEAD_AFTER_MAKO = re.compile(u'^' + MD_HEAD_AFTER_MAKO)
+
     def __init__(self, config, md):
         super(MakoPreprocessor, self).__init__(md)
         self.mako_args = config.get('meta')
@@ -43,6 +49,7 @@ class MakoPreprocessor(Preprocessor):
             self.mako_base_dirs = [self.mako_include_base]
 
     def run(self, lines):
+        lines = [re.sub(self.RE_MD_HEAD_BEFORE_MAKO, self.MD_HEAD_AFTER_MAKO, line) for line in lines]
         if self.mako_python_block:
             path_python_block = None
             if os.path.exists(self.mako_python_block):
@@ -68,6 +75,7 @@ class MakoPreprocessor(Preprocessor):
         mako_tpl = Template(md, input_encoding=self.mako_include_encoding, lookup=mako_lookup)
         mako_result = mako_tpl.render(**mako_args)
         lines = mako_result.splitlines()[1:]
+        lines = [re.sub(self.RE_MD_HEAD_AFTER_MAKO, self.MD_HEAD_BEFORE_MAKO, line) for line in lines]
         return lines
 
 
