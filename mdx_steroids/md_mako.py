@@ -1,9 +1,9 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 """
-## steroids.mako
+## steroids.md_mako
 
-The `steroids.mako` feeds Markdown through the Mako templating system.
+The `steroids.md_mako` feeds Markdown through the Mako templating system.
 
 ### Installation
 
@@ -32,11 +32,11 @@ from mako.lookup import TemplateLookup
 class MakoPreprocessor(Preprocessor):
     def __init__(self, config, md):
         super(MakoPreprocessor, self).__init__(md)
-        self.mako_args = config.get('mako_args')
-        self.mako_include_base = config.get('mako_include_base')
-        self.mako_include_encoding = config.get('mako_include_encoding')
-        self.mako_include_auto = config.get('mako_include_auto')
-        self.mako_python_block = config.get('mako_python_block')
+        self.mako_args = config.get('meta')
+        self.mako_include_base = config.get('include_base')
+        self.mako_include_encoding = config.get('include_encoding')
+        self.mako_include_auto = config.get('include_auto')
+        self.mako_python_block = config.get('python_block')
         if type(self.mako_include_base) is list:
             self.mako_base_dirs = self.mako_include_base
         else:
@@ -59,26 +59,31 @@ class MakoPreprocessor(Preprocessor):
             line_include_auto = u'<%include file="{}"/>'.format(self.mako_include_auto)
             lines = [line_include_auto] + lines
         md = u"\n".join(lines)
+        mako_args = self.mako_args
+        if hasattr(self.markdown, 'Meta'):
+            md_meta = {k.lower(): u''.join(v) if isinstance(v, list) else v for k, v in self.markdown.Meta.items()}
+            assert isinstance(mako_args, dict)
+            mako_args.update(md_meta)
         mako_lookup = TemplateLookup(directories=self.mako_base_dirs)
         mako_tpl = Template(md, input_encoding=self.mako_include_encoding, lookup=mako_lookup)
-        mako_result = mako_tpl.render(**self.mako_args)
+        mako_result = mako_tpl.render(**mako_args)
         lines = mako_result.splitlines()[1:]
-        print(lines)
         return lines
 
 
 class MarkdownMakoExtension(Extension):
     def __init__(self, *args, **kwargs):
         self.config = {
-            'mako_include_base'    : [u'.', 'Default location from which to evaluate ' \
+            'include_base'    : [u'.', 'Default location from which to evaluate ' \
                                            'relative paths for the include statement.'],
-            'mako_include_encoding': ['utf-8', 'Encoding of the files used by the include ' \
+            'include_encoding': ['utf-8', 'Encoding of the files used by the include ' \
                                                'statement.'],
-            'mako_include_auto'    : [u'', 'Path to Mako file to be automatically' \
+            'include_auto'    : [u'', 'Path to Mako file to be automatically' \
                                             'included at the beginning.'],
-            'mako_python_block'    : [u'', 'Path to Python file to be automatically' \
+            'python_block'    : [u'', 'Path to Python file to be automatically' \
                                             'included at the beginning as a module block.'],
-            'mako_args'            : [{}, 'Dict of args passed to mako.Template().render()'],
+            'meta'            : [{}, 'Dict of args passed to mako.Template().render().' \
+                                            'Can be overriden through Markdown YAML metadata.'],
         }
         super(MarkdownMakoExtension, self).__init__(*args, **kwargs)
 
@@ -87,8 +92,7 @@ class MarkdownMakoExtension(Extension):
         md.registerExtension(self)
         config = self.getConfigs()
         md_mako = MakoPreprocessor(config, md)
-        md.preprocessors.add('md_mako', md_mako, "_begin")
-        print(md.preprocessors)
+        md.preprocessors.add('md_mako', md_mako, ">normalize_whitespace")
 
 def makeExtension(*args, **kwargs):
     return MarkdownMakoExtension(kwargs)

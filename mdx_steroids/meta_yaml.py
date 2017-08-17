@@ -69,7 +69,7 @@ class MetaYamlExtension (Extension):
 
     def extendMarkdown(self, md, md_globals):
         """Add MetaYamlPreprocessor to Markdown instance."""
-        md.preprocessors.add("meta_yaml", MetaYamlPreprocessor(md), ">meta")
+        md.preprocessors.add("meta_yaml", MetaYamlPreprocessor(md), "<normalize_whitespace")
 
 
 class MetaYamlPreprocessor(Preprocessor):
