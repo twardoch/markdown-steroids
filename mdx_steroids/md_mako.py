@@ -13,7 +13,56 @@ pip install --user --upgrade git+https://github.com/twardoch/markdown-steroids.g
 
 ### Docs
 
-* https://github.com/twardoch/markdown-steroids/
+* https://github.com/twardoch/markdown-steroids
+
+### Options
+
+```yaml
+  steroids.md_mako:
+    include_base    : '.'        # Default location from which to evaluate relative paths for the `<%include file="..."/>` statement.
+    include_encoding: 'utf-8'    # Encoding of the files used by the `<%include file="..."/>` statement.
+    include_auto    : 'head.md'  # Path to Mako file to be automatically included at the beginning.
+    python_block    : 'head.py'  # Path to Python file to be automatically included at the beginning as a module block. Useful for global imports and functions.
+    meta:                        # Dict of args passed to `mako.Template().render()`. Can be overriden through Markdown YAML metadata.
+      author        : 'John Doe' # Can be referred inside the Markdown via `${author}`
+      status        : 'devel'    # Can be referred inside the Markdown via `${status}`
+```
+
+### Example
+
+#### Input Markdown
+
+This assumes that the `meta` or `steroids.meta_yaml` extension is enabled,
+so parsing metadata at the beginning of the file works.
+
+```markdown
+---
+author: John Doe
+---
+<%!
+import datetime
+def today():
+    now = datetime.datetime.now()
+    return now.strftime('%Y-%m-%d')
+%>
+
+${author} has last edited this on ${today()}.
+
+% for number in ['one', 'two', 'three']:
+* ${number}
+% endfor
+```
+
+#### Output HTML
+
+```html
+<p>John Doe has last edited this on 2017-08-17.</p>
+<ul>
+<li>one</li>
+<li>two</li>
+<li>three</li>
+</ul>
+```
 
 Copyright (c) 2017 Adam Twardoch <adam+github@twardoch.com>
 License: [BSD 3-clause](https://opensource.org/licenses/BSD-3-Clause)
@@ -31,9 +80,14 @@ from mako.lookup import TemplateLookup
 
 
 class MakoPreprocessor(Preprocessor):
+    # Mako interprets `##` at the beginning of a line as a comment,
+    # while in Markdown it’s the H2 heading. Therefore, before
+    # passing the content to Mako, we replace the initial `##`
+    # with a fake string, and after the Mako processing
+    # we change it back.
     MD_HEAD_BEFORE_MAKO = u'##'
     RE_MD_HEAD_BEFORE_MAKO = re.compile(u'^' + MD_HEAD_BEFORE_MAKO)
-    MD_HEAD_AFTER_MAKO = u'3fHkslFJ39Z'
+    MD_HEAD_AFTER_MAKO = u'3fHkslFJ39Z' # This is the fake string
     RE_MD_HEAD_AFTER_MAKO = re.compile(u'^' + MD_HEAD_AFTER_MAKO)
 
     def __init__(self, config, md):
@@ -83,11 +137,9 @@ class MarkdownMakoExtension(Extension):
     def __init__(self, *args, **kwargs):
         self.config = {
             'include_base'    : [u'.', 'Default location from which to evaluate ' \
-                                           'relative paths for the include statement.'],
-            'include_encoding': ['utf-8', 'Encoding of the files used by the include ' \
-                                               'statement.'],
-            'include_auto'    : [u'', 'Path to Mako file to be automatically' \
-                                            'included at the beginning.'],
+                                           'relative paths for the <%include file="..."/> statement.'],
+            'include_encoding': ['utf-8', 'Encoding of the files used by the <%include file="..."/> statement.'],
+            'include_auto'    : [u'', 'Path to Mako file to be automatically included at the beginning.'],
             'python_block'    : [u'', 'Path to Python file to be automatically' \
                                             'included at the beginning as a module block.'],
             'meta'            : [{}, 'Dict of args passed to mako.Template().render().' \
