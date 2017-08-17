@@ -21,7 +21,7 @@ class KillTagsPostprocessor(Postprocessor):
 class KillTagsExtension(Extension):
     def __init__(self, *args, **kwargs):
         self.config = {
-            'tags': [['del'], 'HTML element tags to be removed (with contents)'],
+            'tags': [[''], 'HTML element tags to be removed (with contents)'],
         }
         super(KillTagsExtension, self).__init__(*args, **kwargs)
 
