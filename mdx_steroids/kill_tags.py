@@ -6,16 +6,16 @@ from markdown.postprocessors import Postprocessor
 from bs4 import BeautifulSoup
 
 class KillTagsPostprocessor(Postprocessor):
-    def kill_tags(self, html, tags):
+    def kill_tags(self, html, find_tags):
         soup = BeautifulSoup(html, "lxml")
-        for tag in tags:
-            if soup.find_all(tag):
-                for t in soup.find_all(tag):
-                    t.replace_with("")
-        empty_tags = soup.findAll('p')
-        for tag in empty_tags:
-            if not tag.contents:
-                tag.extract()
+        for find_tag in find_tags:
+            for t in soup.find_all(find_tag):
+                t.extract()
+        for t in soup.find_all('p'):
+            if not len(t.contents):
+                t.extract()
+            elif not unicode(t.contents[0]).rstrip():
+                t.extract()
         return unicode(soup)
 
     def run(self, html):
