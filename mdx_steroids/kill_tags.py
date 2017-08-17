@@ -12,6 +12,10 @@ class KillTagsPostprocessor(Postprocessor):
             if soup.find_all(tag):
                 for t in soup.find_all(tag):
                     t.replace_with("")
+        empty_tags = soup.findAll('p')
+        for tag in empty_tags:
+            if not p.contents:
+                tag.extract()
         return unicode(soup)
 
     def run(self, html):
