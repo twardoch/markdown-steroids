@@ -30,7 +30,7 @@ Elements matching to these selectors will be completely removed from the final H
   mdx_steroids.kill_tags:
     normalize: false  # Do not use BeautifulSoup for post-processing
     kill:             # List of CSS selectors or (with "!" prefix) XPath selectors to delete
-      - "!//pre[@class and contains(concat(' ', normalize-space(@class), ' '), ' hilite ') and code[@class and
+      - "!//pre[@class and contains(concat(' ', normalize-space(@class), ' '), ' highlight ') and code[@class and
       contains(concat(' ', normalize-space(@class), ' '), ' language-del ')]]"
       - del
     kill_known: false # Do not remove some hardcoded "known" selectors
@@ -174,7 +174,7 @@ class KillTagsPostprocessor(Postprocessor):
 
     def known_selectors(self):
         return [
-            "//pre[@class and contains(concat(' ', normalize-space(@class), ' '), ' hilite ') and code[@class and "
+            "//pre[@class and contains(concat(' ', normalize-space(@class), ' '), ' highlight ') and code[@class and "
              "contains(concat(' ', normalize-space(@class), ' '), ' language-del ')]]",
             "descendant-or-self::del",
         ]
