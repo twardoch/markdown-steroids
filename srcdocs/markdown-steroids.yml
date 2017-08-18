@@ -126,7 +126,7 @@ markdown_extensions:
       - p
     normalize: false
 - mdx_steroids.md_mako:
-    #python_block  : 'mako-mdx-steroids.py'
+    python_block  : 'mako-mdx-steroids.py'
     meta: 
       author: 'Adam Twardoch'
 - mdx_steroids.meta_yaml
