@@ -1,49 +1,54 @@
 # mdx_steroids
 
-A small collection of Python Markdown extensions
+A small collection of Python Markdown extensions.
 
-## steroids.kill_tags
 
-The `steroids.kill_tags` removes requested HTML elements from final HTML output.
 
-### Installation
+# Installation
 
-```bash
-pip install --user --upgrade git+https://github.com/twardoch/markdown-steroids.git
+```
+pip install --user --upgrade  git+https://github.com/twardoch/markdown-steroids.git
 ```
 
-### Docs
 
-* https://github.com/twardoch/markdown-steroids
+# Usage in MkDocs
 
-### Options
-
-* The `kill` option allows to specify a list of CSS selectors or (when using the "!" prefix), XPath selectors.
-Elements matching to these selectors will be completely removed from the final HTML.
-
-* The `kill_known` option allows to remove (if true) or keep (if false) certain hardcoded selectors.
-
-* The `kill_empty` option allows to specify a list of simple element tags which will be removed if they’re empty.
-
-* The `normalize` option will pass the final HTML through BeautifulSoup if true.
+In your `mkdocs.yaml` include:
 
 ```yaml
-  steroids.kill_tags:
-    normalize: false  # Do not use BeautifulSoup for post-processing
-    kill:             # List of CSS selectors or (with "!" prefix) XPath selectors to delete
-      - "!//pre[@class and contains(concat(' ', normalize-space(@class), ' '), ' hilite ') and code[@class and
-      contains(concat(' ', normalize-space(@class), ' '), ' language-del ')]]"
-      - del
-    kill_known: false # Do not remove some hardcoded "known" selectors
-    kill_empty:       # List of HTML tags (simple) to be removed if they’re empty
+markdown_extensions:
+- mdx_steroids.absimgsrc:
+    base_url       : 'https://github.com/repo/blob/master/images/'
+    # Base URL to which the relative paths will be appended
+- mdx_steroids.keys:
+    camel_case: true
+    strict: false
+    separator: ''
+- mdx_steroids.kill_tags:
+    kill_known: true
+    kill_empty:
       - p
-      - div
+    normalize: false
+- mdx_steroids.md_mako:
+    python_block  : 'my_md_mako.py'
+    meta:
+      author: 'John Doe'
+- mdx_steroids.meta_yaml
+- mdx_steroids.replimgsrc:
+    find           : 'https://github.com/repo/blob/master/images'
+    replace        : '../img/'
+- mdx_steroids.wikilink:
+    base_url       : '/'
+    end_url        : '/'
+    html_class     : 'wikilink'
+    space_sep      : '-'
 ```
 
+----
 
-## steroids.wikilink
+# steroids.absimgsrc
 
-The `steroids.wikilink` extension parses wikilinks in the style of the  [Gollum](https://github.com/gollum/gollum) wiki and the [Github Wiki system](https://help.github.com/articles/about-github-wikis/). It will convert links such as `[[Page name]]` to `[Page name](/Page-name/)`. You can specify the start, end and separator strings.
+The `steroids.absimgsrc` replaces relative image URLs with absolute ones.
 
 ### Installation
 
@@ -53,40 +58,35 @@ pip install --user --upgrade git+https://github.com/twardoch/markdown-steroids.g
 
 ### Docs
 
-* https://github.com/twardoch/markdown-steroids
+* https://github.com/twardoch/markdown-steroids/
 
 ### Options
 
 ```yaml
-  steroids.wikilink:
-    base_url       : '/'                  # String to append to beginning or URL.
-    end_url        : '/'                  # String to append to end of URL.
-    html_class     : 'wikilink'           # CSS hook. Leave blank for none.
-    space_sep      : '-'                  # String that replaces the space, "-" by default.
-    build_url      : build_url            # Alternative callable formats URL from label.
+  steroids.absimgsrc:
+    base_url       : 'https://github.com/repo/blob/master/images/'
+    # Base URL to which the relative paths will be appended
 ```
 
 ### Example
 
 ---
 
-This is a [[Wiki Link]] of some sorts. 
+
 
 ---
 
 #### Input Markdown
 
-```markdown
-This is a [[Wiki Link]] of some sorts. 
-```
+````markdown
+````
 
 #### Output HTML
 
-```html
-<p>This is a <a class="wikilink" href="/Wiki-Link/">Wiki Link</a> of some sorts.</p>
-```
+````html
+````
 
-
+----
 
 ## steroids.keys
 
@@ -162,51 +162,11 @@ class="key-page-up">Page Up</kbd></kbd>, type in <kbd class="keys"><kbd>Hello</k
 class="keys"><kbd class="key-enter">Enter</kbd></kbd>.</p>
 ```
 
+----
 
-## steroids.replimgsrc
+# steroids.kill_tags
 
-The `steroids.replimgsrc` extension finds and replaces portions of an image URL. 
-
-### Installation
-
-```bash
-pip install --user --upgrade git+https://github.com/twardoch/markdown-steroids.git
-```
-
-### Docs
-
-* https://github.com/twardoch/markdown-steroids/
-
-### Options
-
-```yaml
-  steroids.replimgsrc: 
-    find           : 'https://github.com/repo/blob/master/images/'
-    replace        : '../img/'
-```
-
-### Example
-
----
-
-
-
----
-
-#### Input Markdown
-
-```markdown
-```
-
-#### Output HTML
-
-```html
-```
-
-
-## steroids.absimgsrc
-
-The `steroids.absimgsrc` replaces relative image URLs with absolute ones. 
+The `steroids.kill_tags` removes requested HTML elements from final HTML output.
 
 ### Installation
 
@@ -216,64 +176,35 @@ pip install --user --upgrade git+https://github.com/twardoch/markdown-steroids.g
 
 ### Docs
 
-* https://github.com/twardoch/markdown-steroids/
+* https://github.com/twardoch/markdown-steroids
 
 ### Options
 
-```yaml
-  steroids.absimgsrc: 
-    base_url       : 'https://github.com/repo/blob/master/images/' 
-    # Base URL to which the relative paths will be appended
-```
+* The `kill` option allows to specify a list of CSS selectors or (when using the "!" prefix), XPath selectors.
+Elements matching to these selectors will be completely removed from the final HTML.
 
-### Example
+* The `kill_known` option allows to remove (if true) or keep (if false) certain hardcoded selectors.
 
----
+* The `kill_empty` option allows to specify a list of simple element tags which will be removed if they’re empty.
 
-
-
----
-
-#### Input Markdown
-
-````markdown
-````
-
-#### Output HTML
-
-````html
-````
-
-
-
-# Installation
-
-```
-pip install --user --upgrade  git+https://github.com/twardoch/markdown-steroids.git
-```
-
-
-
-## Usage in MkDocs
-
-In your `mkdocs.yaml` include:
+* The `normalize` option will pass the final HTML through BeautifulSoup if true.
 
 ```yaml
-steroids.wikilinks
-markdown_extensions:
-- steroids.kbd:
-    repl_mac       : false                # Replace macOS symbols
-    html_class     : 'kbd'                # CSS hook. Leave blank for none
-- steroids.replimgsrc: 
-    find           : 'https://github.com/repo/blob/master/images/'
-    replace        : '../img/'
-- steroids.absimgsrc: 
-    base_url       : 'https://github.com/repo/blob/master/images/' 
-    # Base URL to which the relative paths will be appended
+  steroids.kill_tags:
+    normalize: false  # Do not use BeautifulSoup for post-processing
+    kill:             # List of CSS selectors or (with "!" prefix) XPath selectors to delete
+      - "!//pre[@class and contains(concat(' ', normalize-space(@class), ' '), ' hilite ') and code[@class and
+      contains(concat(' ', normalize-space(@class), ' '), ' language-del ')]]"
+      - del
+    kill_known: false # Do not remove some hardcoded "known" selectors
+    kill_empty:       # List of HTML tags (simple) to be removed if they’re empty
+      - p
+      - div
 ```
 
+----
 
-## steroids.md_mako
+# steroids.md_mako
 
 The `steroids.md_mako` feeds Markdown through the Mako templating system.
 
@@ -336,6 +267,96 @@ ${author} has last edited this on ${today()}.
 </ul>
 ```
 
+----
+
+## steroids.replimgsrc
+
+The `steroids.replimgsrc` extension finds and replaces portions of an image URL.
+
+### Installation
+
+```bash
+pip install --user --upgrade git+https://github.com/twardoch/markdown-steroids.git
+```
+
+### Docs
+
+* https://github.com/twardoch/markdown-steroids/
+
+### Options
+
+```yaml
+  steroids.replimgsrc:
+    find           : 'https://github.com/repo/blob/master/images/'
+    replace        : '../img/'
+```
+
+### Example
+
+---
+
+
+
+---
+
+#### Input Markdown
+
+```markdown
+```
+
+#### Output HTML
+
+```html
+```
+
+----
+
+# steroids.wikilink
+
+The `steroids.wikilink` extension parses wikilinks in the style of the  [Gollum](https://github.com/gollum/gollum) wiki and the [Github Wiki system](https://help.github.com/articles/about-github-wikis/). It will convert links such as `[[Page name]]` to `[Page name](/Page-name/)`. You can specify the start, end and separator strings.
+
+### Installation
+
+```bash
+pip install --user --upgrade git+https://github.com/twardoch/markdown-steroids.git
+```
+
+### Docs
+
+* https://github.com/twardoch/markdown-steroids
+
+### Options
+
+```yaml
+  steroids.wikilink:
+    base_url       : '/'                  # String to append to beginning or URL.
+    end_url        : '/'                  # String to append to end of URL.
+    html_class     : 'wikilink'           # CSS hook. Leave blank for none.
+    space_sep      : '-'                  # String that replaces the space, "-" by default.
+    build_url      : build_url            # Alternative callable formats URL from label.
+```
+
+### Example
+
+---
+
+This is a [[Wiki Link]] of some sorts.
+
+---
+
+#### Input Markdown
+
+```markdown
+This is a [[Wiki Link]] of some sorts.
+```
+
+#### Output HTML
+
+```html
+<p>This is a <a class="wikilink" href="/Wiki-Link/">Wiki Link</a> of some sorts.</p>
+```
+
+----
 
 ### Copyright and License
 
