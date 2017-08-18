@@ -1,8 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-
 """
-## steroids.kill_tags
+# mdx_steroids.kill_tags
 
 The `mdx_steroids.kill_tags` removes requested HTML elements from final HTML output.
 
@@ -28,7 +27,7 @@ Elements matching to these selectors will be completely removed from the final H
 * The `normalize` option will pass the final HTML through BeautifulSoup if true.
 
 ```yaml
-  steroids.kill_tags:
+  mdx_steroids.kill_tags:
     normalize: false  # Do not use BeautifulSoup for post-processing
     kill:             # List of CSS selectors or (with "!" prefix) XPath selectors to delete
       - "!//pre[@class and contains(concat(' ', normalize-space(@class), ' '), ' hilite ') and code[@class and
@@ -38,6 +37,97 @@ Elements matching to these selectors will be completely removed from the final H
     kill_empty:       # List of HTML tags (simple) to be removed if they’re empty
       - p
       - div
+```
+
+### Example
+
+This assumes the `pymdownx.tilde` extension being used, and the above configuration.
+
+#### Input Markdown 1
+
+This is an example where a portion of inline text has been surrounded with `~~` on each side, which will be visible in the Github wiki preview~~ but will be deleted from the final HTML~~. And this is another example where a portion of inline text has been surrounded with the HTML tag `del` on each side<del> and it also will be deleted from the final HTML</del>.
+
+```markdown
+This is an example where a portion of inline text has
+been surrounded with `~~` on each side, which will
+be visible in the Github wiki preview~~ but will
+be deleted from the final HTML~~. And this is another
+example where a portion of inline text has been
+surrounded with the HTML tag `del` on each
+side<del> and it also will be deleted from the
+final HTML</del>.
+```
+
+#### Output HTML 1
+
+<p>This is an example where a portion of inline text has been surrounded with <code>~~</code> on each side,
+which will be visible in the Github wiki preview . And this is another example where a portion of inline text has
+been surrounded with the HTML tag <code>del</code> on each side. </p>
+
+```html
+<p>This is an example where a portion of inline text has been surrounded with <code>~~</code> on each side,
+which will be visible in the Github wiki preview . And this is another example where a portion of inline text has
+been surrounded with the HTML tag <code>del</code> on each side. </p>
+```
+
+#### Input Markdown 2
+
+This is a visible paragraph before the special del block.
+
+```del
+## This heading from details will be deleted
+
+This can be an arbitrarily long set of paragraphs.
+This can be an arbitrarily long set of paragraphs.
+
+* this is a list item that will be deleted
+
+* this is another list item that will be deleted
+```
+
+* this is a list item that will be visible
+
+* this is another list item that will be visible
+
+    This is a visible paragraph before the special del block.
+
+    ```del
+    ## This heading from details will be deleted
+
+    This can be an arbitrarily long set of paragraphs.
+    This can be an arbitrarily long set of paragraphs.
+
+    * this is a list item that will be deleted
+
+    * this is another list item that will be deleted
+    ```
+
+    * this is a list item that will be visible
+
+    * this is another list item that will be visible
+
+#### Output HTML 2
+
+<p>This is a visible paragraph before the special del block. </p>
+<ul>
+<li>
+<p>this is a list item that will be visible</p>
+</li>
+<li>
+<p>this is another list item that will be visible</p>
+</li>
+</ul>
+
+```html
+<p>This is a visible paragraph before the special del block. </p>
+<ul>
+<li>
+<p>this is a list item that will be visible</p>
+</li>
+<li>
+<p>this is another list item that will be visible</p>
+</li>
+</ul>
 ```
 
 Copyright (c) 2017 Adam Twardoch <adam+github@twardoch.com>

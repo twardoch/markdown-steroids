@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 """
-## steroids.replimgsrc
+# mdx_steroids.replimgsrc
 
 The `mdx_steroids.replimgsrc` extension finds and replaces portions of an image URL. 
 
@@ -22,24 +22,6 @@ pip install --user --upgrade git+https://github.com/twardoch/markdown-steroids.g
     find           : 'https://github.com/repo/blob/master/images/'
     replace        : '../img/'
 ```
-
-### Example
-
----
-
-
-
----
-
-#### Input Markdown
-
-````markdown
-````
-
-#### Output HTML
-
-````html
-````
 
 Copyright (c) 2016 Adam Twardoch <adam+github@twardoch.com>
 License: [BSD 3-clause](https://opensource.org/licenses/BSD-3-Clause)

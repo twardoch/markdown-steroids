@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 """
-## steroids.wikilink
+# mdx_steroids.wikilink
 
 The `mdx_steroids.wikilink` extension parses wikilinks in the style of the  [Gollum](https://github.com/gollum/gollum) wiki and the [Github Wiki system](https://help.github.com/articles/about-github-wikis/). It will convert links such as `[[Page name]]` to `[Page name](/Page-name/)`. You can specify the start, end and separator strings.
 
@@ -28,23 +28,21 @@ pip install --user --upgrade git+https://github.com/twardoch/markdown-steroids.g
 
 ### Example
 
----
-
-This is a [[Wiki Link]] of some sorts. 
-
----
-
 #### Input Markdown
 
-````markdown
+This is a [[Wiki Link]] of some sorts.
+
+```markdown
 This is a [[Wiki Link]] of some sorts. 
-````
+```
 
 #### Output HTML
 
-````html
 <p>This is a <a class="wikilink" href="/Wiki-Link/">Wiki Link</a> of some sorts.</p>
-````
+
+```html
+<p>This is a <a class="wikilink" href="/Wiki-Link/">Wiki Link</a> of some sorts.</p>
+```
 
 Copyright (c) 2016 Adam Twardoch <adam+github@twardoch.com>
 Based on original code

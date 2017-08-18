@@ -68,28 +68,10 @@ pip install --user --upgrade git+https://github.com/twardoch/markdown-steroids.g
 ### Options
 
 ```yaml
-  steroids.absimgsrc:
+  mdx_steroids.absimgsrc:
     base_url       : 'https://github.com/repo/blob/master/images/'
     # Base URL to which the relative paths will be appended
 ```
-
-### Example
-
----
-
-
-
----
-
-#### Input Markdown
-
-````markdown
-````
-
-#### Output HTML
-
-````html
-````
 
 ----
 
@@ -129,6 +111,8 @@ The database can be extended or modified with the `key_map` dict.
 
 ### Input
 
+Press ++Shift+Alt+PgUp++, type in ++"Hello"++ and press ++Enter++.
+
 ```markdown
 Press ++Shift+Alt+PgUp++, type in ++"Hello"++ and press ++Enter++.
 ```
@@ -136,13 +120,17 @@ Press ++Shift+Alt+PgUp++, type in ++"Hello"++ and press ++Enter++.
 ### Config 1
 
 ```yaml
-  pymdownx.keys:
+  mdx_steroids.keys:
     camel_case: true
     strict: false
     separator: '+'
 ```
 
 ### Output 1
+
+<p>Press <span class="keys"><kbd class="key-shift">Shift</kbd><span>+</span><kbd
+class="key-alt">Alt</kbd><span>+</span><kbd class="key-page-up">Page Up</kbd></span>, type in <span
+class="keys"><kbd>Hello</kbd></span> and press <span class="keys"><kbd class="key-enter">Enter</kbd></span>.</p>
 
 ```html
 <p>Press <span class="keys"><kbd class="key-shift">Shift</kbd><span>+</span><kbd
@@ -153,13 +141,17 @@ class="keys"><kbd>Hello</kbd></span> and press <span class="keys"><kbd class="ke
 ### Config 2
 
 ```yaml
-  pymdownx.keys:
+  mdx_steroids.keys:
     camel_case: true
     strict: true
     separator: ''
 ```
 
 ### Output 2
+
+<p>Press <kbd class="keys"><kbd class="key-shift">Shift</kbd><kbd class="key-alt">Alt</kbd><kbd
+class="key-page-up">Page Up</kbd></kbd>, type in <kbd class="keys"><kbd>Hello</kbd></kbd> and press <kbd
+class="keys"><kbd class="key-enter">Enter</kbd></kbd>.</p>
 
 ```html
 <p>Press <kbd class="keys"><kbd class="key-shift">Shift</kbd><kbd class="key-alt">Alt</kbd><kbd
@@ -195,7 +187,7 @@ Elements matching to these selectors will be completely removed from the final H
 * The `normalize` option will pass the final HTML through BeautifulSoup if true.
 
 ```yaml
-  steroids.kill_tags:
+  mdx_steroids.kill_tags:
     normalize: false  # Do not use BeautifulSoup for post-processing
     kill:             # List of CSS selectors or (with "!" prefix) XPath selectors to delete
       - "!//pre[@class and contains(concat(' ', normalize-space(@class), ' '), ' hilite ') and code[@class and
@@ -205,6 +197,97 @@ Elements matching to these selectors will be completely removed from the final H
     kill_empty:       # List of HTML tags (simple) to be removed if they’re empty
       - p
       - div
+```
+
+### Example
+
+This assumes the `pymdownx.tilde` extension being used, and the above configuration.
+
+#### Input Markdown 1
+
+This is an example where a portion of inline text has been surrounded with `~~` on each side, which will be visible in the Github wiki preview~~ but will be deleted from the final HTML~~. And this is another example where a portion of inline text has been surrounded with the HTML tag `del` on each side<del> and it also will be deleted from the final HTML</del>.
+
+```markdown
+This is an example where a portion of inline text has
+been surrounded with `~~` on each side, which will
+be visible in the Github wiki preview~~ but will
+be deleted from the final HTML~~. And this is another
+example where a portion of inline text has been
+surrounded with the HTML tag `del` on each
+side<del> and it also will be deleted from the
+final HTML</del>.
+```
+
+#### Output HTML 1
+
+<p>This is an example where a portion of inline text has been surrounded with <code>~~</code> on each side,
+which will be visible in the Github wiki preview . And this is another example where a portion of inline text has
+been surrounded with the HTML tag <code>del</code> on each side. </p>
+
+```html
+<p>This is an example where a portion of inline text has been surrounded with <code>~~</code> on each side,
+which will be visible in the Github wiki preview . And this is another example where a portion of inline text has
+been surrounded with the HTML tag <code>del</code> on each side. </p>
+```
+
+#### Input Markdown 2
+
+This is a visible paragraph before the special del block.
+
+```del
+## This heading from details will be deleted
+
+This can be an arbitrarily long set of paragraphs.
+This can be an arbitrarily long set of paragraphs.
+
+* this is a list item that will be deleted
+
+* this is another list item that will be deleted
+```
+
+* this is a list item that will be visible
+
+* this is another list item that will be visible
+
+    This is a visible paragraph before the special del block.
+
+    ```del
+    ## This heading from details will be deleted
+
+    This can be an arbitrarily long set of paragraphs.
+    This can be an arbitrarily long set of paragraphs.
+
+    * this is a list item that will be deleted
+
+    * this is another list item that will be deleted
+    ```
+
+    * this is a list item that will be visible
+
+    * this is another list item that will be visible
+
+#### Output HTML 2
+
+<p>This is a visible paragraph before the special del block. </p>
+<ul>
+<li>
+<p>this is a list item that will be visible</p>
+</li>
+<li>
+<p>this is another list item that will be visible</p>
+</li>
+</ul>
+
+```html
+<p>This is a visible paragraph before the special del block. </p>
+<ul>
+<li>
+<p>this is a list item that will be visible</p>
+</li>
+<li>
+<p>this is another list item that will be visible</p>
+</li>
+</ul>
 ```
 
 ----
@@ -226,7 +309,7 @@ pip install --user --upgrade git+https://github.com/twardoch/markdown-steroids.g
 ### Options
 
 ```yaml
-  steroids.md_mako:
+  mdx_steroids.md_mako:
     include_base    : '.'        # Default location from which to evaluate relative paths for the `<%include file="..."/>` statement.
     include_encoding: 'utf-8'    # Encoding of the files used by the `<%include file="..."/>` statement.
     include_auto    : 'head.md'  # Path to Mako file to be automatically included at the beginning.
@@ -238,10 +321,10 @@ pip install --user --upgrade git+https://github.com/twardoch/markdown-steroids.g
 
 ### Example
 
-#### Input Markdown
-
 This assumes that the `meta` or `mdx_steroids.meta_yaml` extension is enabled,
 so parsing metadata at the beginning of the file works.
+
+#### Input Markdown
 
 ```markdown
 ---
@@ -262,6 +345,13 @@ ${author} has last edited this on ${today()}.
 ```
 
 #### Output HTML
+
+<p>John Doe has last edited this on 2017-08-17.</p>
+<ul>
+<li>one</li>
+<li>two</li>
+<li>three</li>
+</ul>
 
 ```html
 <p>John Doe has last edited this on 2017-08-17.</p>
@@ -296,24 +386,6 @@ pip install --user --upgrade git+https://github.com/twardoch/markdown-steroids.g
     replace        : '../img/'
 ```
 
-### Example
-
----
-
-
-
----
-
-#### Input Markdown
-
-```markdown
-```
-
-#### Output HTML
-
-```html
-```
-
 ----
 
 # mdx_steroids.wikilink
@@ -343,19 +415,17 @@ pip install --user --upgrade git+https://github.com/twardoch/markdown-steroids.g
 
 ### Example
 
----
+#### Input Markdown
 
 This is a [[Wiki Link]] of some sorts.
-
----
-
-#### Input Markdown
 
 ```markdown
 This is a [[Wiki Link]] of some sorts.
 ```
 
 #### Output HTML
+
+<p>This is a <a class="wikilink" href="/Wiki-Link/">Wiki Link</a> of some sorts.</p>
 
 ```html
 <p>This is a <a class="wikilink" href="/Wiki-Link/">Wiki Link</a> of some sorts.</p>

@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 """
-## steroids.md_mako
+# mdx_steroids.md_mako
 
 The `mdx_steroids.md_mako` feeds Markdown through the Mako templating system.
 
@@ -18,7 +18,7 @@ pip install --user --upgrade git+https://github.com/twardoch/markdown-steroids.g
 ### Options
 
 ```yaml
-  steroids.md_mako:
+  mdx_steroids.md_mako:
     include_base    : '.'        # Default location from which to evaluate relative paths for the `<%include file="..."/>` statement.
     include_encoding: 'utf-8'    # Encoding of the files used by the `<%include file="..."/>` statement.
     include_auto    : 'head.md'  # Path to Mako file to be automatically included at the beginning.
@@ -30,10 +30,10 @@ pip install --user --upgrade git+https://github.com/twardoch/markdown-steroids.g
 
 ### Example
 
-#### Input Markdown
-
 This assumes that the `meta` or `mdx_steroids.meta_yaml` extension is enabled,
 so parsing metadata at the beginning of the file works.
+
+#### Input Markdown
 
 ```markdown
 ---
@@ -54,6 +54,13 @@ ${author} has last edited this on ${today()}.
 ```
 
 #### Output HTML
+
+<p>John Doe has last edited this on 2017-08-17.</p>
+<ul>
+<li>one</li>
+<li>two</li>
+<li>three</li>
+</ul>
 
 ```html
 <p>John Doe has last edited this on 2017-08-17.</p>

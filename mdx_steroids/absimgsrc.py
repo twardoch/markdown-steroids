@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 """
-## steroids.absimgsrc
+# mdx_steroids.absimgsrc
 
 The `mdx_steroids.absimgsrc` replaces relative image URLs with absolute ones. 
 
@@ -18,28 +18,10 @@ pip install --user --upgrade git+https://github.com/twardoch/markdown-steroids.g
 ### Options
 
 ```yaml
-  steroids.absimgsrc: 
+  mdx_steroids.absimgsrc:
     base_url       : 'https://github.com/repo/blob/master/images/' 
     # Base URL to which the relative paths will be appended
 ```
-
-### Example
-
----
-
-
-
----
-
-#### Input Markdown
-
-````markdown
-````
-
-#### Output HTML
-
-````html
-````
 
 Copyright (c) 2016 Adam Twardoch <adam+github@twardoch.com>
 License: [BSD 3-clause](https://opensource.org/licenses/BSD-3-Clause)
