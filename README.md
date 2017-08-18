@@ -3,6 +3,6 @@
 A small collection of Python Markdown extensions.
 
 * [Documentation](https://twardoch.github.io/markdown-steroids/)
-* [Source docs](./srcdocs/docs)
+* [Source docs](./srcdocs/docs/index.md)
 
 
