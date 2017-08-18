@@ -3,6 +3,7 @@ pages:
 - index.md
 - mdx_steroids: 
   - 'absimgsrc': absimgsrc.md
+  - 'figcaps': figcaps.md
   - 'keys': keys.md
   - 'kill_tags': kill_tags.md
   - 'md_mako': md_mako.md
@@ -19,7 +20,7 @@ site_author: Adam Twardoch
 site_url: https://twardoch.github.io/markdown-steroids/
 
 # Copyright
-copyright: Copyright © 2016–2017 <a href="https://twardoch.github.io/">Adam Twardoch</a>
+copyright: Copyright © 2016–2017 <a href="https://twardoch.github.io/">Adam Twardoch</a> and original authors. 
 
 # Documentation and theme
 theme: readthedocs
