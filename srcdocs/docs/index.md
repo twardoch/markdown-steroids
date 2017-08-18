@@ -10,6 +10,8 @@ A small collection of Python Markdown extensions, written by Adam Twardoch excep
 * [mdx_steroids.replimgsrc](replimgsrc.md) 
 * [mdx_steroids.wikilink](wikilink.md) adapted from original
 
+${author} has last edited this on ${today()}.
+
 # Installation
 
 ```
