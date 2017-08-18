@@ -4,10 +4,10 @@ A small collection of Python Markdown extensions.
 
 * [mdx_steroids.absimgsrc](#mdx_steroidsabsimgsrc)
 * [mdx_steroids.keys](#mdx_steroidskeys)
-* [mdx_steroids.kill_tags](mdx_steroidskill_tags)
-* [mdx_steroids.md_mako](mdx_steroidsmd_mako)
-* [mdx_steroids.replimgsrc](mdx_steroidsreplimgsrc)
-* [mdx_steroids.wikilink](mdx_steroidswikilink)
+* [mdx_steroids.kill_tags](#mdx_steroidskill_tags)
+* [mdx_steroids.md_mako](#mdx_steroidsmd_mako)
+* [mdx_steroids.replimgsrc](#mdx_steroidsreplimgsrc)
+* [mdx_steroids.wikilink](#mdx_steroidswikilink)
 
 # Installation
 
