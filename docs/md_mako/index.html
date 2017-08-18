@@ -156,16 +156,16 @@
           <div role="main">
             <div class="section">
               
-                <div><h1 id="mdx_steroidsmd_mako">mdx_steroids.md_mako<a class="headerlink" href="#mdx_steroidsmd_mako" title="Permanent link">&#187;</a></h1>
+                <section class="section1" id="mdx_steroidsmd_mako"><h1>mdx_steroids.md_mako<a class="headerlink" href="#mdx_steroidsmd_mako" title="Permanent link">&#187;</a></h1>
 <p>The <code>mdx_steroids.md_mako</code> feeds Markdown through the Mako templating system.</p>
-<h3 id="installation">Installation<a class="headerlink" href="#installation" title="Permanent link">&#187;</a></h3>
+<section class="section3" id="installation"><h3>Installation<a class="headerlink" href="#installation" title="Permanent link">&#187;</a></h3>
 <pre class="highlight"><code class="language-bash">pip install --user --upgrade git+https://github.com/twardoch/markdown-steroids.git</code></pre>
 
-<h3 id="docs">Docs<a class="headerlink" href="#docs" title="Permanent link">&#187;</a></h3>
+</section><section class="section3" id="docs"><h3>Docs<a class="headerlink" href="#docs" title="Permanent link">&#187;</a></h3>
 <ul>
 <li><a href="https://github.com/twardoch/markdown-steroids">github.com/twardoch/markdown-steroids</a></li>
 </ul>
-<h3 id="options">Options<a class="headerlink" href="#options" title="Permanent link">&#187;</a></h3>
+</section><section class="section3" id="options"><h3>Options<a class="headerlink" href="#options" title="Permanent link">&#187;</a></h3>
 <pre class="highlight"><code class="language-yaml">  mdx_steroids.md_mako:
     include_base    : '.'        # Default location from which to evaluate relative paths for the `&lt;%include file="..."/&gt;` statement.
     include_encoding: 'utf-8'    # Encoding of the files used by the `&lt;%include file="..."/&gt;` statement.
@@ -175,10 +175,10 @@
       author        : 'John Doe' # Can be referred inside the Markdown via `${author}`
       status        : 'devel'    # Can be referred inside the Markdown via `${status}`</code></pre>
 
-<h3 id="example">Example<a class="headerlink" href="#example" title="Permanent link">&#187;</a></h3>
+</section><section class="section3" id="example"><h3>Example<a class="headerlink" href="#example" title="Permanent link">&#187;</a></h3>
 <p>This assumes that the <code>meta</code> or <code>mdx_steroids.meta_yaml</code> extension is enabled,<br/>
 so parsing metadata at the beginning of the file works.</p>
-<h4 id="input-markdown">Input Markdown<a class="headerlink" href="#input-markdown" title="Permanent link">&#187;</a></h4>
+<section class="section4" id="input-markdown"><h4>Input Markdown<a class="headerlink" href="#input-markdown" title="Permanent link">&#187;</a></h4>
 <pre class="highlight"><code class="language-markdown">---
 author: John Doe
 ---
@@ -195,7 +195,7 @@ ${author} has last edited this on ${today()}.
 * ${number}
 % endfor</code></pre>
 
-<h4 id="output-html">Output HTML<a class="headerlink" href="#output-html" title="Permanent link">&#187;</a></h4>
+</section><section class="section4" id="output-html"><h4>Output HTML<a class="headerlink" href="#output-html" title="Permanent link">&#187;</a></h4>
 <p>John Doe has last edited this on 2017-08-17.</p>
 
 <ul>
@@ -212,7 +212,8 @@ ${author} has last edited this on ${today()}.
 &lt;/ul&gt;</code></pre>
 
 <p>Copyright &#169; 2017 Adam Twardoch <a href="mailto:adam+github@twardoch.com">adam+github@twardoch.com</a><br/>
-License: <a href="https://opensource.org/licenses/BSD-3-Clause">BSD 3-clause</a></p></div>
+License: <a href="https://opensource.org/licenses/BSD-3-Clause">BSD 3-clause</a></p>
+</section></section></section>
               
             </div>
           </div>

@@ -156,7 +156,7 @@
           <div role="main">
             <div class="section">
               
-                <div><h1 id="mdx_steroidskeys">mdx_steroids.keys<a class="headerlink" href="#mdx_steroidskeys" title="Permanent link">&#187;</a></h1>
+                <section class="section1" id="mdx_steroidskeys"><h1>mdx_steroids.keys<a class="headerlink" href="#mdx_steroidskeys" title="Permanent link">&#187;</a></h1>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>This is a fork of <a href="http://facelessuser.github.io/pymdown-extensions/extensions/keys/"><code>pymdownx.keys</code></a> by Isaac Muse. Please check the <a href="http://facelessuser.github.io/pymdown-extensions/extensions/keys/"><strong>documentation</strong></a> on the original author&#8217;s site! </p>
@@ -168,35 +168,35 @@ Markdown extension for keystroke (user keyboard input) formatting.</p>
 or <code>++"string"++</code> (for continuous keyboard input) into HTML <code>&lt;kbd&gt;</code> elements.</p>
 <p>If a key is found in the extension&#8217;s database, its <code>&lt;kbd&gt;</code> element gets a matching class.<br/>
 Common synonyms are included, e.g. <code>++pg-up++</code> will match as <code>++page-up++</code>.</p>
-<h2 id="config">Config<a class="headerlink" href="#config" title="Permanent link">&#187;</a></h2>
+<section class="section2" id="config"><h2>Config<a class="headerlink" href="#config" title="Permanent link">&#187;</a></h2>
 <p>If <code>strict</code> is <code>True</code>, the entire series of keystrokes is wrapped into an outer<code>&lt;kbd&gt;</code> element, and then,<br/>
 each keystroke is wrapped into a separate inner <code>&lt;kbd&gt;</code> element, which matches the HTML5 spec.<br/>
 If <code>strict</code> is <code>False</code>, an outer <code>&lt;span&gt;</code> is used, which matches the practice on Github or StackOverflow.</p>
 <p>The resulting <code>&lt;kbd&gt;</code> elements are separated by <code>separator</code> (<code>+</code> by default, can be <code>''</code> or something else).</p>
 <p>If <code>camel_case</code> is <code>True</code>, <code>++PageUp++</code> will match the same as <code>++page-up++</code>.</p>
 <p>The database can be extended or modified with the <code>key_map</code> dict.</p>
-<h2 id="examples">Examples<a class="headerlink" href="#examples" title="Permanent link">&#187;</a></h2>
-<h3 id="input">Input<a class="headerlink" href="#input" title="Permanent link">&#187;</a></h3>
+</section><section class="section2" id="examples"><h2>Examples<a class="headerlink" href="#examples" title="Permanent link">&#187;</a></h2>
+<section class="section3" id="input"><h3>Input<a class="headerlink" href="#input" title="Permanent link">&#187;</a></h3>
 <pre class="highlight"><code class="language-markdown">Press ++Shift+Alt+PgUp++, type in ++"Hello"++ and press ++Enter++.</code></pre>
 
-<h3 id="config-1">Config 1<a class="headerlink" href="#config-1" title="Permanent link">&#187;</a></h3>
+</section><section class="section3" id="config-1"><h3>Config 1<a class="headerlink" href="#config-1" title="Permanent link">&#187;</a></h3>
 <pre class="highlight"><code class="language-yaml">  pymdownx.keys:
     camel_case: true
     strict: false
     separator: '+'</code></pre>
 
-<h3 id="output-1">Output 1<a class="headerlink" href="#output-1" title="Permanent link">&#187;</a></h3>
+</section><section class="section3" id="output-1"><h3>Output 1<a class="headerlink" href="#output-1" title="Permanent link">&#187;</a></h3>
 <pre class="highlight"><code class="language-html">&lt;p&gt;Press &lt;span class="keys"&gt;&lt;kbd class="key-shift"&gt;Shift&lt;/kbd&gt;&lt;span&gt;+&lt;/span&gt;&lt;kbd
 class="key-alt"&gt;Alt&lt;/kbd&gt;&lt;span&gt;+&lt;/span&gt;&lt;kbd class="key-page-up"&gt;Page Up&lt;/kbd&gt;&lt;/span&gt;, type in &lt;span
 class="keys"&gt;&lt;kbd&gt;Hello&lt;/kbd&gt;&lt;/span&gt; and press &lt;span class="keys"&gt;&lt;kbd class="key-enter"&gt;Enter&lt;/kbd&gt;&lt;/span&gt;.&lt;/p&gt;</code></pre>
 
-<h3 id="config-2">Config 2<a class="headerlink" href="#config-2" title="Permanent link">&#187;</a></h3>
+</section><section class="section3" id="config-2"><h3>Config 2<a class="headerlink" href="#config-2" title="Permanent link">&#187;</a></h3>
 <pre class="highlight"><code class="language-yaml">  pymdownx.keys:
     camel_case: true
     strict: true
     separator: ''</code></pre>
 
-<h3 id="output-2">Output 2<a class="headerlink" href="#output-2" title="Permanent link">&#187;</a></h3>
+</section><section class="section3" id="output-2"><h3>Output 2<a class="headerlink" href="#output-2" title="Permanent link">&#187;</a></h3>
 <pre class="highlight"><code class="language-html">&lt;p&gt;Press &lt;kbd class="keys"&gt;&lt;kbd class="key-shift"&gt;Shift&lt;/kbd&gt;&lt;kbd class="key-alt"&gt;Alt&lt;/kbd&gt;&lt;kbd
 class="key-page-up"&gt;Page Up&lt;/kbd&gt;&lt;/kbd&gt;, type in &lt;kbd class="keys"&gt;&lt;kbd&gt;Hello&lt;/kbd&gt;&lt;/kbd&gt; and press &lt;kbd
 class="keys"&gt;&lt;kbd class="key-enter"&gt;Enter&lt;/kbd&gt;&lt;/kbd&gt;.&lt;/p&gt;</code></pre>
@@ -213,7 +213,8 @@ of the Software.</p>
 TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL<br/>
 THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF<br/>
 CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER<br/>
-DEALINGS IN THE SOFTWARE.</p></div>
+DEALINGS IN THE SOFTWARE.</p>
+</section></section></section>
               
             </div>
           </div>
