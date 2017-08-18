@@ -116,6 +116,7 @@ markdown_extensions:
     smart_insert   : true
     insert         : true
     superscript    : true
+- mdx_steroids.figcap
 - mdx_steroids.keys:
     camel_case: true
     strict: false
@@ -135,11 +136,9 @@ markdown_extensions:
     end_url        : '/'
     html_class     : 'wikilink'
     space_sep      : '-'
-#- sections
-#- outline
+- outline
 - cite
 - custom_span_class
-- figcap
 - fontawesome_markdown
 - mkdcomments
 

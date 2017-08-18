@@ -3,11 +3,15 @@
 
 ### Copyright and License
 
-* Copyright © 2016-2017 [Adam Twardoch](https://github.com/twardoch)
-* Copyright © 2008 [Waylan Limberg](http://achinghead.com) 
-* Copyright © 2008-2014 The Python Markdown Project
-* Copyright © 2014-2015 [Isaac Muse](http://facelessuser.github.io/pymdown-extensions/) 
-* License: [BSD 3-Clause License](license)
+Copyright (c) 2016-2017 [Adam Twardoch](http://twardoch.github.io/)
+Copyright (c) 2014-2017 [Isaac Muse](https://github.com/facelessuser/pymdown-extensions)
+Copyright (c) 2016 [mkszk](https://github.com/mkszk/)
+Copyright (c) 2007-2014 [The Python Markdown Project](https://pythonhosted.org/Markdown/)
+Copyright (c) 2008 [Waylan Limberg](http://achinghead.com) 
+Copyright (c) 2004-2006 Yuri Takhteyev
+Copyright (c) 2004 Manfred Stienstra
+
+License: [BSD 3-Clause License](license)
 
 ### Projects related to Markdown and MkDocs by Adam Twardoch: 
 

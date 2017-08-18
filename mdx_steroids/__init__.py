@@ -1,5 +1,6 @@
 __all__ = [
 	'absimgsrc', 
+	'figcap'
 	'kbd', 
 	'keymap_db', 
 	'keys', 
