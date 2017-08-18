@@ -240,7 +240,7 @@ pip install --user --upgrade git+https://github.com/twardoch/markdown-steroids.g
 
 #### Input Markdown
 
-This assumes that the `meta` or `steroids.meta_yaml` extension is enabled,
+This assumes that the `meta` or `mdx_steroids.meta_yaml` extension is enabled,
 so parsing metadata at the beginning of the file works.
 
 ```markdown

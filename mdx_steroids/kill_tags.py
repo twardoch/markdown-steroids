@@ -4,7 +4,7 @@
 """
 ## steroids.kill_tags
 
-The `steroids.kill_tags` removes requested HTML elements from final HTML output.
+The `mdx_steroids.kill_tags` removes requested HTML elements from final HTML output.
 
 ### Installation
 

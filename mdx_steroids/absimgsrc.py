@@ -3,7 +3,7 @@
 """
 ## steroids.absimgsrc
 
-The `steroids.absimgsrc` replaces relative image URLs with absolute ones. 
+The `mdx_steroids.absimgsrc` replaces relative image URLs with absolute ones. 
 
 ### Installation
 

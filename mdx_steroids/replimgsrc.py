@@ -3,7 +3,7 @@
 """
 ## steroids.replimgsrc
 
-The `steroids.replimgsrc` extension finds and replaces portions of an image URL. 
+The `mdx_steroids.replimgsrc` extension finds and replaces portions of an image URL. 
 
 ### Installation
 
