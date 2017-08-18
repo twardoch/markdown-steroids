@@ -2,9 +2,9 @@
 # -*- coding: utf-8 -*-
 
 """
-## steroids.md_mako
+## steroids.kill_tags
 
-The `steroids.md_mako` feeds Markdown through the Mako templating system.
+The `steroids.kill_tags` removes requested tags from final HTML output.
 
 ### Installation
 
@@ -36,28 +36,42 @@ __version__ = '0.5.0'
 
 from markdown.extensions import Extension
 from markdown.postprocessors import Postprocessor
+import lxml.html
+import lxml.html.soupparser
+from bs4 import BeautifulSoup
 import lxml.etree as et
 
+
 class KillTagsPostprocessor(Postprocessor):
-    def kill_tags(self, html):
-        tree = et.fromstring(html)
+
+    def normalize_html(self):
+        soup = BeautifulSoup(self.html, "html5lib")
+        self.html = soup.encode(formatter=None)
+
+    def kill_tags(self):
+        tree = lxml.html.fromstring(self.html)
         for kill_tag in self.kill:
             et.strip_elements(tree, kill_tag, with_tail=False)
         for kill_empty_tag in self.kill_empty:
             for el in tree.xpath(
                 "//{}[not(descendant-or-self::*/text()[normalize-space()]) and not(descendant-or-self::*/attribute::*)]".format(kill_empty_tag)):
                 el.getparent().remove(el)
-        return(et.tostring(tree, pretty_print=False))
+        self.html = et.tostring(tree, pretty_print=False)
 
     def run(self, html):
+        self.html = html
         self.kill = self.config.get('kill', [])
         self.kill_empty = self.config.get('kill_empty', [])
-        return self.kill_tags(html)
+        if self.config.get('normalize', False):
+            self.normalize_html()
+        self.kill_tags()
+        return self.html
 
 class KillTagsExtension(Extension):
     def __init__(self, *args, **kwargs):
         self.config = {
-            'kill': [[], 'List of HTML tags to be removed, with contents'],
+            'normalize': [False, 'Normalize HTML before processing'],
+            'kill': [['del'], 'List of HTML tags to be removed, with contents'],
             'kill_empty': [[
                 'p', 'div', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6'
             ], 'List of HTML tags to be removed if they are empty'],
