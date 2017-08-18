@@ -2,7 +2,12 @@
 
 A small collection of Python Markdown extensions.
 
-
+* mdx_steroids.absimgsrc
+* mdx_steroids.keys
+* mdx_steroids.kill_tags
+* mdx_steroids.md_mako
+* mdx_steroids.replimgsrc
+* mdx_steroids.wikilink
 
 # Installation
 
@@ -46,9 +51,9 @@ markdown_extensions:
 
 ----
 
-# steroids.absimgsrc
+# mdx_steroids.absimgsrc
 
-The `steroids.absimgsrc` replaces relative image URLs with absolute ones.
+The `mdx_steroids.absimgsrc` replaces relative image URLs with absolute ones.
 
 ### Installation
 
@@ -88,9 +93,9 @@ pip install --user --upgrade git+https://github.com/twardoch/markdown-steroids.g
 
 ----
 
-## steroids.keys
+# mdx_steroids.keys
 
-The `steroids.keys` extension converts syntax for user keyboard entry: `++Cmd+K++` into `<kbd>Cmd+K</kbd>`.
+The `mdx_steroids.keys` extension converts syntax for user keyboard entry: `++Cmd+K++` into `<kbd>Cmd+K</kbd>`.
 
 ### Installation
 
@@ -164,9 +169,9 @@ class="keys"><kbd class="key-enter">Enter</kbd></kbd>.</p>
 
 ----
 
-# steroids.kill_tags
+# mdx_steroids.kill_tags
 
-The `steroids.kill_tags` removes requested HTML elements from final HTML output.
+The `mdx_steroids.kill_tags` removes requested HTML elements from final HTML output.
 
 ### Installation
 
@@ -204,9 +209,9 @@ Elements matching to these selectors will be completely removed from the final H
 
 ----
 
-# steroids.md_mako
+# mdx_steroids.md_mako
 
-The `steroids.md_mako` feeds Markdown through the Mako templating system.
+The `mdx_steroids.md_mako` feeds Markdown through the Mako templating system.
 
 ### Installation
 
@@ -269,9 +274,9 @@ ${author} has last edited this on ${today()}.
 
 ----
 
-## steroids.replimgsrc
+# mdx_steroids.replimgsrc
 
-The `steroids.replimgsrc` extension finds and replaces portions of an image URL.
+The `mdx_steroids.replimgsrc` extension finds and replaces portions of an image URL.
 
 ### Installation
 
@@ -311,9 +316,9 @@ pip install --user --upgrade git+https://github.com/twardoch/markdown-steroids.g
 
 ----
 
-# steroids.wikilink
+# mdx_steroids.wikilink
 
-The `steroids.wikilink` extension parses wikilinks in the style of the  [Gollum](https://github.com/gollum/gollum) wiki and the [Github Wiki system](https://help.github.com/articles/about-github-wikis/). It will convert links such as `[[Page name]]` to `[Page name](/Page-name/)`. You can specify the start, end and separator strings.
+The `mdx_steroids.wikilink` extension parses wikilinks in the style of the  [Gollum](https://github.com/gollum/gollum) wiki and the [Github Wiki system](https://help.github.com/articles/about-github-wikis/). It will convert links such as `[[Page name]]` to `[Page name](/Page-name/)`. You can specify the start, end and separator strings.
 
 ### Installation
 
