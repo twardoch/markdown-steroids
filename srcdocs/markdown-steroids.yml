@@ -3,7 +3,7 @@ pages:
 - index.md
 - mdx_steroids: 
   - 'absimgsrc': absimgsrc.md
-  - 'figcaps': figcaps.md
+  - 'figcap': figcap.md
   - 'keys': keys.md
   - 'kill_tags': kill_tags.md
   - 'md_mako': md_mako.md

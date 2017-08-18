@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <meta name="author" content="Adam Twardoch">
+  <link rel="shortcut icon" href="../img/favicon.ico">
+  <title>keys - markdown-steroids</title>
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+
+  <link rel="stylesheet" href="../css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../css/theme_extra.css" type="text/css" />
+  <link rel="stylesheet" href="../css/highlight.css">
+  
+  <script>
+    // Current page data
+    var mkdocs_page_name = "keys";
+    var mkdocs_page_input_path = "keys.md";
+    var mkdocs_page_url = "/keys/";
+  </script>
+  
+  <script src="../js/jquery-2.1.1.min.js"></script>
+  <script src="../js/modernizr-2.8.3.min.js"></script>
+  <script type="text/javascript" src="../js/highlight.pack.js"></script> 
+  
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+      <div class="wy-side-nav-search">
+        <a href=".." class="icon icon-home"> markdown-steroids</a>
+        <div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+	<ul class="current">
+	  
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="..">Home</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <span class="caption-text">mdx_steroids</span>
+    <ul class="subnav">
+                <li class="">
+                    
+    <a class="" href="../absimgsrc/">absimgsrc</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../figcap/">figcap</a>
+                </li>
+                <li class=" current">
+                    
+    <a class="current" href="./">keys</a>
+    <ul class="subnav">
+            
+    <li class="toctree-l3"><a href="#config">Config</a></li>
+    
+
+    <li class="toctree-l3"><a href="#examples">Examples</a></li>
+    
+        <ul>
+        
+            <li><a class="toctree-l4" href="#input">Input</a></li>
+        
+            <li><a class="toctree-l4" href="#config-1">Config 1</a></li>
+        
+            <li><a class="toctree-l4" href="#output-1">Output 1</a></li>
+        
+            <li><a class="toctree-l4" href="#config-2">Config 2</a></li>
+        
+            <li><a class="toctree-l4" href="#output-2">Output 2</a></li>
+        
+        </ul>
+    
+
+    </ul>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../kill_tags/">kill_tags</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../md_mako/">md_mako</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../meta_yaml/">meta_yaml</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../replimgsrc/">replimgsrc</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../wikilink/">wikilink</a>
+                </li>
+    </ul>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../credits/">Credits</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../license/">License</a>
+	    </li>
+          
+        </ul>
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="..">markdown-steroids</a>
+      </nav>
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="..">Docs</a> &raquo;</li>
+    
+      
+        
+          <li>mdx_steroids &raquo;</li>
+        
+      
+    
+    <li>keys</li>
+    <li class="wy-breadcrumbs-aside">
+      
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main">
+            <div class="section">
+              
+                <section class="section1" id="mdx_steroidskeys"><h1>mdx_steroids.keys<a class="headerlink" href="#mdx_steroidskeys" title="Permanent link">&#187;</a></h1>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This is a fork of <a href="http://facelessuser.github.io/pymdown-extensions/extensions/keys/"><code>pymdownx.keys</code></a> by Isaac Muse. Please check the <a href="http://facelessuser.github.io/pymdown-extensions/extensions/keys/"><strong>documentation</strong></a> on the original author&#8217;s site! </p>
+</div>
+<p>Keys.</p>
+<p>pymdownx.keys<br/>
+Markdown extension for keystroke (user keyboard input) formatting.</p>
+<p>It wraps the syntax <code>++key+key+key++</code> (for individual keystrokes with modifiers)<br/>
+or <code>++"string"++</code> (for continuous keyboard input) into HTML <code>&lt;kbd&gt;</code> elements.</p>
+<p>If a key is found in the extension&#8217;s database, its <code>&lt;kbd&gt;</code> element gets a matching class.<br/>
+Common synonyms are included, e.g. <code>++pg-up++</code> will match as <code>++page-up++</code>.</p>
+<section class="section2" id="config"><h2>Config<a class="headerlink" href="#config" title="Permanent link">&#187;</a></h2>
+<p>If <code>strict</code> is <code>True</code>, the entire series of keystrokes is wrapped into an outer<code>&lt;kbd&gt;</code> element, and then,<br/>
+each keystroke is wrapped into a separate inner <code>&lt;kbd&gt;</code> element, which matches the HTML5 spec.<br/>
+If <code>strict</code> is <code>False</code>, an outer <code>&lt;span&gt;</code> is used, which matches the practice on Github or StackOverflow.</p>
+<p>The resulting <code>&lt;kbd&gt;</code> elements are separated by <code>separator</code> (<code>+</code> by default, can be <code>''</code> or something else).</p>
+<p>If <code>camel_case</code> is <code>True</code>, <code>++PageUp++</code> will match the same as <code>++page-up++</code>.</p>
+<p>The database can be extended or modified with the <code>key_map</code> dict.</p>
+</section><section class="section2" id="examples"><h2>Examples<a class="headerlink" href="#examples" title="Permanent link">&#187;</a></h2>
+<section class="section3" id="input"><h3>Input<a class="headerlink" href="#input" title="Permanent link">&#187;</a></h3>
+<pre class="highlight"><code class="language-markdown">Press ++Shift+Alt+PgUp++, type in ++"Hello"++ and press ++Enter++.</code></pre>
+
+</section><section class="section3" id="config-1"><h3>Config 1<a class="headerlink" href="#config-1" title="Permanent link">&#187;</a></h3>
+<pre class="highlight"><code class="language-yaml">  pymdownx.keys:
+    camel_case: true
+    strict: false
+    separator: '+'</code></pre>
+
+</section><section class="section3" id="output-1"><h3>Output 1<a class="headerlink" href="#output-1" title="Permanent link">&#187;</a></h3>
+<pre class="highlight"><code class="language-html">&lt;p&gt;Press &lt;span class="keys"&gt;&lt;kbd class="key-shift"&gt;Shift&lt;/kbd&gt;&lt;span&gt;+&lt;/span&gt;&lt;kbd
+class="key-alt"&gt;Alt&lt;/kbd&gt;&lt;span&gt;+&lt;/span&gt;&lt;kbd class="key-page-up"&gt;Page Up&lt;/kbd&gt;&lt;/span&gt;, type in &lt;span
+class="keys"&gt;&lt;kbd&gt;Hello&lt;/kbd&gt;&lt;/span&gt; and press &lt;span class="keys"&gt;&lt;kbd class="key-enter"&gt;Enter&lt;/kbd&gt;&lt;/span&gt;.&lt;/p&gt;</code></pre>
+
+</section><section class="section3" id="config-2"><h3>Config 2<a class="headerlink" href="#config-2" title="Permanent link">&#187;</a></h3>
+<pre class="highlight"><code class="language-yaml">  pymdownx.keys:
+    camel_case: true
+    strict: true
+    separator: ''</code></pre>
+
+</section><section class="section3" id="output-2"><h3>Output 2<a class="headerlink" href="#output-2" title="Permanent link">&#187;</a></h3>
+<pre class="highlight"><code class="language-html">&lt;p&gt;Press &lt;kbd class="keys"&gt;&lt;kbd class="key-shift"&gt;Shift&lt;/kbd&gt;&lt;kbd class="key-alt"&gt;Alt&lt;/kbd&gt;&lt;kbd
+class="key-page-up"&gt;Page Up&lt;/kbd&gt;&lt;/kbd&gt;, type in &lt;kbd class="keys"&gt;&lt;kbd&gt;Hello&lt;/kbd&gt;&lt;/kbd&gt; and press &lt;kbd
+class="keys"&gt;&lt;kbd class="key-enter"&gt;Enter&lt;/kbd&gt;&lt;/kbd&gt;.&lt;/p&gt;</code></pre>
+
+<p>Idea by Adam Twardoch and coded by Isaac Muse.</p>
+<p>Copyright &#169; 2017 Isaac Muse <a href="mailto:isaacmuse@gmail.com">isaacmuse@gmail.com</a></p>
+<p>Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated<br/>
+documentation files (the &#8220;Software&#8221;), to deal in the Software without restriction, including without limitation<br/>
+the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software,<br/>
+and to permit persons to whom the Software is furnished to do so, subject to the following conditions:</p>
+<p>The above copyright notice and this permission notice shall be included in all copies or substantial portions<br/>
+of the Software.</p>
+<p>THE SOFTWARE IS PROVIDED &#8220;AS IS&#8221;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED<br/>
+TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL<br/>
+THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF<br/>
+CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER<br/>
+DEALINGS IN THE SOFTWARE.</p>
+</section></section></section>
+              
+            </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../kill_tags/" class="btn btn-neutral float-right" title="kill_tags">Next <span class="icon icon-circle-arrow-right"></span></a>
+      
+      
+        <a href="../figcap/" class="btn btn-neutral" title="figcap"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+    
+      <p>Copyright © 2016–2017 <a href="https://twardoch.github.io/">Adam Twardoch</a> and original authors.</p>
+    
+  </div>
+
+  Built with <a href="http://www.mkdocs.org">MkDocs</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+	  
+        </div>
+      </div>
+
+    </section>
+    
+  </div>
+
+  <div class="rst-versions" role="note" style="cursor: pointer">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      
+      
+        <span><a href="../figcap/" style="color: #fcfcfc;">&laquo; Previous</a></span>
+      
+      
+        <span style="margin-left: 15px"><a href="../kill_tags/" style="color: #fcfcfc">Next &raquo;</a></span>
+      
+    </span>
+</div>
+    <script src="../js/theme.js"></script>
+
+</body>
+</html>

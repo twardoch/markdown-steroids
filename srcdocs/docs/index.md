@@ -3,7 +3,7 @@
 A small collection of Python Markdown extensions, written by Adam Twardoch except when stated otherwise. 
 
 * [mdx_steroids.absimgsrc](absimgsrc.md) 
-* [mdx_steroids.figcaps](figcaps.md) by mszk
+* [mdx_steroids.figcap](figcap.md) by mszk
 * [mdx_steroids.keys](keys.md) by Issac Muse after the idea by Adam Twardoch
 * [mdx_steroids.kill_tags](kill_tags.md) 
 * [mdx_steroids.md_mako](md_mako.md) 

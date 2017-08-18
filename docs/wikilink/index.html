@@ -8,7 +8,7 @@
   
   <meta name="author" content="Adam Twardoch">
   <link rel="shortcut icon" href="../img/favicon.ico">
-  <title>absimgsrc - markdown-steroids</title>
+  <title>wikilink - markdown-steroids</title>
   <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
 
   <link rel="stylesheet" href="../css/theme.css" type="text/css" />
@@ -17,9 +17,9 @@
   
   <script>
     // Current page data
-    var mkdocs_page_name = "absimgsrc";
-    var mkdocs_page_input_path = "absimgsrc.md";
-    var mkdocs_page_url = "/absimgsrc/";
+    var mkdocs_page_name = "wikilink";
+    var mkdocs_page_input_path = "wikilink.md";
+    var mkdocs_page_url = "/wikilink/";
   </script>
   
   <script src="../js/jquery-2.1.1.min.js"></script>
@@ -56,21 +56,9 @@
 		
     <span class="caption-text">mdx_steroids</span>
     <ul class="subnav">
-                <li class=" current">
+                <li class="">
                     
-    <a class="current" href="./">absimgsrc</a>
-    <ul class="subnav">
-            
-    <li class="toctree-l3"><a href="#installation">Installation</a></li>
-    
-
-    <li class="toctree-l3"><a href="#docs">Docs</a></li>
-    
-
-    <li class="toctree-l3"><a href="#options">Options</a></li>
-    
-
-    </ul>
+    <a class="" href="../absimgsrc/">absimgsrc</a>
                 </li>
                 <li class="">
                     
@@ -96,9 +84,32 @@
                     
     <a class="" href="../replimgsrc/">replimgsrc</a>
                 </li>
-                <li class="">
+                <li class=" current">
                     
-    <a class="" href="../wikilink/">wikilink</a>
+    <a class="current" href="./">wikilink</a>
+    <ul class="subnav">
+            
+    <li class="toctree-l3"><a href="#installation">Installation</a></li>
+    
+
+    <li class="toctree-l3"><a href="#docs">Docs</a></li>
+    
+
+    <li class="toctree-l3"><a href="#options">Options</a></li>
+    
+
+    <li class="toctree-l3"><a href="#example">Example</a></li>
+    
+        <ul>
+        
+            <li><a class="toctree-l4" href="#input-markdown">Input Markdown</a></li>
+        
+            <li><a class="toctree-l4" href="#output-html">Output HTML</a></li>
+        
+        </ul>
+    
+
+    </ul>
                 </li>
     </ul>
 	    </li>
@@ -139,7 +150,7 @@
         
       
     
-    <li>absimgsrc</li>
+    <li>wikilink</li>
     <li class="wy-breadcrumbs-aside">
       
     </li>
@@ -149,23 +160,39 @@
           <div role="main">
             <div class="section">
               
-                <section class="section1" id="mdx_steroidsabsimgsrc"><h1>mdx_steroids.absimgsrc<a class="headerlink" href="#mdx_steroidsabsimgsrc" title="Permanent link">&#187;</a></h1>
-<p>The <code>mdx_steroids.absimgsrc</code> replaces relative image URLs with absolute ones. </p>
+                <section class="section1" id="mdx_steroidswikilink"><h1>mdx_steroids.wikilink<a class="headerlink" href="#mdx_steroidswikilink" title="Permanent link">&#187;</a></h1>
+<p>The <code>mdx_steroids.wikilink</code> extension parses wikilinks in the style of the  <a href="https://github.com/gollum/gollum">Gollum</a> wiki and the <a href="https://help.github.com/articles/about-github-wikis/">Github Wiki system</a>. It will convert links such as <code>[[Page name]]</code> to <code>[Page name](/Page-name/)</code>. You can specify the start, end and separator strings.</p>
 <section class="section3" id="installation"><h3>Installation<a class="headerlink" href="#installation" title="Permanent link">&#187;</a></h3>
 <pre class="highlight"><code class="language-bash">pip install --user --upgrade git+https://github.com/twardoch/markdown-steroids.git</code></pre>
 
 </section><section class="section3" id="docs"><h3>Docs<a class="headerlink" href="#docs" title="Permanent link">&#187;</a></h3>
 <ul>
-<li><a href="https://github.com/twardoch/markdown-steroids/">github.com/twardoch/markdown-steroids/</a></li>
+<li><a href="https://github.com/twardoch/markdown-steroids">github.com/twardoch/markdown-steroids</a></li>
 </ul>
 </section><section class="section3" id="options"><h3>Options<a class="headerlink" href="#options" title="Permanent link">&#187;</a></h3>
-<pre class="highlight"><code class="language-yaml">  mdx_steroids.absimgsrc:
-    base_url       : 'https://github.com/repo/blob/master/images/' 
-    # Base URL to which the relative paths will be appended</code></pre>
+<pre class="highlight"><code class="language-yaml">  steroids.wikilink:
+    base_url       : '/'                  # String to append to beginning or URL.
+    end_url        : '/'                  # String to append to end of URL.
+    html_class     : 'wikilink'           # CSS hook. Leave blank for none.
+    space_sep      : '-'                  # String that replaces the space, "-" by default.
+    build_url      : build_url            # Alternative callable formats URL from label.</code></pre>
+
+</section><section class="section3" id="example"><h3>Example<a class="headerlink" href="#example" title="Permanent link">&#187;</a></h3>
+<section class="section4" id="input-markdown"><h4>Input Markdown<a class="headerlink" href="#input-markdown" title="Permanent link">&#187;</a></h4>
+<p>This is a <a class="wikilink" href="../Wiki-Link/">Wiki Link</a> of some sorts.</p>
+<pre class="highlight"><code class="language-markdown">This is a [[Wiki Link]] of some sorts. </code></pre>
+
+</section><section class="section4" id="output-html"><h4>Output HTML<a class="headerlink" href="#output-html" title="Permanent link">&#187;</a></h4>
+<p>This is a <a class="wikilink" href="/Wiki-Link/">Wiki Link</a> of some sorts.</p>
+
+<pre class="highlight"><code class="language-html">&lt;p&gt;This is a &lt;a class="wikilink" href="/Wiki-Link/"&gt;Wiki Link&lt;/a&gt; of some sorts.&lt;/p&gt;</code></pre>
 
 <p>Copyright &#169; 2016 Adam Twardoch <a href="mailto:adam+github@twardoch.com">adam+github@twardoch.com</a><br/>
+Based on original code<br/>
+Copyright &#169; 2008 <a href="http://achinghead.com">Waylan Limberg</a><br/>
+Copyright &#169; 2008-2014 The Python Markdown Project<br/>
 License: <a href="https://opensource.org/licenses/BSD-3-Clause">BSD 3-clause</a></p>
-</section></section>
+</section></section></section>
               
             </div>
           </div>
@@ -173,10 +200,10 @@ License: <a href="https://opensource.org/licenses/BSD-3-Clause">BSD 3-clause</a>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="../figcap/" class="btn btn-neutral float-right" title="figcap">Next <span class="icon icon-circle-arrow-right"></span></a>
+        <a href="../credits/" class="btn btn-neutral float-right" title="Credits">Next <span class="icon icon-circle-arrow-right"></span></a>
       
       
-        <a href=".." class="btn btn-neutral" title="Home"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../replimgsrc/" class="btn btn-neutral" title="replimgsrc"><span class="icon icon-circle-arrow-left"></span> Previous</a>
       
     </div>
   
@@ -204,10 +231,10 @@ License: <a href="https://opensource.org/licenses/BSD-3-Clause">BSD 3-clause</a>
     <span class="rst-current-version" data-toggle="rst-current-version">
       
       
-        <span><a href=".." style="color: #fcfcfc;">&laquo; Previous</a></span>
+        <span><a href="../replimgsrc/" style="color: #fcfcfc;">&laquo; Previous</a></span>
       
       
-        <span style="margin-left: 15px"><a href="../figcap/" style="color: #fcfcfc">Next &raquo;</a></span>
+        <span style="margin-left: 15px"><a href="../credits/" style="color: #fcfcfc">Next &raquo;</a></span>
       
     </span>
 </div>
