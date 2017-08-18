@@ -89,6 +89,7 @@ This can be an arbitrarily long set of paragraphs.
 
 * this is another list item that will be visible
 
+```markdown
     This is a visible paragraph before the special del block.
 
     ```del
@@ -105,6 +106,7 @@ This can be an arbitrarily long set of paragraphs.
     * this is a list item that will be visible
 
     * this is another list item that will be visible
+```
 
 #### Output HTML 2
 
