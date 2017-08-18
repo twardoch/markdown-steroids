@@ -20,12 +20,8 @@ pip install --user --upgrade git+https://github.com/twardoch/markdown-steroids.g
 
 ```yaml
   steroids.kill_tags:
-    kill:          # List of HTML tags to be removed, with contents
-      - del
-      - sup
-    kill_empty:    # List of HTML tags to be removed if they’re empty
-      - p
-      - div
+    kill: del strike up     # List of HTML tags to be removed, with contents
+    kill_empty: p div       # List of HTML tags to be removed if they’re empty
 ```
 
 Copyright (c) 2017 Adam Twardoch <adam+github@twardoch.com>
@@ -60,8 +56,8 @@ class KillTagsPostprocessor(Postprocessor):
 
     def run(self, html):
         self.html = html
-        self.kill = self.config.get('kill', [])
-        self.kill_empty = self.config.get('kill_empty', [])
+        self.kill = self.config.get('kill', '').split()
+        self.kill_empty = self.config.get('kill_empty', '').split()
         if self.config.get('normalize', False):
             self.normalize_html()
         self.kill_tags()
@@ -71,10 +67,8 @@ class KillTagsExtension(Extension):
     def __init__(self, *args, **kwargs):
         self.config = {
             'normalize': [False, 'Normalize HTML before processing'],
-            'kill': [['del'], 'List of HTML tags to be removed, with contents'],
-            'kill_empty': [[
-                'p', 'div', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6'
-            ], 'List of HTML tags to be removed if they are empty'],
+            'kill': ['del', 'List of HTML tags to be removed, with contents'],
+            'kill_empty': ['p div h1 h2 h3 h4 h5 h6 details', 'List of HTML tags to be removed if they are empty'],
         }
         super(KillTagsExtension, self).__init__(*args, **kwargs)
 
