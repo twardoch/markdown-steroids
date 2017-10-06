@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-"""
+u"""
 # mdx_steroids.kill_tags
 
 The `mdx_steroids.kill_tags` removes requested HTML elements from final HTML output.
@@ -136,13 +136,13 @@ Copyright (c) 2017 Adam Twardoch <adam+github@twardoch.com>
 License: [BSD 3-clause](https://opensource.org/licenses/BSD-3-Clause)
 """
 
-__version__ = '0.5.0'
+__version__ = '0.5.3'
 
 from markdown.extensions import Extension
 from markdown.postprocessors import Postprocessor
 import lxml.html
 import lxml.html.soupparser
-import lxml.cssselect
+import cssselect
 from bs4 import BeautifulSoup
 import lxml.etree as et
 
@@ -180,7 +180,7 @@ class KillTagsPostprocessor(Postprocessor):
         ]
 
     def parse_selector(self, selector):
-        cx = lxml.cssselect.LxmlHTMLTranslator()
+        cx = cssselect.LxmlHTMLTranslator()
         if selector[:1] == '!':  # direct XPath selector
             xpath_sel = selector[1:]
         else:

@@ -1,5 +1,6 @@
 Markdown>=2.6.8
 mako>=1.0.7
 pymdown-extensions>=3.5.0
+cssselect>=1.0.1
 lxml>=3.8.0
 beautifulsoup4>=4.6.0

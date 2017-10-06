@@ -25,7 +25,7 @@ setup(
     # Versions should comply with PEP440.  For a discussion on single-sourcing
     # the version across setup.py and the project code, see
     # https://packaging.python.org/en/latest/single_source_version.html
-    version='0.5.2',
+    version='0.5.3',
 
     description='Small collection of Python Markdown extensions',
     long_description=long_description,
@@ -85,6 +85,7 @@ setup(
         'markdown>=2.6.8',
         'mako>=1.0.7',
         'pymdown-extensions>=3.5.0',
+        'cssselect>=1.0.1',
         'lxml>=3.8.0',
         'beautifulsoup4>=4.6.0',
     ],
