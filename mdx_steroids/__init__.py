@@ -10,4 +10,6 @@ __all__ = [
 	'replimgsrc',
 	'util',
 	'wikilink',
+	'comments',
+	'interlink',
 ]

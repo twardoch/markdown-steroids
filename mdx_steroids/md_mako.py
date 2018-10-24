@@ -80,7 +80,7 @@ __version__ = '0.5.0'
 import os.path
 import io
 import re
-from markdown.extensions import Extension
+from markdown import Extension
 from markdown.preprocessors import Preprocessor
 from mako.template import Template
 from mako.lookup import TemplateLookup
@@ -154,12 +154,12 @@ class MarkdownMakoExtension(Extension):
         }
         super(MarkdownMakoExtension, self).__init__(*args, **kwargs)
 
-    def extendMarkdown(self, md, md_globals):
+    def extendMarkdown(self, md):
         self.md = md
         md.registerExtension(self)
         config = self.getConfigs()
         md_mako = MakoPreprocessor(config, md)
-        md.preprocessors.add('md_mako', md_mako, ">normalize_whitespace")
+        md.preprocessors.register(md_mako, 'md_mako', ">normalize_whitespace")
 
 def makeExtension(*args, **kwargs):
-    return MarkdownMakoExtension(kwargs)
+    return MarkdownMakoExtension(*args, **kwargs)

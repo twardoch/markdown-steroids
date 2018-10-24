@@ -138,7 +138,7 @@ License: [BSD 3-clause](https://opensource.org/licenses/BSD-3-Clause)
 
 __version__ = '0.5.3'
 
-from markdown.extensions import Extension
+from markdown import Extension
 from markdown.postprocessors import Postprocessor
 import lxml.html
 import lxml.html.soupparser

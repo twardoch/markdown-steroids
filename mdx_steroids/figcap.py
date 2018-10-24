@@ -11,7 +11,7 @@ License: [BSD](http://www.opensource.org/licenses/bsd-license.php)
 '''
 
 from __future__ import unicode_literals
-from markdown.extensions import Extension
+from markdown import Extension
 from markdown.inlinepatterns import ImagePattern, IMAGE_LINK_RE
 from markdown.util import etree
 
