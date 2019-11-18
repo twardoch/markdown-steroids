@@ -247,7 +247,6 @@ aliases = {
     "lt": "less",
     "lwin": "left-windows",
     "mbutton": "middle-button",
-    "menu": "alt",
     "multiply": "num-asterisk",
     "mute": "volume-mute",
     "next": "page-down",
