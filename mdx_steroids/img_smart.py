@@ -68,6 +68,7 @@ class MDXSmartImageProcessor(BlockProcessor):
         url_find = self.config.get("find", None)
         url_repl_path = self.config.get("repl_path", None)
         url_repl_url = self.config.get("repl_url", None)
+        alt_figure = self.config.get("alt_figure", False)
 
         filepath = url
         orig_url = url
@@ -117,15 +118,22 @@ class MDXSmartImageProcessor(BlockProcessor):
         if (cls):
             img.set('class', cls)
         img.set('src', orig_url)
+
+        insel = img
         if box:
             a = etree.Element('a')
             a.set('data-fancybox', 'help')
             a.set('href', url)
             a.append(img)
-            parent.append(a)
-        else:
-            parent.append(img)
-
+            insel = a
+        if (alt and alt_figure):
+            figure = etree.Element('figure')
+            figure.append(insel)
+            figcaption = etree.Element('figcaption')
+            figcaption.text = alt
+            figure.append(figcaption)
+            insel = figure
+        parent.append(insel)
 
     # ![By default](/i/ukrainian-keyboard-default.png){: width=400} assign width i.e. <img width="400"/>
     def assignExtra(self, img, attr):
@@ -169,6 +177,7 @@ class MDXSmartImageExtension(Extension):
             'find'   : ["", "the string to find in the URL"],
             'repl_path': ["", "the string to replace for the local path"],
             'repl_url': ["", "the string to replace for the final URL"],
+            'alt_figure': [False, "Build <figure> from ![alt]() text"],
         }
         super(MDXSmartImageExtension, self).__init__(*args, **kwargs)
 
