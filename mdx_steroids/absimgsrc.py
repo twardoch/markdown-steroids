@@ -34,7 +34,7 @@ __version__ = '0.4.4'
 try:
     from urllib.parse import urljoin
 except ImportError:
-    from urlparse import urljoin
+    from six.moves.urllib.parse import urljoin
 
 from markdown import Extension
 from markdown.treeprocessors import Treeprocessor

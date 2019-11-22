@@ -83,6 +83,7 @@ CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFT
 DEALINGS IN THE SOFTWARE.
 """
 from __future__ import unicode_literals
+from __future__ import absolute_import
 from markdown import Extension
 from markdown.inlinepatterns import InlineProcessor
 from markdown import util as md_util

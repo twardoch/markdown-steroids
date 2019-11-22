@@ -3,6 +3,8 @@
 
 # Based on https://github.com/glushchenko/micropress/
 
+from __future__ import absolute_import
+from __future__ import print_function
 import re
 
 from markdown import Extension
@@ -10,7 +12,7 @@ from markdown.extensions import attr_list
 from markdown.blockprocessors import BlockProcessor
 from markdown.util import etree
 from PIL import Image
-from urlparse import urlparse
+#from urlparse import urlparse
 from os.path import splitext, basename, exists
 
 class MDXSmartImageProcessor(BlockProcessor):
@@ -188,4 +190,3 @@ class MDXSmartImageExtension(Extension):
 
 def makeExtension(*args, **kwargs):
     return MDXSmartImageExtension(*args, **kwargs)
-

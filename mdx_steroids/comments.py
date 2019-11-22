@@ -53,6 +53,7 @@ In order to render markdown comments, you must *(a)*use them in an html block (w
 
 """
 
+from __future__ import absolute_import
 import re
 from markdown import Extension
 from markdown.preprocessors import Preprocessor

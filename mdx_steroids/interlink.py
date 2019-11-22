@@ -54,6 +54,7 @@ License: [BSD 3-clause](https://opensource.org/licenses/BSD-3-Clause)
 from __future__ import absolute_import
 from __future__ import unicode_literals
 
+from __future__ import print_function
 import re
 
 from markdown import Extension

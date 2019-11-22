@@ -136,6 +136,10 @@ Copyright (c) 2017 Adam Twardoch <adam+github@twardoch.com>
 License: [BSD 3-clause](https://opensource.org/licenses/BSD-3-Clause)
 """
 
+from __future__ import absolute_import
+from __future__ import unicode_literals
+from future.utils import bytes_to_native_str as n
+import six
 __version__ = '0.5.3'
 
 from markdown import Extension
@@ -169,8 +173,8 @@ class KillTagsPostprocessor(Postprocessor):
                     parent.text = parent.text + node.tail
 
     def normalize_html(self):
-        soup = BeautifulSoup(self.html, "html5lib")
-        self.html = unicode(soup)
+        out = BeautifulSoup(self.html, "html5lib")
+        self.html = six.text_type(out)
 
     def known_selectors(self):
         return [
@@ -199,7 +203,8 @@ class KillTagsPostprocessor(Postprocessor):
                     ' and not(descendant-or-self::*/attribute::*)'
                     ']'.format(kill_empty_selector)):
                 self.remove_keeping_tail(el)
-        self.html = et.tostring(tree, pretty_print=False)
+        out = n(et.tostring(tree, pretty_print=False))
+        self.html = six.text_type(out)
 
     def run(self, html):
         self.html = html
@@ -212,7 +217,7 @@ class KillTagsPostprocessor(Postprocessor):
         self.kill_selectors()
         if self.config.get('normalize', False):
             self.normalize_html()
-        return self.html
+        return six.text_type(self.html)
 
 
 class KillTagsExtension(Extension):

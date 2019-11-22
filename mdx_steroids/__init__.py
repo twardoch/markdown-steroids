@@ -1,9 +1,9 @@
 __all__ = [
-	'absimgsrc', 
+	'absimgsrc',
 	'figcap'
-	'kbd', 
-	'keymap_db', 
-	'keys', 
+	'kbd',
+	'keymap_db',
+	'keys',
 	'kill_tags',
 	'md_mako',
 	'meta_yaml',
@@ -12,4 +12,5 @@ __all__ = [
 	'wikilink',
 	'comments',
 	'interlink',
+	'img_smart'
 ]
