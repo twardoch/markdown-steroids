@@ -125,6 +125,9 @@ class MDXSmartImageProcessor(BlockProcessor):
         if box:
             a = etree.Element('a')
             a.set('data-fancybox', 'help')
+            a.set('class', 'fancybox')
+            if alt:
+                a.set('data-caption', alt)
             a.set('href', url)
             a.append(img)
             insel = a

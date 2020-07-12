@@ -140,13 +140,13 @@ from __future__ import absolute_import
 from __future__ import unicode_literals
 from future.utils import bytes_to_native_str as n
 import six
-__version__ = '0.5.3'
+__version__ = '0.5.4'
 
 from markdown import Extension
 from markdown.postprocessors import Postprocessor
 import lxml.html
 import lxml.html.soupparser
-import cssselect
+import lxml.cssselect as cssselect
 from bs4 import BeautifulSoup
 import lxml.etree as et
 

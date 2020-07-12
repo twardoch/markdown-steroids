@@ -109,7 +109,7 @@ keymap = {
     "caps-lock": "CapsLock",
     "clear": "Clear",
     "eject": "Eject",
-    "enter": "↩",
+    "enter": "↲",
     "escape": "Esc",
     "help": "Help",
     "print-screen": "PrtSc",
