@@ -134,8 +134,8 @@ class MakoPreprocessor(Preprocessor):
             md_meta = {k.lower(): ''.join(v) if isinstance(v, list) else v for k, v in self.markdown.Meta.items()}
             assert isinstance(mako_args, dict)
             mako_args.update(md_meta)
-        mako_lookup = TemplateLookup(directories=self.mako_base_dirs)
-        mako_tpl = Template(md, input_encoding=self.mako_include_encoding, lookup=mako_lookup)
+        mako_lookup = TemplateLookup(directories=self.mako_base_dirs, strict_undefined=True)
+        mako_tpl = Template(md, input_encoding=self.mako_include_encoding, lookup=mako_lookup, strict_undefined=True)
         mako_result = six.text_type(mako_tpl.render(**mako_args))
         lines = mako_result.splitlines()[1:]
         return lines
