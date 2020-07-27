@@ -26,22 +26,22 @@ The database can be extended or modified with the `key_map` dict.
 
 ### Input
 
-~~~
+```
 Press ++Shift+Alt+PgUp++, type in ++"Hello"++ and press ++Enter++.
-~~~
+```
 
 ### Config 1
 
-~~~.yaml
+```
   pymdownx.keys:
     camel_case: true
     strict: false
     separator: '+'
-~~~
+```
 
 ### Output 1
 
-~~~.html
+```
 <p>Press <span class="keys"><kbd class="key-shift">Shift</kbd><span>+</span><kbd
 class="key-alt">Alt</kbd><span>+</span><kbd class="key-page-up">Page Up</kbd></span>, type in <span
 class="keys"><kbd>Hello</kbd></span> and press <span class="keys"><kbd class="key-enter">Enter</kbd></span>.</p>
@@ -49,20 +49,20 @@ class="keys"><kbd>Hello</kbd></span> and press <span class="keys"><kbd class="ke
 
 ### Config 2
 
-~~~.yaml
+```
   pymdownx.keys:
     camel_case: true
     strict: true
     separator: ''
-~~~
+```
 
 ### Output 2
 
-~~~.html
+```
 <p>Press <kbd class="keys"><kbd class="key-shift">Shift</kbd><kbd class="key-alt">Alt</kbd><kbd
 class="key-page-up">Page Up</kbd></kbd>, type in <kbd class="keys"><kbd>Hello</kbd></kbd> and press <kbd
 class="keys"><kbd class="key-enter">Enter</kbd></kbd>.</p>
-~~~
+```
 
 Idea by Adam Twardoch and coded by Isaac Muse.
 
@@ -82,12 +82,12 @@ THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABI
 CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 """
-from __future__ import unicode_literals
-from __future__ import absolute_import
+import html
 from markdown import Extension
 from markdown.inlinepatterns import InlineProcessor
 from markdown import util as md_util
-from . import util
+import xml.etree.ElementTree as etree
+from pymdownx import util
 from . import keymap_db as keymap
 import re
 
@@ -155,7 +155,7 @@ class KeysPattern(InlineProcessor):
         """Process key."""
 
         if key.startswith(('"', "'")):
-            value = (None, util.html_unescape(ESCAPE_RE.sub(r'\1', key[1:-1])).strip())
+            value = (None, html.unescape(ESCAPE_RE.sub(r'\1', key[1:-1])).strip())
         else:
             norm_key = self.normalize(key)
             canonical_key = self.aliases.get(norm_key, norm_key)
@@ -173,7 +173,7 @@ class KeysPattern(InlineProcessor):
         if None in content:
             return None, None, None
 
-        el = md_util.etree.Element(
+        el = etree.Element(
             ('kbd' if self.strict else 'span'),
             ({'class': ' '.join(self.classes)} if self.classes else {})
         )
@@ -184,12 +184,12 @@ class KeysPattern(InlineProcessor):
             if item_class:
                 classes.append('key-' + item_class)
             if last is not None and self.ksep:
-                span = md_util.etree.SubElement(el, 'span')
+                span = etree.SubElement(el, 'span')
                 span.text = md_util.AtomicString(self.ksep)
             attr = {}
             if classes:
                 attr['class'] = ' '.join(classes)
-            kbd = md_util.etree.SubElement(el, 'kbd', attr)
+            kbd = etree.SubElement(el, 'kbd', attr)
             kbd.text = md_util.AtomicString(item_name)
             last = kbd
 
