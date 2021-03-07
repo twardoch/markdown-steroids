@@ -1,17 +1,21 @@
 # Site structure
-pages:
-- index.md
-- mdx_steroids: 
-  - 'absimgsrc': absimgsrc.md
-  - 'figcap': figcap.md
-  - 'keys': keys.md
-  - 'kill_tags': kill_tags.md
-  - 'md_mako': md_mako.md
-  - 'meta_yaml': meta_yaml.md
-  - 'replimgsrc': replimgsrc.md
-  - 'wikilink': wikilink.md
-- 'Credits': credits.md
-- 'License': license.md
+nav:
+        - index.md
+        - mdx_steroids:
+                  - "absimgsrc": absimgsrc.md
+                  - "figcap": figcap.md
+                  - "keys": keys.md
+                  - "kill_tags": kill_tags.md
+                  - "md_mako": md_mako.md
+                  - "meta_yaml": meta_yaml.md
+                  - "replimgsrc": replimgsrc.md
+                  - "wikilink": wikilink.md
+        - "Credits": credits.md
+        - "License": license.md
+
+docs_dir: docs/
+site_dir: ../docs/
+use_directory_urls: true
 
 # Project information
 site_name: markdown-steroids
@@ -20,126 +24,140 @@ site_author: Adam Twardoch
 site_url: https://twardoch.github.io/markdown-steroids/
 
 # Copyright
-copyright: Copyright © 2016–2017 <a href="https://twardoch.github.io/">Adam Twardoch</a> and original authors.  
+copyright: Copyright © 2016–2020 <a href="https://twardoch.github.io/">Adam Twardoch</a> and original authors.
 
 # Documentation and theme
-theme: readthedocs
+theme:
+        name: material
+        palette:
+                primary: "indigo"
+                accent: "indigo"
+extra_css:
+        - "style/custom.css"
+        - "style/keys.css"
 
 # Options
 extra:
-  version: 2017.08.17
-  #logo: images/logo.png
-  github:
-    download_release: true
-  author:
-    twitter: adamtwar
-    github: twardoch
-
-docs_dir: docs/
-site_dir: ../docs/
-use_directory_urls: true
+        version: 2020.07.28
+        github:
+                download_release: true
+        author:
+                twitter: adamtwar
+                github: twardoch
 
 markdown_extensions:
-# Production extensions
-- attr_list 
-- def_list 
-- tables 
-- abbr 
-- admonition
-- nl2br
-- smarty:
-    smart_angled_quotes    : false # whether to convert angled quotes
-    smart_dashes           : true  # convert dashes
-    smart_ellipses         : true  # whether to convert ellipses
-    smart_quotes           : true  # convert straight quotes
-    substitutions:                 # overwrite default substitutions
-        ellipsis           : '…'   # ...
-        left-angle-quote   : '«'   # <<
-        left-double-quote  : '“'   # "
-        left-single-quote  : '‘'   # '
-        mdash              : '—'   # ---
-        ndash              : '–'   # --
-        right-angle-quote  : '»'   # >>
-        right-double-quote : '”'   # "
-        right-single-quote : '’'   # '
-- toc:
-    anchorlink     : false
-    baselevel      : 1
-    marker         : '[TOC]'
-    permalink      : '»'
-    separator      : '-'
-    title          : 'Table of Contents'
-- footnotes:
-    PLACE_MARKER   : '///Footnotes Go Here///' 
-    # if the place marker text is not found in the document, 
-    # the footnote definitions are placed at the end of the resulting HTML document
-    UNIQUE_IDS     : false
-    BACKLINK_TEXT  : '&#8617;'  
-#- pymdownx.extrarawhtml 
-- pymdownx.betterem:
-    smart_enable   : 'all'                # 'all' | 'asterisk' | 'underscore' | 'none'
-- pymdownx.superfences:
-    disable_indented_code_blocks : false
-    highlight_code : true
-- pymdownx.escapeall:
-    hardbreak      : true
-    nbsp           : true
-- pymdownx.highlight:
-    css_class      : 'highlight'
-    guess_lang     : false
-    linenums       : false
-    noclasses      : true
-    pygments_style : 'default'  
-    use_pygments   : false
-- pymdownx.inlinehilite:
-    css_class      : 'highlight'
-    style_plain_text : false
-    use_codehilite_settings : false
-- pymdownx.magiclink:
-    hide_protocol  : true
-- pymdownx.mark:
-    smart_mark     : true                 # Allows for ==mark==me== 
-- pymdownx.smartsymbols: 
-    arrows         : true
-    care_of        : false
-    copyright      : true
-    fractions      : true
-    notequal       : true
-    ordinal_numbers : false
-    plusminus      : true
-    registered     : true
-    trademark      : true
-- pymdownx.tilde: 
-    smart_delete   : false
-    delete         : true
-    subscript      : false
-- pymdownx.caret: 
-    smart_insert   : true
-    insert         : true
-    superscript    : true
-- mdx_steroids.figcap
-- mdx_steroids.keys:
-    camel_case: true
-    strict: false
-    separator: ''
-- mdx_steroids.kill_tags: 
-    kill_known: true 
-    kill_empty: 
-      - p
-    normalize: false
-- mdx_steroids.md_mako:
-    python_block  : 'mako-mdx-steroids.py'
-    meta: 
-      author: 'Adam Twardoch'
-- mdx_steroids.meta_yaml
-- mdx_steroids.wikilink: 
-    base_url       : '/'
-    end_url        : '/'
-    html_class     : 'wikilink'
-    space_sep      : '-'
-- outline
-- cite
-- custom_span_class
-- fontawesome_markdown
-- mkdcomments
-
+        # Production extensions
+        - extra
+        - attr_list
+        - def_list
+        - tables
+        - abbr
+        - admonition
+        - codehilite
+        - nl2br
+        - smarty:
+                  smart_angled_quotes: false # whether to convert angled quotes
+                  smart_dashes: true # convert dashes
+                  smart_ellipses: true # whether to convert ellipses
+                  smart_quotes: true # convert straight quotes
+                  substitutions: # overwrite default substitutions
+                          ellipsis: "…" # ...
+                          left-angle-quote: "«" # <<
+                          left-double-quote: "“" # "
+                          left-single-quote: "‘" # '
+                          mdash: "—" # ---
+                          ndash: "–" # --
+                          right-angle-quote: "»" # >>
+                          right-double-quote: "”" # "
+                          right-single-quote: "’" # '
+        - toc:
+                  anchorlink: false
+                  baselevel: 1
+                  marker: "[TOC]"
+                  permalink: "»"
+                  separator: "-"
+                  title: "Table of Contents"
+        - footnotes:
+                  PLACE_MARKER: "///Footnotes Go Here///"
+                  # if the place marker text is not found in the document,
+                  # the footnote definitions are placed at the end of the resulting HTML document
+                  UNIQUE_IDS: false
+                  BACKLINK_TEXT: "&#8617;"
+        - pymdownx.betterem:
+                  smart_enable: "all" # 'all' | 'asterisk' | 'underscore' | 'none'
+        - pymdownx.superfences:
+                  disable_indented_code_blocks: false
+                  highlight_code: true
+        - pymdownx.escapeall:
+                  hardbreak: true
+                  nbsp: true
+        - pymdownx.highlight:
+                  css_class: "highlight"
+                  guess_lang: false
+                  linenums: false
+                  noclasses: true
+                  pygments_style: "default"
+                  use_pygments: false
+        - pymdownx.inlinehilite:
+                  css_class: "highlight"
+                  style_plain_text: false
+        - pymdownx.magiclink:
+                  hide_protocol: true
+        - pymdownx.mark:
+                  smart_mark: true
+        - pymdownx.smartsymbols:
+                  arrows: true
+                  care_of: false
+                  copyright: true
+                  fractions: true
+                  notequal: true
+                  ordinal_numbers: false
+                  plusminus: true
+                  registered: true
+                  trademark: true
+        - pymdownx.tasklist:
+                  custom_checkbox: false
+        - pymdownx.tilde:
+                  smart_delete: false
+                  delete: true
+                  subscript: false
+        - pymdownx.caret:
+                  smart_insert: true
+                  insert: true
+                  superscript: true
+        - pymdownx.snippets:
+                  base_path: "."
+                  encoding: "utf-8"
+        - mdx_steroids.keys:
+                  camel_case: true
+                  strict: false
+                  separator: ""
+        - mdx_steroids.kill_tags:
+                  kill_known: true
+                  kill_empty:
+                          - p
+                  normalize: false
+        - mdx_steroids.replimgsrc:
+                  find: "/img/"
+                  replace: "/img/"
+        - mdx_steroids.wikilink:
+                  base_url: ""
+                  end_url: ".md"
+                  html_class: "wikilink"
+                  space_sep: "-"
+        - mdx_steroids.interlink:
+                  base_url: ""
+                  end_url: ".md"
+        - mdx_steroids.img_smart:
+                  find: "/img/"
+                  repl_path: "/img/"
+                  repl_url: "/img/"
+                  alt_figure: true
+        - fontawesome_markdown
+        - mdx_steroids.comments
+        #- mdx_steroids.meta_yaml
+        - mdx_custom_span_class
+        - mdx_steroids.md_mako:
+                  python_block: "mako-mdx-steroids.py"
+                  meta:
+                          author: "Adam Twardoch"

@@ -1,0 +1,4 @@
+@charset "UTF-8";
+.md-typeset table:not([class]) {
+    font-size: 1.2rem !important;
+}

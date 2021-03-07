@@ -29,7 +29,7 @@ License: [BSD 3-clause](https://opensource.org/licenses/BSD-3-Clause)
 from __future__ import absolute_import
 from __future__ import unicode_literals
 
-__version__ = '0.4.4'
+__version__ = '0.5.0'
 
 from markdown import Extension
 from markdown.treeprocessors import Treeprocessor
@@ -41,7 +41,7 @@ class MDXReplaceImageSrcTreeprocessor(Treeprocessor):
         self.config = config
 
     def run(self, root):
-        imgs = root.getiterator("img")
+        imgs = root.iter("img")
         for image in imgs:
             image.set("src", self.find_replace(image.attrib["src"]))
 

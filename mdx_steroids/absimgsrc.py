@@ -3,7 +3,7 @@
 """
 # mdx_steroids.absimgsrc
 
-The `mdx_steroids.absimgsrc` replaces relative image URLs with absolute ones. 
+The `mdx_steroids.absimgsrc` replaces relative image URLs with absolute ones.
 
 ### Installation
 
@@ -19,7 +19,7 @@ pip install --user --upgrade git+https://github.com/twardoch/markdown-steroids.g
 
 ```yaml
   mdx_steroids.absimgsrc:
-    base_url       : 'https://github.com/repo/blob/master/images/' 
+    base_url       : 'https://github.com/repo/blob/master/images/'
     # Base URL to which the relative paths will be appended
 ```
 
