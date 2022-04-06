@@ -14,6 +14,7 @@ from markdown.util import etree
 from PIL import Image
 #from urlparse import urlparse
 from os.path import splitext, basename, exists
+import requests, io
 
 class MDXSmartImageProcessor(BlockProcessor):
     NOBRACKET = r'[^\]\[]*'
@@ -81,16 +82,35 @@ class MDXSmartImageProcessor(BlockProcessor):
 
         width = height = 0
         img = etree.Element('img')
+        scale = 2
 
         if (attr):
             image_size = self.assignExtra(img, attr)
-            width = image_size['width']
-            height = image_size['height']
+            width = int(image_size.get('width', 0))
+            height = int(image_size.get('height', 0))
+            scale = int(image_size.get('scale', 2))
 
         if (width == 0 and height == 0):
-            if exists(filepath):
-                with Image.open(filepath) as im:
-                    width, height = im.size
+            imb = None
+            if filepath.startswith('http'):
+                try:
+                    response = requests.get(filepath)
+                    imb = io.BytesIO(response.content)
+                except:
+                    pass
+            elif exists(filepath):
+                imb = Image.open(filepath, "rb")
+            if imb:
+                im = Image.open(imb)
+                width, height = im.size
+                try_scale = im.info.get('dpi', None)
+                if try_scale:
+                    if try_scale[0] > 140:
+                        scale = 2
+                    else:
+                        scale = 1
+                print(f"{filepath=} {width=} {height=} {scale=}")
+                imb.close()
 
         cls = img.get('class', '')
         if cls:
@@ -100,15 +120,15 @@ class MDXSmartImageProcessor(BlockProcessor):
         htmlwidth = None
         box = False
         if (width > 1280):
-            htmlwidth = int(width/2)
+            htmlwidth = int(width/scale)
             cls += ' imxl'
             box = True
         elif (width > 500):
-            htmlwidth = int(width/2)
+            htmlwidth = int(width/scale)
             cls += ' iml'
             box = True
         elif (width > 32):
-            htmlwidth = int(width/2)
+            htmlwidth = int(width/scale)
             cls += ' imm'
         elif (width > 0):
             htmlwidth = width
@@ -142,7 +162,7 @@ class MDXSmartImageProcessor(BlockProcessor):
 
     # ![By default](/i/ukrainian-keyboard-default.png){: width=400} assign width i.e. <img width="400"/>
     def assignExtra(self, img, attr):
-        image_size = {'width': 0, 'height': 0}
+        image_size = {'width': 0, 'height': 0, 'scale': 2}
 
         BASE_RE = r'\{\:?([^\}]*)\}'
         INLINE_RE = re.compile(r'^%s' % BASE_RE)
@@ -158,6 +178,8 @@ class MDXSmartImageProcessor(BlockProcessor):
 
             for k, v in attr_list.get_attrs(attr):
                 if k == '.':
+                    if v == 'lores':
+                        image_size['scale'] = 1
                     cls = img.get('class')
                     if cls:
                         img.set('class', '%s %s' % (cls, v))
