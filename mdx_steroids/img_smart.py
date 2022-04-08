@@ -117,15 +117,15 @@ class MDXSmartImageProcessor(BlockProcessor):
             htmlcls = "image"
         htmlwidth = None
         box = False
-        if (width > 1280):
+        if (int(width/scale) > 1280):
             htmlwidth = int(width/scale)
             htmlcls += ' imxl'
             box = True
-        elif (width > 500):
+        elif (int(width/scale) > 500):
             htmlwidth = int(width/scale)
             htmlcls += ' iml'
             box = True
-        elif (width > 32):
+        elif (int(width/scale) > 32):
             htmlwidth = int(width/scale)
             htmlcls += ' imm'
         elif (width > 0):
