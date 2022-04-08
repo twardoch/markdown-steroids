@@ -187,7 +187,10 @@ class MDXSmartImageProcessor(BlockProcessor):
                         img.set('class', v)
                 else:
                     if (k == 'data-scale'):
-                        image_size['scale'] = 1/int(v.rstrip("%"))*100
+                        try:
+                            image_size['scale'] = 1/int(v.rstrip("%"))*100
+                        except ValueError:
+                            pass
                     else:
                         key = NAME_RE.sub('_', k)
                         img.set(key, v)
