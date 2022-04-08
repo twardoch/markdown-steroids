@@ -11,7 +11,7 @@ from markdown import Extension
 from markdown.extensions import attr_list
 from markdown.blockprocessors import BlockProcessor
 from markdown.util import etree
-from PIL import Image
+import PIL, PIL.Image
 #from urlparse import urlparse
 from os.path import splitext, basename, exists
 import requests, io
@@ -82,13 +82,15 @@ class MDXSmartImageProcessor(BlockProcessor):
 
         width = height = 0
         img = etree.Element('img')
-        scale = 2
+        scale = 2.0
+        title = None
 
         if (attr):
             image_size = self.assignExtra(img, attr)
             width = int(image_size.get('width', 0))
             height = int(image_size.get('height', 0))
-            scale = int(image_size.get('scale', 2))
+            scale = float(image_size.get('scale', 2))
+            title = image_size.get('title', None)
 
         if (width == 0 and height == 0):
             imb = None
@@ -99,46 +101,42 @@ class MDXSmartImageProcessor(BlockProcessor):
                 except:
                     pass
             elif exists(filepath):
-                imb = Image.open(filepath, "rb")
+                imb = open(filepath, "rb")
             if imb:
-                im = Image.open(imb)
-                width, height = im.size
-                try_scale = im.info.get('dpi', None)
-                if try_scale:
-                    if try_scale[0] > 140:
-                        scale = 2
-                    else:
-                        scale = 1
-                print(f"{filepath=} {width=} {height=} {scale=}")
-                imb.close()
+                try:
+                    im = PIL.Image.open(imb)
+                    width, height = im.size
+                    imb.close()
+                except PIL.UnidentifiedImageError:
+                    print(f"{filepath} is not an image")
 
-        cls = img.get('class', '')
-        if cls:
-            cls += " image"
+        htmlcls = img.get('class', '')
+        if htmlcls:
+            htmlcls += " image"
         else:
-            cls = "image"
+            htmlcls = "image"
         htmlwidth = None
         box = False
         if (width > 1280):
             htmlwidth = int(width/scale)
-            cls += ' imxl'
+            htmlcls += ' imxl'
             box = True
         elif (width > 500):
             htmlwidth = int(width/scale)
-            cls += ' iml'
+            htmlcls += ' iml'
             box = True
         elif (width > 32):
             htmlwidth = int(width/scale)
-            cls += ' imm'
+            htmlcls += ' imm'
         elif (width > 0):
             htmlwidth = width
-            cls += ' ims'
+            htmlcls += ' ims'
         if htmlwidth:
             img.set('width', str(htmlwidth))
         if (alt):
             img.set('alt', alt)
-        if (cls):
-            img.set('class', cls)
+        if (htmlcls):
+            img.set('class', htmlcls)
         img.set('src', orig_url)
 
         insel = img
@@ -146,7 +144,9 @@ class MDXSmartImageProcessor(BlockProcessor):
             a = etree.Element('a')
             a.set('data-fancybox', 'help')
             a.set('class', 'fancybox')
-            if alt:
+            if title:
+                a.set('data-caption', title)
+            elif alt:
                 a.set('data-caption', alt)
             a.set('href', url)
             a.append(img)
@@ -162,7 +162,7 @@ class MDXSmartImageProcessor(BlockProcessor):
 
     # ![By default](/i/ukrainian-keyboard-default.png){: width=400} assign width i.e. <img width="400"/>
     def assignExtra(self, img, attr):
-        image_size = {'width': 0, 'height': 0, 'scale': 2}
+        image_size = {'width': 0, 'height': 0, 'scale': 2.0}
 
         BASE_RE = r'\{\:?([^\}]*)\}'
         INLINE_RE = re.compile(r'^%s' % BASE_RE)
@@ -179,15 +179,18 @@ class MDXSmartImageProcessor(BlockProcessor):
             for k, v in attr_list.get_attrs(attr):
                 if k == '.':
                     if v == 'lores':
-                        image_size['scale'] = 1
-                    cls = img.get('class')
-                    if cls:
-                        img.set('class', '%s %s' % (cls, v))
+                        image_size['scale'] = 1.0
+                    htmlcls = img.get('class')
+                    if htmlcls:
+                        img.set('class', '%s %s' % (htmlcls, v))
                     else:
                         img.set('class', v)
                 else:
-                    key = NAME_RE.sub('_', k)
-                    img.set(key, v)
+                    if (k == 'data-scale'):
+                        image_size['scale'] = 1/int(v.rstrip("%"))*100
+                    else:
+                        key = NAME_RE.sub('_', k)
+                        img.set(key, v)
 
                     if (k == 'width'):
                         image_size['width'] = v
