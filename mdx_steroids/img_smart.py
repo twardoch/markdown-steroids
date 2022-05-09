@@ -87,7 +87,6 @@ class MDXSmartImageProcessor(BlockProcessor):
         url_repl_path = self.config.get("repl_path", None)
         url_repl_url = self.config.get("repl_url", None)
         alt_figure = self.config.get("alt_figure", False)
-        fast_build = self.config.get("fast_build", False)
 
         filepath = url
         orig_url = url
@@ -237,7 +236,6 @@ class MDXSmartImageExtension(Extension):
             "repl_path": ["", "the string to replace for the local path"],
             "repl_url": ["", "the string to replace for the final URL"],
             "alt_figure": [False, "Build <figure> from ![alt]() text"],
-            "fast_build": [False, "Skip slow image processing"],
             "cache": ["", "cache JSON file to speed up processing"],
         }
         super(MDXSmartImageExtension, self).__init__(*args, **kwargs)
