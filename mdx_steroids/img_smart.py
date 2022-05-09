@@ -5,7 +5,7 @@
 
 from __future__ import absolute_import
 from __future__ import print_function
-import re
+import re, json
 
 from markdown import Extension
 from markdown.extensions import attr_list
@@ -14,7 +14,7 @@ from markdown.util import etree
 import PIL, PIL.Image
 
 # from urlparse import urlparse
-from os.path import splitext, basename, exists
+from os.path import splitext, basename, exists, realpath
 import requests, io
 
 
@@ -59,6 +59,13 @@ class MDXSmartImageProcessor(BlockProcessor):
             return False
 
     def run(self, parent, blocks):
+        cache_path = self.config.get("cache", "")
+        cache = {}
+        if cache_path:
+            if exists(cache_path):
+                with open(cache_path) as f:
+                    cache = json.load(f)
+
         alt = url = attr = None
 
         raw_block = blocks.pop(0)
@@ -102,22 +109,30 @@ class MDXSmartImageProcessor(BlockProcessor):
             title = image_size.get("title", None)
 
         if width == 0 and height == 0:
-            imb = None
-            if filepath.startswith("http") and not fast_build:
-                try:
-                    response = requests.get(filepath)
-                    imb = io.BytesIO(response.content)
-                except:
-                    pass
-            elif exists(filepath):
-                imb = open(filepath, "rb")
-            if imb:
-                try:
-                    im = PIL.Image.open(imb)
-                    width, height = im.size
-                    imb.close()
-                except PIL.UnidentifiedImageError:
-                    print(f"{filepath} is not an image")
+            if filepath in cache.keys():
+                width = cache[filepath]["width"]
+                height = cache[filepath]["height"]
+            else:
+                imb = None
+                if filepath.startswith("http"):
+                    try:
+                        response = requests.get(filepath)
+                        imb = io.BytesIO(response.content)
+                    except:
+                        pass
+                elif exists(filepath):
+                    imb = open(filepath, "rb")
+                if imb:
+                    try:
+                        im = PIL.Image.open(imb)
+                        width, height = im.size
+                        imb.close()
+                        cache[filepath] = {"width": width, "height": height}
+                    except PIL.UnidentifiedImageError:
+                        print(f"{filepath} is not an image")
+        if cache_path:
+            with open(cache_path, "w") as f:
+                json.dump(cache, f)
 
         htmlcls = img.get("class", "")
         if htmlcls:
@@ -223,6 +238,7 @@ class MDXSmartImageExtension(Extension):
             "repl_url": ["", "the string to replace for the final URL"],
             "alt_figure": [False, "Build <figure> from ![alt]() text"],
             "fast_build": [False, "Skip slow image processing"],
+            "cache": ["", "cache JSON file to speed up processing"],
         }
         super(MDXSmartImageExtension, self).__init__(*args, **kwargs)
 
