@@ -128,7 +128,6 @@ class MDXSmartImageProcessor(BlockProcessor):
                     guess = filetype.guess_mime(imbytes)
                     if guess:
                         media = guess.split("/")[0].replace('image', 'img')
-                        print(f"{filepath}: {media=}")
                 try:
                     imbytesio.seek(0)
                     if media in ('video'):
@@ -139,7 +138,6 @@ class MDXSmartImageProcessor(BlockProcessor):
                     elif media in ('img'):
                         immeta = iio.immeta(imbytesio)
                         if immeta:
-                            #print(f">> {filepath}: {immeta=}")
                             width, height = immeta.get('shape', (None, None))
                 except:
                     print(f"{filepath} is not a valid video, image or SVG")
@@ -153,7 +151,6 @@ class MDXSmartImageProcessor(BlockProcessor):
             height = 1080
         if width:
             cache[filepath] = {"media": media, "width": width, "height": height}
-            #print(f">>> {filepath}: {cache[filepath]=}")
         if cache_path:
             with open(cache_path, "w") as f:
                 json.dump(cache, f)
@@ -163,13 +160,13 @@ class MDXSmartImageProcessor(BlockProcessor):
 
         img = etree.Element("img")
 
+        image_size = {}
         if attr:
             image_size = self.assignExtra(img, attr)
             width = int(image_size.get("width", width))
             height = int(image_size.get("height", height))
             scale = float(image_size.get("scale", scale))
             title = image_size.get("title", title)
-
 
 
         htmlcls = img.get("class", "")
@@ -226,7 +223,7 @@ class MDXSmartImageProcessor(BlockProcessor):
 
     # ![By default](/i/ukrainian-keyboard-default.png){: width=400} assign width i.e. <img width="400"/>
     def assignExtra(self, img, attr):
-        image_size = {"width": 0, "height": 0, "scale": 2.0}
+        image_size = {}
 
         BASE_RE = r"\{\:?([^\}]*)\}"
         INLINE_RE = re.compile(r"^%s" % BASE_RE)
