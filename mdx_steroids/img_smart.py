@@ -13,7 +13,6 @@ from markdown.extensions import attr_list
 from markdown.blockprocessors import BlockProcessor
 from markdown.util import etree
 import PIL, PIL.Image
-from cairosvg import svg2png
 import imageio.v3 as iio
 import filetype
 
@@ -102,18 +101,18 @@ class MDXSmartImageProcessor(BlockProcessor):
             height = cache[filepath]["height"]
         else:
             width = height = 0
-            imbytes = None
+            imbytes = imbytesio = immeta = None
             if filepath.startswith("http"):
                 try:
                     response = requests.get(filepath)
-                    imbytes = io.BytesIO(response.content).read()
+                    imbytesio = io.BytesIO(response.content)
                 except:
                     pass
             elif exists(filepath):
-                imbytes = open(filepath, "rb").read()
-            if imbytes:
-                print(f"Analyzing image: {filepath}")
-                imframe = None
+                imbytesio = open(filepath, "rb")
+            if imbytesio:
+                imbytes = imbytesio.read()
+                print(f"Analyzing image: {filepath} with size {len(imbytes)}")
                 media = ""
                 if b"</svg>" in imbytes and b"<svg" in imbytes:
                     svg = str(imbytes)
@@ -122,22 +121,29 @@ class MDXSmartImageProcessor(BlockProcessor):
                     if rem:
                         width = int(rem.group(3)) - int(rem.group(1))
                         height = int(rem.group(4)) - int(rem.group(2))
-                    else:
-                        imframe = svg2png(bytestring=imbytes, dpi=36)
+                elif b"</html>" in imbytes and b"<html" in imbytes:
+                    media = "html"
+                    print(f"WARNING: {filepath} is of type HTML, possibly 404")
                 else:
                     guess = filetype.guess_mime(imbytes)
                     if guess:
                         media = guess.split("/")[0].replace('image', 'img')
-                        imframe = imbytes
-                    #print(f"{filepath}: {guess=}")
-                if media in ('svg', 'img', 'video'):
-                    if imframe:
-                        try:
-                            immeta = iio.immeta(imframe)
+                        print(f"{filepath}: {media=}")
+                try:
+                    imbytesio.seek(0)
+                    if media in ('video'):
+                        frames = iio.imread(imbytesio, plugin="pyav", index=None)
+                        if frames.any():
+                            width = frames.shape[1]
+                            height = frames.shape[2]
+                    elif media in ('img'):
+                        immeta = iio.immeta(imbytesio)
+                        if immeta:
                             #print(f">> {filepath}: {immeta=}")
-                            width, height = immeta.get('size', immeta.get('shape', (None, None)))
-                        except:
-                            print(f"{filepath} is not a valid video, image or SVG")
+                            width, height = immeta.get('shape', (None, None))
+                except:
+                    print(f"{filepath} is not a valid video, image or SVG")
+                imbytesio.close()
 
         if width > 1920:
             height = int(height * 1920 / width)
