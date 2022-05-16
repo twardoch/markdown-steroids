@@ -6,12 +6,16 @@
 from __future__ import absolute_import
 from __future__ import print_function
 import re, json
+from pathlib import Path
 
 from markdown import Extension
 from markdown.extensions import attr_list
 from markdown.blockprocessors import BlockProcessor
 from markdown.util import etree
 import PIL, PIL.Image
+from cairosvg import svg2png
+import imageio.v3 as iio
+import filetype
 
 # from urlparse import urlparse
 from os.path import splitext, basename, exists, realpath
@@ -46,6 +50,8 @@ class MDXSmartImageProcessor(BlockProcessor):
     INLINE_LINK_RE = re.compile(r"\[([^\]]*)\]\(([^)]+)\)(\{\:?([^\}]*)\})?")
     FIGURES_RE = re.compile("|".join(f for f in FIGURES))
 
+    SVG_VIEWBOX_RE = re.compile(r'viewBox="(\d*?) (\d*?) (\d*?) (\d*?)"')
+
     def __init__(self, md, config):
         super(MDXSmartImageProcessor, self).__init__(md)
         self.config = config
@@ -53,34 +59,27 @@ class MDXSmartImageProcessor(BlockProcessor):
     def test(self, parent, block):
         isImage = bool(self.FIGURES_RE.search(block))
         isOnlyOneLine = len(block.splitlines()) == 1
-        if isImage and isOnlyOneLine:
-            return True
-        else:
-            return False
+        return isImage and isOnlyOneLine
 
     def run(self, parent, blocks):
         cache_path = self.config.get("cache", "")
         cache = {}
-        if cache_path:
-            if exists(cache_path):
-                with open(cache_path) as f:
-                    cache = json.load(f)
+        if cache_path and exists(cache_path):
+            with open(cache_path) as f:
+                cache = json.load(f)
 
         alt = url = attr = None
 
         raw_block = blocks.pop(0)
         mdImage = self.FIGURES_RE.search(raw_block).group(0)
 
-        rAlt = self.FIGURES_RE.search(raw_block)
-        if rAlt:
+        if rAlt := self.FIGURES_RE.search(raw_block):
             alt = rAlt.group(1)
 
-        rUrl = self.INLINE_LINK_RE.search(mdImage)
-        if rUrl:
+        if rUrl := self.INLINE_LINK_RE.search(mdImage):
             url = rUrl.group(2)
 
-        rAttr = self.INLINE_LINK_RE.search(mdImage)
-        if rAttr:
+        if rAttr := self.INLINE_LINK_RE.search(mdImage):
             attr = self.INLINE_LINK_RE.search(mdImage).group(3)
 
         url_find = self.config.get("find", None)
@@ -96,42 +95,76 @@ class MDXSmartImageProcessor(BlockProcessor):
             url = url.replace(url_find, url_repl_url)
 
         width = height = 0
-        img = etree.Element("img")
-        scale = 2.0
-        title = None
 
-        if attr:
-            image_size = self.assignExtra(img, attr)
-            width = int(image_size.get("width", 0))
-            height = int(image_size.get("height", 0))
-            scale = float(image_size.get("scale", 2))
-            title = image_size.get("title", None)
+        if filepath in cache.keys():
+            media = cache[filepath]["media"]
+            width = cache[filepath]["width"]
+            height = cache[filepath]["height"]
+        else:
+            width = height = 0
+            imbytes = None
+            if filepath.startswith("http"):
+                try:
+                    response = requests.get(filepath)
+                    imbytes = io.BytesIO(response.content).read()
+                except:
+                    pass
+            elif exists(filepath):
+                imbytes = open(filepath, "rb").read()
+            if imbytes:
+                print(f"Analyzing image: {filepath}")
+                imframe = None
+                media = ""
+                if b"</svg>" in imbytes and b"<svg" in imbytes:
+                    svg = str(imbytes)
+                    media = "svg"
+                    rem = self.SVG_VIEWBOX_RE.search(svg)
+                    if rem:
+                        width = int(rem.group(3)) - int(rem.group(1))
+                        height = int(rem.group(4)) - int(rem.group(2))
+                    else:
+                        imframe = svg2png(bytestring=imbytes, dpi=36)
+                else:
+                    guess = filetype.guess_mime(imbytes)
+                    if guess:
+                        media = guess.split("/")[0].replace('image', 'img')
+                        imframe = imbytes
+                    #print(f"{filepath}: {guess=}")
+                if media in ('svg', 'img', 'video'):
+                    if imframe:
+                        try:
+                            immeta = iio.immeta(imframe)
+                            #print(f">> {filepath}: {immeta=}")
+                            width, height = immeta.get('size', immeta.get('shape', (None, None)))
+                        except:
+                            print(f"{filepath} is not a valid video, image or SVG")
 
-        if width == 0 and height == 0:
-            if filepath in cache.keys():
-                width = cache[filepath]["width"]
-                height = cache[filepath]["height"]
-            else:
-                imb = None
-                if filepath.startswith("http"):
-                    try:
-                        response = requests.get(filepath)
-                        imb = io.BytesIO(response.content)
-                    except:
-                        pass
-                elif exists(filepath):
-                    imb = open(filepath, "rb")
-                if imb:
-                    try:
-                        im = PIL.Image.open(imb)
-                        width, height = im.size
-                        imb.close()
-                        cache[filepath] = {"width": width, "height": height}
-                    except PIL.UnidentifiedImageError:
-                        print(f"{filepath} is not an image")
+        if width > 1920:
+            height = int(height * 1920 / width)
+            width = 1920
+        if height > 1080:
+            width = int(width * 1080 / height)
+            height = 1080
+        if width:
+            cache[filepath] = {"media": media, "width": width, "height": height}
+            #print(f">>> {filepath}: {cache[filepath]=}")
         if cache_path:
             with open(cache_path, "w") as f:
                 json.dump(cache, f)
+
+        scale = 2.0
+        title = None
+
+        img = etree.Element("img")
+
+        if attr:
+            image_size = self.assignExtra(img, attr)
+            width = int(image_size.get("width", width))
+            height = int(image_size.get("height", height))
+            scale = float(image_size.get("scale", scale))
+            title = image_size.get("title", title)
+
+
 
         htmlcls = img.get("class", "")
         if htmlcls:
@@ -161,6 +194,8 @@ class MDXSmartImageProcessor(BlockProcessor):
         if htmlcls:
             img.set("class", htmlcls)
         img.set("src", orig_url)
+        if self.config.get("lazy", False):
+            img.set("loading", "lazy")
 
         insel = img
         if box:
@@ -237,6 +272,7 @@ class MDXSmartImageExtension(Extension):
             "repl_url": ["", "the string to replace for the final URL"],
             "alt_figure": [False, "Build <figure> from ![alt]() text"],
             "cache": ["", "cache JSON file to speed up processing"],
+            "lazy": [False, 'Add loading="lazy" attribute to images'],
         }
         super(MDXSmartImageExtension, self).__init__(*args, **kwargs)
 
