@@ -95,9 +95,7 @@ class MakoPreprocessor(Preprocessor):
     # passing the content to Mako, we replace the initial `##`
     # with a fake string, and after the Mako processing
     # we change it back.
-    MD_HEAD_BEFORE_MAKO = '##'
-    RE_MD_HEAD_BEFORE_MAKO = re.compile('^' + MD_HEAD_BEFORE_MAKO)
-    MD_HEAD_AFTER_MAKO = "${'##'}"
+    re_ignore_mako_comments = re.compile(r"^([#]+)", re.M)
 
     def __init__(self, config, md):
         super(MakoPreprocessor, self).__init__(md)
@@ -111,8 +109,10 @@ class MakoPreprocessor(Preprocessor):
         else:
             self.mako_base_dirs = [self.mako_include_base]
 
+    def keep_markdown_headings(self, md):
+        return self.re_ignore_mako_comments.sub(r"${'\1'}", md)
+
     def run(self, lines):
-        lines = [re.sub(self.RE_MD_HEAD_BEFORE_MAKO, self.MD_HEAD_AFTER_MAKO, line) for line in lines]
         if self.mako_python_block:
             path_python_block = None
             if os.path.exists(self.mako_python_block):
@@ -126,7 +126,7 @@ class MakoPreprocessor(Preprocessor):
             else:
                 lines = [''] + lines
         if self.mako_include_auto:
-            line_include_auto = '<%include file="{}"/>'.format(self.mako_include_auto)
+            line_include_auto = f'<%include file="{self.mako_include_auto}"/>'
             lines = [line_include_auto] + lines
         md = "\n".join(lines)
         mako_args = self.mako_args
@@ -135,7 +135,7 @@ class MakoPreprocessor(Preprocessor):
             assert isinstance(mako_args, dict)
             mako_args.update(md_meta)
         mako_lookup = TemplateLookup(directories=self.mako_base_dirs, strict_undefined=True)
-        mako_tpl = Template(md, input_encoding=self.mako_include_encoding, lookup=mako_lookup, strict_undefined=True)
+        mako_tpl = Template(md, input_encoding=self.mako_include_encoding, lookup=mako_lookup, strict_undefined=True, preprocessor=self.keep_markdown_headings)
         mako_result = six.text_type(mako_tpl.render(**mako_args))
         lines = mako_result.splitlines()[1:]
         return lines
