@@ -86,6 +86,8 @@ class MDXSmartImageProcessor(BlockProcessor):
         url_repl_url = self.config.get("repl_url", None)
         alt_figure = self.config.get("alt_figure", False)
 
+        if not url:
+            url = ""
         filepath = url
         orig_url = url
         if url_find and url_repl_path:
