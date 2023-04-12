@@ -11,7 +11,7 @@ from pathlib import Path
 from markdown import Extension
 from markdown.extensions import attr_list
 from markdown.blockprocessors import BlockProcessor
-from markdown.util import etree
+import xml.etree.ElementTree as etree
 import PIL, PIL.Image
 import imageio.v3 as iio
 import filetype
@@ -281,7 +281,7 @@ class MDXSmartImageExtension(Extension):
         }
         super(MDXSmartImageExtension, self).__init__(*args, **kwargs)
 
-    def extendMarkdown(self, md, md_globals):
+    def extendMarkdown(self, md):
         config = self.getConfigs()
         smartImage = MDXSmartImageProcessor(md.parser, self.getConfigs())
         md.parser.blockprocessors.add("smartImage", smartImage, "<ulist")

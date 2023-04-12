@@ -70,7 +70,7 @@ setup(
     # requirements files see:
     # https://packaging.python.org/en/latest/requirements.html
     install_requires=[
-        "markdown>=2.6.8",
+        "markdown>=3.2,<3.4",
         "mako>=1.0.7",
         "pymdown-extensions>=3.5.0",
         "cssselect>=1.0.1",

@@ -1,4 +1,4 @@
-Markdown>=2.6.8
+Markdown>=3.2,<3.4
 mako>=1.0.7
 pymdown-extensions>=3.5.0
 cssselect>=1.0.1
