@@ -96,7 +96,9 @@ class MakoPreprocessor(Preprocessor):
     # passing the content to Mako, we replace the initial `##`
     # with a fake string, and after the Mako processing
     # we change it back.
-    re_ignore_mako_comments = re.compile(r"^([#]+)", re.M)
+    re_mako_skip_conflicting_syntax1 = re.compile(r"^([#]+)", re.M)
+    re_mako_skip_conflicting_syntax2 = re.compile(r"^({%)", re.M)
+    re_mako_skip_conflicting_syntax3 = re.compile(r"^(%})", re.M)
 
     def __init__(self, config, md):
         super(MakoPreprocessor, self).__init__(md)
@@ -111,7 +113,10 @@ class MakoPreprocessor(Preprocessor):
             self.mako_base_dirs = [self.mako_include_base]
 
     def keep_markdown_headings(self, md):
-        return self.re_ignore_mako_comments.sub(r"${'\1'}", md)
+        md = self.re_mako_skip_conflicting_syntax1.sub(r"${'\1'}", md)
+        md = self.re_mako_skip_conflicting_syntax2.sub(r"${'\1'}", md)
+        md = self.re_mako_skip_conflicting_syntax3.sub(r"${'\1'}", md)
+        return md
 
     def run(self, lines):
         if self.mako_python_block:
