@@ -14,9 +14,8 @@ keymap = {
     "auto-button": "♥",
     "turn-on": "✓",
     "turn-off": "□",
-    "mac": '<sup>M</sup>',
-    "win": '<sup>W</sup>',
-
+    "mac": "<sup>M</sup>",
+    "win": "<sup>W</sup>",
     # Digits
     "0": "0",
     "1": "1",
@@ -28,7 +27,6 @@ keymap = {
     "7": "7",
     "8": "8",
     "9": "9",
-
     # Letters
     "a": "A",
     "b": "B",
@@ -56,10 +54,8 @@ keymap = {
     "x": "X",
     "y": "Y",
     "z": "Z",
-
     # Space
     "space": "Space",
-
     # Punctuation
     "backslash": "\\",
     "bar": "|",
@@ -69,7 +65,7 @@ keymap = {
     "bracket-right": "]",
     "colon": ":",
     "comma": ",",
-    "double-quote": "\"",
+    "double-quote": '"',
     "equal": "=",
     "exclam": "!",
     "grave": "`",
@@ -84,7 +80,6 @@ keymap = {
     "slash": "/",
     "tilde": "~",
     "underscore": "_",
-
     # Navigation keys
     "arrow": "←↑↓→",
     "arrow-up-down": "↑↓",
@@ -97,13 +92,11 @@ keymap = {
     "page-down": "PgDn",
     "home": "Home",
     "end": "End",
-
     # Edit keys
     "backspace": "BkSp",
     "delete": "Del",
     "insert": "Ins",
     "tab": "⇥",
-
     # Action keys
     "break": "Break",
     "caps-lock": "CapsLock",
@@ -114,7 +107,6 @@ keymap = {
     "help": "Help",
     "print-screen": "PrtSc",
     "scroll-lock": "ScrLock",
-
     # Numeric keypad
     "num0": "Num 0",
     "num1": "Num 1",
@@ -136,7 +128,6 @@ keymap = {
     "num-separator": "Num .",
     "num-slash": "Num /",
     "num-enter": "Num Enter",
-
     # Modifier keys
     "alt": "Alt",
     "alt-graph": "AltGr",
@@ -163,7 +154,6 @@ keymap = {
     "shift": "Shift",
     "super": "Super",
     "windows": "Win",
-
     # Function keys
     "f1": "F1",
     "f2": "F2",
@@ -189,7 +179,6 @@ keymap = {
     "f22": "F22",
     "f23": "F23",
     "f24": "F24",
-
     # Extra keys
     "backtab": "Back Tab",
     "browser-back": "Browser Back",
@@ -217,7 +206,6 @@ keymap = {
     "volume-mute": "Mute",
     "volume-up": "Volume Up",
     "zoom": "Zoom",
-
     # Mouse
     "left-button": "Left Button",
     "middle-button": "Middle Button",
@@ -228,6 +216,7 @@ keymap = {
 
 aliases = {
     "arrows": "arrow",
+    # "ENT": "enter", # Test: Add direct alias for ENT - Removed
     "add": "num-plus",
     "apps": "context-menu",
     "back": "backspace",

@@ -61,6 +61,7 @@ from markdown.postprocessors import Postprocessor
 
 PREFIX_PLACEHOLDER = "OMtxTKldR2f1LZ5Q"
 
+
 class CommentsExtension(Extension):
 
     def __init__(self, *args, **kwargs):
@@ -69,17 +70,16 @@ class CommentsExtension(Extension):
 
     def extendMarkdown(self, md, md_globals):
         md.registerExtension(self)
-        md.preprocessors.add(
-            "comment_munger", CommentMunger(md), "<html_block")
-        md.preprocessors.add(
-            "comment_remover", CommentRemover(md), ">html_block")
+        md.preprocessors.add("comment_munger", CommentMunger(md), "<html_block")
+        md.preprocessors.add("comment_remover", CommentRemover(md), ">html_block")
         md.postprocessors.add(
-            "raw_comment_replacer", RawCommentReplacer(md), ">raw_html")
+            "raw_comment_replacer", RawCommentReplacer(md), ">raw_html"
+        )
 
 
 class CommentMunger(Preprocessor):
     def run(self, lines):
-        return [re.sub(r'<!---', PREFIX_PLACEHOLDER, line) for line in lines]
+        return [re.sub(r"<!---", PREFIX_PLACEHOLDER, line) for line in lines]
 
 
 class CommentRemover(Preprocessor):
@@ -96,15 +96,15 @@ class CommentRemover(Preprocessor):
 
     def _uncommenter(self, line):
         # inline
-        line = re.sub(r'\s*' + PREFIX_PLACEHOLDER + r'.*?-->', '', line)
+        line = re.sub(r"\s*" + PREFIX_PLACEHOLDER + r".*?-->", "", line)
 
         # start multiline
-        line, count = re.subn(r'\s*' + PREFIX_PLACEHOLDER + r'.*', '', line)
+        line, count = re.subn(r"\s*" + PREFIX_PLACEHOLDER + r".*", "", line)
 
         return line, bool(count)
 
     def _unmultiliner(self, line):
-        new_line, count = re.subn(r'.*?-->', '', line, count=1)
+        new_line, count = re.subn(r".*?-->", "", line, count=1)
 
         # end multiline
         if count > 0:
@@ -112,12 +112,12 @@ class CommentRemover(Preprocessor):
 
         # continue multiline
         else:
-            return ('', True)
+            return ("", True)
 
 
 class RawCommentReplacer(Postprocessor):
     def run(self, text):
-        return re.sub(PREFIX_PLACEHOLDER, '<!---', text)
+        return re.sub(PREFIX_PLACEHOLDER, "<!---", text)
 
 
 def makeExtension(*args, **kwargs):
