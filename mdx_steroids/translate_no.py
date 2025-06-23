@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-u"""
+"""
 # mdx_steroids.translate_no
 
 The `mdx_steroids.translate_no` extension for Python Markdown adds the `translate="no"` attribute to specified HTML selectors.
@@ -38,7 +38,8 @@ from __future__ import absolute_import
 from __future__ import unicode_literals
 from future.utils import bytes_to_native_str as n
 import six
-__version__ = '0.5.4'
+
+__version__ = "0.5.4"
 
 from markdown import Extension
 from markdown.postprocessors import Postprocessor
@@ -51,8 +52,8 @@ import lxml.etree as et
 
 class NoTranslatePostprocessor(Postprocessor):
     def add_attribute_to_element(self, element):
-        element.attrib['translate']='no'
-        element.classes.add('notranslate')
+        element.attrib["translate"] = "no"
+        element.classes.add("notranslate")
 
     def normalize_html(self):
         out = BeautifulSoup(self.html, "html5lib")
@@ -60,7 +61,7 @@ class NoTranslatePostprocessor(Postprocessor):
 
     def parse_selector(self, selector):
         cx = cssselect.LxmlHTMLTranslator()
-        if selector[:1] == '!':  # direct XPath selector
+        if selector[:1] == "!":  # direct XPath selector
             xpath_sel = selector[1:]
         else:
             xpath_sel = cx.css_to_xpath(selector)  # CSS selector
@@ -76,11 +77,13 @@ class NoTranslatePostprocessor(Postprocessor):
 
     def run(self, html):
         self.html = html
-        self.selectors = [self.parse_selector(sel) for sel in self.config.get('add', [])]
-        if self.config.get('normalize', False):
+        self.selectors = [
+            self.parse_selector(sel) for sel in self.config.get("add", [])
+        ]
+        if self.config.get("normalize", False):
             self.normalize_html()
         self.process_selectors()
-        if self.config.get('normalize', False):
+        if self.config.get("normalize", False):
             self.normalize_html()
         return six.text_type(self.html)
 
@@ -88,18 +91,18 @@ class NoTranslatePostprocessor(Postprocessor):
 class NoTranslateExtensions(Extension):
     def __init__(self, *args, **kwargs):
         self.config = {
-            'normalize' : [False, 'Normalize HTML'],
-            'add'      : [
-                ['code', 'mark', 'pre', 'kbd'],
-                'List of element CSS selectors where translate="no" is added'
-                ]
+            "normalize": [False, "Normalize HTML"],
+            "add": [
+                ["code", "mark", "pre", "kbd"],
+                'List of element CSS selectors where translate="no" is added',
+            ],
         }
         super(NoTranslateExtensions, self).__init__(*args, **kwargs)
 
     def extendMarkdown(self, md, md_globals):
         processor = NoTranslatePostprocessor(md)
         processor.config = self.getConfigs()
-        md.postprocessors.add('translate_no', processor, '_end')
+        md.postprocessors.add("translate_no", processor, "_end")
         # md.registerExtension(self)
 
 

@@ -1,23 +1,12 @@
 import os.path
-from codecs import open
-
 from setuptools import setup
-
-try:
-    from sh import pandoc
-
-    isPandoc = True
-except ImportError:
-    isPandoc = False
 
 # Get the long description from the README file
 readmepath = os.path.join(os.path.realpath(os.path.dirname(__file__)), "README.md")
 long_description = ""
 if os.path.exists(readmepath):
-    if isPandoc:
-        long_description = pandoc(readmepath, read="markdown", write="rst")
-    else:
-        long_description = open(readmepath, encoding="utf-8").read()
+    with open(readmepath, encoding="utf-8") as f:
+        long_description = f.read()
 
 setup(
     name="mdx_steroids",
@@ -56,12 +45,22 @@ setup(
         "Natural Language :: English",
         # Pick your license as you wish (should match "license" above)
         "License :: OSI Approved :: BSD License",
-        # Specify the Python versions you support here. In particular, ensure
-        # that you indicate whether you support Python 2, Python 3 or both.
-        "Programming Language :: Python :: 2.7",
+        # Specify the Python versions you support here.
+        "Programming Language :: Python :: 3",
+        "Programming Language :: Python :: 3.8",
+        "Programming Language :: Python :: 3.9",
+        "Programming Language :: Python :: 3.10",
+        "Programming Language :: Python :: 3.11",
     ],
     # What does your project relate to?
-    keywords=["Markdown", "typesetting", "include", "plugin", "extension"],
+    keywords=[
+        "Markdown",
+        "typesetting",
+        "include",
+        "plugin",
+        "extension",
+        "python-markdown",
+    ],
     # You can just specify the packages manually here if your project is
     # simple. Or you can use find_packages().
     packages=["mdx_steroids"],
@@ -70,11 +69,12 @@ setup(
     # requirements files see:
     # https://packaging.python.org/en/latest/requirements.html
     install_requires=[
-        "markdown>=3.2,<3.4",
-        "mako>=1.0.7",
-        "pymdown-extensions>=3.5.0",
-        "cssselect>=1.0.1",
-        "lxml>=3.8.0",
-        "beautifulsoup4>=4.6.0",
+        "markdown>=3.5.0",  # Updated to a newer version
+        "mako>=1.0.7",  # Assuming Mako is still compatible; verify during testing
+        "pymdown-extensions>=9.0",  # Updated to a newer version, assuming compatibility
+        "cssselect>=1.0.1",  # Usually stable
+        "lxml>=3.8.0",  # Usually stable, but check Python 3 specifics
+        "beautifulsoup4>=4.6.0",  # Usually stable
     ],
+    python_requires=">=3.8",  # Specify minimum Python version
 )

@@ -29,12 +29,9 @@ License: [BSD 3-clause](https://opensource.org/licenses/BSD-3-Clause)
 from __future__ import absolute_import
 from __future__ import unicode_literals
 
-__version__ = '0.4.4'
+__version__ = "0.4.4"
 
-try:
-    from urllib.parse import urljoin
-except ImportError:
-    from six.moves.urllib.parse import urljoin
+from urllib.parse import urljoin  # Use direct import for Python 3
 
 from markdown import Extension
 from markdown.treeprocessors import Treeprocessor
@@ -42,41 +39,54 @@ from markdown.treeprocessors import Treeprocessor
 
 class MDXAbsoluteImagesTreeprocessor(Treeprocessor):
     def __init__(self, md, config):
-        super(MDXAbsoluteImagesTreeprocessor, self).__init__(md)
+        super().__init__(md)  # Python 3 style super()
         self.config = config
 
     def run(self, root):
-        imgs = root.getiterator("img")
+        imgs = root.iter("img")  # Modern ElementTree method
         for image in imgs:
-            if self.is_relative(image.attrib["src"]):
+            if "src" in image.attrib and self.is_relative(
+                image.attrib["src"]
+            ):  # Check if src exists
                 image.set("src", self.make_external(image.attrib["src"]))
 
     def make_external(self, path):
-        return urljoin(self.config["base_url"], path)
+        base_url = self.config["base_url"]
+        # Ensure base_url ends with a slash if it's not empty and path isn't absolute
+        if base_url and not base_url.endswith("/") and not path.startswith("/"):
+            base_url += "/"
+        return urljoin(base_url, path)
 
     def is_relative(self, link):
-        if link.startswith('http'):
+        # Consider a link relative if it doesn't start with a known scheme
+        # or protocol-relative double slash. Also, consider data URIs as absolute.
+        known_schemes = ["http://", "https://", "ftp://", "file://", "data:"]
+        if link.startswith("//"):  # Protocol-relative
             return False
+        for scheme in known_schemes:
+            if link.startswith(scheme):
+                return False
         return True
 
 
 class MDXAbsoluteImagesExtension(Extension):
     def __init__(self, *args, **kwargs):
         self.config = {
-            'base_url': [None,
-                         "The base URL to which the relative paths will be appended"],
+            "base_url": [
+                "",  # Changed default from None to empty string
+                "The base URL to which the relative paths will be appended",
+            ],
         }
 
-        super(MDXAbsoluteImagesExtension, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)  # Python 3 style super()
 
-    def extendMarkdown(self, md, md_globals):
+    def extendMarkdown(self, md):  # md_globals is not used by modern extensions
         absoluteImages = MDXAbsoluteImagesTreeprocessor(md, self.getConfigs())
-        md.treeprocessors.add(
-            "absoluteImages",
-            absoluteImages,
-            "_end"
-        )
-        md.registerExtension(self)
+        # Modern way to add treeprocessors
+        md.treeprocessors.register(
+            absoluteImages, "absoluteImages", 5
+        )  # Priority 5, adjust as needed
+        # md.registerExtension(self) # Deprecated
 
 
 def makeExtension(*args, **kwargs):

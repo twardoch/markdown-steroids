@@ -52,6 +52,7 @@ from __future__ import unicode_literals
 from markdown import Extension
 from markdown.preprocessors import Preprocessor
 import yaml
+
 try:
     from yaml import CBaseLoader as Loader
 except ImportError:
@@ -61,15 +62,19 @@ except ImportError:
 # Override the default string handling function to always return unicode objects
 def construct_yaml_str(self, node):
     return self.construct_scalar(node)
-Loader.add_constructor(u'tag:yaml.org,2002:str', construct_yaml_str)
 
 
-class MetaYamlExtension (Extension):
+Loader.add_constructor("tag:yaml.org,2002:str", construct_yaml_str)
+
+
+class MetaYamlExtension(Extension):
     """Extension for parsing YAML-Metadata with Python-Markdown."""
 
     def extendMarkdown(self, md, md_globals):
         """Add MetaYamlPreprocessor to Markdown instance."""
-        md.preprocessors.add("meta_yaml", MetaYamlPreprocessor(md), "<normalize_whitespace")
+        md.preprocessors.add(
+            "meta_yaml", MetaYamlPreprocessor(md), "<normalize_whitespace"
+        )
 
 
 class MetaYamlPreprocessor(Preprocessor):
@@ -83,7 +88,7 @@ class MetaYamlPreprocessor(Preprocessor):
     """
 
     def run(self, lines):
-        """ Parse Meta-Data and store in Markdown.Meta. """
+        """Parse Meta-Data and store in Markdown.Meta."""
         yaml_block = []
         line = lines.pop(0)
         if line == "---":
@@ -98,7 +103,9 @@ class MetaYamlPreprocessor(Preprocessor):
             meta = yaml.load("\n".join(yaml_block), Loader)
 
             # Compat with PyMarkdown's meta: Keys are lowercase, values are lists
-            meta = {k.lower(): v if isinstance(v, list) else [v] for k, v in meta.items()}
+            meta = {
+                k.lower(): v if isinstance(v, list) else [v] for k, v in meta.items()
+            }
 
             self.markdown.Meta = meta
         return lines

@@ -4,9 +4,9 @@
 # mdx_steroids.interlink
 
 The `mdx_steroids.interlink` extension preprocesses internal links
-in the style of [text](some-link#anchor). You can insert a `base_url` 
-or `end_url` strings if the link does not contain a protocol (`://`) 
-or a period (`.`). 
+in the style of [text](some-link#anchor). You can insert a `base_url`
+or `end_url` strings if the link does not contain a protocol (`://`)
+or a period (`.`).
 
 ### Installation
 
@@ -33,7 +33,7 @@ pip install --user --upgrade git+https://github.com/twardoch/markdown-steroids.g
 This is a [[Wiki Link]] of some sorts.
 
 ```markdown
-This is a [[Wiki Link]] of some sorts. 
+This is a [[Wiki Link]] of some sorts.
 ```
 
 #### Output HTML
@@ -59,52 +59,58 @@ import re
 
 from markdown import Extension
 from markdown.preprocessors import Preprocessor
-try: 
-    from pymdownx.slugs import uslugify_cased_encoded as slugify
-except ImportError: 
-    print("Install pymdownx: pip install --user pymdown-extensions")
 
-__version__ = '0.5.0'
+# try: # slugify was unused (F401)
+# from pymdownx.slugs import uslugify_cased_encoded as slugify
+# except ImportError:
+# print("Install pymdownx: pip install --user pymdown-extensions")
 
-reInterLink = re.compile(r'(?<!!)\[([^\]]+)\]\((\S+(?=\)))\)')
+__version__ = "0.5.0"
+
+reInterLink = re.compile(r"(?<!!)\[([^\]]+)\]\((\S+(?=\)))\)")
+
 
 class MDXInterLinksProcessor(Preprocessor):
     def __init__(self, md, config):
-        super(MDXInterLinksProcessor, self).__init__(md)
+        super().__init__(md)  # Python 3 super()
         self.config = config
 
     def build_url(self, matcho):
         text = matcho.group(1)
         link = matcho.group(2)
-        base = self.config.get('base_url', [''])[0]
-        end = self.config.get('end_url', [''])[0]
-        if ('://' not in link) and ('.' not in link): 
-            alink = link.split('#')
-            if alink[0]: 
+        base = self.config.get("base_url", [""])[0]
+        end = self.config.get("end_url", [""])[0]
+        if ("://" not in link) and ("." not in link):
+            alink = link.split("#")
+            if alink[0]:
                 linklist = [base] + alink[:1] + [end]
-                if len(alink) > 1: 
-                    linklist += ['#'] + alink[1:]
+                if len(alink) > 1:
+                    linklist += ["#"] + alink[1:]
                 link = "".join(linklist)
-        return '[%s](%s)' % (text, link)
+        return "[%s](%s)" % (text, link)
 
     def run(self, lines):
         return [reInterLink.sub(self.build_url, line) for line in lines]
 
+
 class MDXInterLinkExtension(Extension):
     def __init__(self, *args, **kwargs):
         self.config = {
-            'base_url'  : ['', 'String to append to beginning or URL.'],
-            'end_url'   : ['', 'String to append to end of URL.'],
+            "base_url": ["", "String to append to beginning or URL."],
+            "end_url": ["", "String to append to end of URL."],
         }
 
-        super(MDXInterLinkExtension, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)  # Python 3 super()
 
-    def extendMarkdown(self, md, md_globals):
+    def extendMarkdown(self, md):  # md_globals not used
         self.md = md
-        md.registerExtension(self)
+        # md.registerExtension(self) # Deprecated
         md.preprocessors.register(
-            MDXInterLinksProcessor(md, self.config), "interlink", 6
+            MDXInterLinksProcessor(md, self.getConfigs()),
+            "interlink",
+            6,  # Use self.getConfigs()
         )
+
 
 def makeExtension(*args, **kwargs):
     return MDXInterLinkExtension(*args, **kwargs)
