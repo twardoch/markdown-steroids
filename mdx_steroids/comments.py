@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
 """
 # mdx_steroids.comments
 
@@ -53,20 +52,19 @@ In order to render markdown comments, you must *(a)*use them in an html block (w
 
 """
 
-from __future__ import absolute_import
 import re
+
 from markdown import Extension
-from markdown.preprocessors import Preprocessor
 from markdown.postprocessors import Postprocessor
+from markdown.preprocessors import Preprocessor
 
 PREFIX_PLACEHOLDER = "OMtxTKldR2f1LZ5Q"
 
 
 class CommentsExtension(Extension):
-
     def __init__(self, *args, **kwargs):
         """Initialize."""
-        super(CommentsExtension, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
 
     def extendMarkdown(self, md, md_globals):
         md.registerExtension(self)

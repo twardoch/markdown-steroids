@@ -84,13 +84,15 @@ DEALINGS IN THE SOFTWARE.
 """
 
 import html
-from markdown import Extension
-from markdown.inlinepatterns import InlineProcessor
-from markdown import util as md_util
-import xml.etree.ElementTree as etree
-from pymdownx import util
-from . import keymap_db as keymap
 import re
+import xml.etree.ElementTree as etree
+
+from markdown import Extension
+from markdown import util as md_util
+from markdown.inlinepatterns import InlineProcessor
+from pymdownx import util
+
+from . import keymap_db as keymap
 
 RE_KBD = r"""(?x)
 (?:
@@ -108,7 +110,7 @@ RE_KBD = r"""(?x)
 
 ESCAPE_RE = re.compile(r"""(?<!\\)(?:\\\\)*\\(.)""")
 UNESCAPED_PLUS = re.compile(r"""(?<!\\)(?:\\\\)*(\+)""")
-ESCAPED_BSLASH = "%s%s%s" % (md_util.STX, ord("\\"), md_util.ETX)
+ESCAPED_BSLASH = "{}{}{}".format(md_util.STX, ord("\\"), md_util.ETX)
 DOUBLE_BSLASH = "\\\\"
 
 
@@ -235,10 +237,10 @@ class KeysExtension(Extension):
     def extendMarkdown(self, md):
         """Add support for keys."""
 
-        util.escape_chars(md, ["+"])  # Ensuring this is active
+        util.escape_chars(md, ["+"])
         md.inlinePatterns.register(
-            KeysPattern(RE_KBD, self.getConfigs(), md), "keys", 10
-        )  # Priority like pymdownx.keys
+            KeysPattern(RE_KBD, self.getConfigs(), md), "keys", 185
+        )
 
 
 def makeExtension(*args, **kwargs):

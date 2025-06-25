@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
 """
 # mdx_steroids.md_mako
 
@@ -75,19 +74,15 @@ Copyright (c) 2017 Adam Twardoch <adam+github@twardoch.com>
 License: [BSD 3-clause](https://opensource.org/licenses/BSD-3-Clause)
 """
 
-from __future__ import absolute_import
-from __future__ import unicode_literals
-
 __version__ = "0.5.0"
 
 import os.path
-import io
 import re
-import six
+
+from mako.lookup import TemplateLookup
+from mako.template import Template
 from markdown import Extension
 from markdown.preprocessors import Preprocessor
-from mako.template import Template
-from mako.lookup import TemplateLookup
 
 
 class MakoPreprocessor(Preprocessor):
@@ -101,7 +96,7 @@ class MakoPreprocessor(Preprocessor):
     re_mako_skip_conflicting_syntax3 = re.compile(r"^(%})", re.M)
 
     def __init__(self, config, md):
-        super(MakoPreprocessor, self).__init__(md)
+        super().__init__(md)
         self.mako_args = config.get("meta")
         self.mako_include_base = config.get("include_base")
         self.mako_include_encoding = config.get("include_encoding")
@@ -130,7 +125,7 @@ class MakoPreprocessor(Preprocessor):
                     self.mako_include_base[0], self.mako_python_block
                 )
             if path_python_block:
-                with io.open(path_python_block, "r", encoding="utf8") as f:
+                with open(path_python_block, encoding="utf8") as f:
                     python_block = f.read().splitlines()
                 lines = ["<%!"] + python_block + ["%>"] + lines
             else:
@@ -157,7 +152,7 @@ class MakoPreprocessor(Preprocessor):
             strict_undefined=True,
             preprocessor=self.keep_markdown_headings,
         )
-        mako_result = six.text_type(mako_tpl.render(**mako_args))
+        mako_result = str(mako_tpl.render(**mako_args))
         lines = mako_result.splitlines()[1:]
         return lines
 
@@ -189,7 +184,7 @@ class MarkdownMakoExtension(Extension):
                 "Can be overriden through Markdown YAML metadata.",
             ],
         }
-        super(MarkdownMakoExtension, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
 
     def extendMarkdown(self, md):
         self.md = md

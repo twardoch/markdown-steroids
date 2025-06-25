@@ -1,29 +1,20 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
 
 # Based on https://github.com/glushchenko/micropress/
 
-from __future__ import absolute_import
-from __future__ import print_function
-import re
-import json
-
-# from pathlib import Path # F401 unused
-
-from markdown import Extension
-from markdown.extensions import attr_list
-from markdown.blockprocessors import BlockProcessor
-import xml.etree.ElementTree as etree
-
-# import PIL # F401 unused (PIL.Image is used)
-import PIL.Image
-import imageio.v3 as iio
-import filetype
-
-# from urlparse import urlparse
-from os.path import exists  # splitext, basename, realpath were F401 unused
-import requests
 import io
+import json
+import re
+import xml.etree.ElementTree as etree
+# from urlparse import urlparse
+from os.path import exists
+
+import filetype
+import imageio.v3 as iio
+import requests
+from markdown import Extension
+from markdown.blockprocessors import BlockProcessor
+from markdown.extensions import attr_list
 
 
 class MDXSmartImageProcessor(BlockProcessor):
@@ -48,8 +39,8 @@ class MDXSmartImageProcessor(BlockProcessor):
     IMAGE_REFERENCE_RE = r"\!" + BRK + r"\s?\[([^\]]*)\]"
 
     FIGURES = [
-        r"^\s*" + IMAGE_LINK_RE + r"(\{\:?([^\}]*)\})?" + r"\s*$",  # Made raw
-        r"^\s*" + IMAGE_REFERENCE_RE + r"\s*$",  # Made raw
+        r"^\s*" + IMAGE_LINK_RE + r"(\{\:?([^\}]*)\})?" + r"\s*$",
+        r"^\s*" + IMAGE_REFERENCE_RE + r"\s*$",
     ]
     INLINE_LINK_RE = re.compile(
         r"\[([^\]]*)\]\(([^)]+)\)(\{\:?([^\}]*)\})?"
@@ -61,7 +52,7 @@ class MDXSmartImageProcessor(BlockProcessor):
     )  # Already uses r""
 
     def __init__(self, md, config):
-        super().__init__(md)  # Python 3 super()
+        super().__init__(md)
         self.config = config
 
     def test(self, parent, block):
@@ -150,7 +141,7 @@ class MDXSmartImageProcessor(BlockProcessor):
                         immeta = iio.immeta(imbytesio)
                         if immeta:
                             width, height = immeta.get("shape", (None, None))
-                except Exception:  # E722 Specify exception
+                except:
                     print(f"{filepath} is not a valid video, image or SVG")
                 if imbytesio:  # Check if imbytesio was successfully opened
                     imbytesio.close()
@@ -256,7 +247,7 @@ class MDXSmartImageProcessor(BlockProcessor):
                         image_size["scale"] = 1.0
                     htmlcls = img.get("class")
                     if htmlcls:
-                        img.set("class", "%s %s" % (htmlcls, v))
+                        img.set("class", f"{htmlcls} {v}")
                     else:
                         img.set("class", v)
                 else:
@@ -288,10 +279,10 @@ class MDXSmartImageExtension(Extension):
             "cache": ["", "cache JSON file to speed up processing"],
             "lazy": [False, 'Add loading="lazy" attribute to images'],
         }
-        super().__init__(*args, **kwargs)  # Python 3 super()
+        super().__init__(*args, **kwargs)
 
     def extendMarkdown(self, md):
-        # config = self.getConfigs() # F841 unused variable
+        self.getConfigs()
         smartImage = MDXSmartImageProcessor(md.parser, self.getConfigs())
         # Modern way to add blockprocessors
         md.parser.blockprocessors.register(

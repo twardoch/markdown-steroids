@@ -1,6 +1,4 @@
-# -*- coding: utf-8 -*-
 """English US keymap, revised 2019-11-18 by Adam Twardoch."""
-from __future__ import unicode_literals
 
 keymap = {
     "click": "click",

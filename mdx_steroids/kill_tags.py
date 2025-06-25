@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
 """
 # mdx_steroids.kill_tags
 
@@ -136,20 +135,17 @@ Copyright (c) 2017 Adam Twardoch <adam+github@twardoch.com>
 License: [BSD 3-clause](https://opensource.org/licenses/BSD-3-Clause)
 """
 
-from __future__ import absolute_import
-from __future__ import unicode_literals
 from future.utils import bytes_to_native_str as n
-import six
 
 __version__ = "0.5.4"
 
-from markdown import Extension
-from markdown.postprocessors import Postprocessor
+import lxml.cssselect as cssselect
+import lxml.etree as et
 import lxml.html
 import lxml.html.soupparser
-import lxml.cssselect as cssselect
 from bs4 import BeautifulSoup
-import lxml.etree as et
+from markdown import Extension
+from markdown.postprocessors import Postprocessor
 
 
 class KillTagsPostprocessor(Postprocessor):
@@ -177,7 +173,7 @@ class KillTagsPostprocessor(Postprocessor):
 
     def normalize_html(self):
         out = BeautifulSoup(self.html, "html5lib")
-        self.html = six.text_type(out)
+        self.html = str(out)
 
     def known_selectors(self):
         return [
@@ -208,7 +204,7 @@ class KillTagsPostprocessor(Postprocessor):
             ):
                 self.remove_keeping_tail(el)
         out = n(et.tostring(tree, pretty_print=False))
-        self.html = six.text_type(out)
+        self.html = str(out)
 
     def run(self, html):
         self.html = html
@@ -221,7 +217,7 @@ class KillTagsPostprocessor(Postprocessor):
         self.kill_selectors()
         if self.config.get("normalize", False):
             self.normalize_html()
-        return six.text_type(self.html)
+        return str(self.html)
 
 
 class KillTagsExtension(Extension):
@@ -235,7 +231,7 @@ class KillTagsExtension(Extension):
                 "List of HTML tags to be removed if they are empty",
             ],
         }
-        super(KillTagsExtension, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
 
     def extendMarkdown(self, md, md_globals):
         processor = KillTagsPostprocessor(md)

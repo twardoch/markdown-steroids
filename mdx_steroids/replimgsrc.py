@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
 """
 # mdx_steroids.replimgsrc
 
@@ -26,8 +25,6 @@ pip install --user --upgrade git+https://github.com/twardoch/markdown-steroids.g
 Copyright (c) 2016 Adam Twardoch <adam+github@twardoch.com>
 License: [BSD 3-clause](https://opensource.org/licenses/BSD-3-Clause)
 """
-from __future__ import absolute_import
-from __future__ import unicode_literals
 
 __version__ = "0.5.0"
 
@@ -37,7 +34,7 @@ from markdown.treeprocessors import Treeprocessor
 
 class MDXReplaceImageSrcTreeprocessor(Treeprocessor):
     def __init__(self, md, config):
-        super(MDXReplaceImageSrcTreeprocessor, self).__init__(md)
+        super().__init__(md)
         self.config = config
 
     def run(self, root):
@@ -56,7 +53,7 @@ class MDXReplaceImageSrcExtension(Extension):
             "replace": ["", "the string to replace"],
         }
 
-        super(MDXReplaceImageSrcExtension, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
 
     def extendMarkdown(self, md, md_globals):
         ReplaceImageSrc = MDXReplaceImageSrcTreeprocessor(md, self.getConfigs())

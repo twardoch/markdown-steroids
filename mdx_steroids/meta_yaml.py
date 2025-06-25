@@ -47,11 +47,9 @@ License: BSD (see LICENSE.md for details)
 
 """
 
-from __future__ import absolute_import
-from __future__ import unicode_literals
+import yaml
 from markdown import Extension
 from markdown.preprocessors import Preprocessor
-import yaml
 
 try:
     from yaml import CBaseLoader as Loader

@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
 """
 # mdx_steroids.interlink
 
@@ -51,19 +50,15 @@ Copyright (c) 2008-2014 The Python Markdown Project
 License: [BSD 3-clause](https://opensource.org/licenses/BSD-3-Clause)
 """
 
-from __future__ import absolute_import
-from __future__ import unicode_literals
-
-from __future__ import print_function
 import re
 
 from markdown import Extension
 from markdown.preprocessors import Preprocessor
 
-# try: # slugify was unused (F401)
-# from pymdownx.slugs import uslugify_cased_encoded as slugify
-# except ImportError:
-# print("Install pymdownx: pip install --user pymdown-extensions")
+try:
+    from pymdownx.slugs import uslugify_cased_encoded as slugify
+except ImportError:
+    print("Install pymdownx: pip install --user pymdown-extensions")
 
 __version__ = "0.5.0"
 
@@ -72,7 +67,7 @@ reInterLink = re.compile(r"(?<!!)\[([^\]]+)\]\((\S+(?=\)))\)")
 
 class MDXInterLinksProcessor(Preprocessor):
     def __init__(self, md, config):
-        super().__init__(md)  # Python 3 super()
+        super().__init__(md)
         self.config = config
 
     def build_url(self, matcho):
@@ -87,7 +82,7 @@ class MDXInterLinksProcessor(Preprocessor):
                 if len(alink) > 1:
                     linklist += ["#"] + alink[1:]
                 link = "".join(linklist)
-        return "[%s](%s)" % (text, link)
+        return f"[{text}]({link})"
 
     def run(self, lines):
         return [reInterLink.sub(self.build_url, line) for line in lines]
@@ -100,7 +95,7 @@ class MDXInterLinkExtension(Extension):
             "end_url": ["", "String to append to end of URL."],
         }
 
-        super().__init__(*args, **kwargs)  # Python 3 super()
+        super().__init__(*args, **kwargs)
 
     def extendMarkdown(self, md):  # md_globals not used
         self.md = md
