@@ -1,6 +1,5 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
-u"""
+"""
 # mdx_steroids.translate_no
 
 The `mdx_steroids.translate_no` extension for Python Markdown adds the `translate="no"` attribute to specified HTML selectors.
@@ -34,33 +33,31 @@ Copyright (c) 2017 Adam Twardoch <adam+github@twardoch.com>
 License: [BSD 3-clause](https://opensource.org/licenses/BSD-3-Clause)
 """
 
-from __future__ import absolute_import
-from __future__ import unicode_literals
 from future.utils import bytes_to_native_str as n
-import six
-__version__ = '0.5.4'
 
-from markdown import Extension
-from markdown.postprocessors import Postprocessor
+__version__ = "0.5.4"
+
+import lxml.cssselect as cssselect
+import lxml.etree as et
 import lxml.html
 import lxml.html.soupparser
-import lxml.cssselect as cssselect
 from bs4 import BeautifulSoup
-import lxml.etree as et
+from markdown import Extension
+from markdown.postprocessors import Postprocessor
 
 
 class NoTranslatePostprocessor(Postprocessor):
     def add_attribute_to_element(self, element):
-        element.attrib['translate']='no'
-        element.classes.add('notranslate')
+        element.attrib["translate"] = "no"
+        element.classes.add("notranslate")
 
     def normalize_html(self):
         out = BeautifulSoup(self.html, "html5lib")
-        self.html = six.text_type(out)
+        self.html = str(out)
 
     def parse_selector(self, selector):
         cx = cssselect.LxmlHTMLTranslator()
-        if selector[:1] == '!':  # direct XPath selector
+        if selector[:1] == "!":  # direct XPath selector
             xpath_sel = selector[1:]
         else:
             xpath_sel = cx.css_to_xpath(selector)  # CSS selector
@@ -72,34 +69,36 @@ class NoTranslatePostprocessor(Postprocessor):
             for el in tree.xpath(process_selector):
                 self.add_attribute_to_element(el)
         out = n(et.tostring(tree, pretty_print=False))
-        self.html = six.text_type(out)
+        self.html = str(out)
 
     def run(self, html):
         self.html = html
-        self.selectors = [self.parse_selector(sel) for sel in self.config.get('add', [])]
-        if self.config.get('normalize', False):
+        self.selectors = [
+            self.parse_selector(sel) for sel in self.config.get("add", [])
+        ]
+        if self.config.get("normalize", False):
             self.normalize_html()
         self.process_selectors()
-        if self.config.get('normalize', False):
+        if self.config.get("normalize", False):
             self.normalize_html()
-        return six.text_type(self.html)
+        return str(self.html)
 
 
 class NoTranslateExtensions(Extension):
     def __init__(self, *args, **kwargs):
         self.config = {
-            'normalize' : [False, 'Normalize HTML'],
-            'add'      : [
-                ['code', 'mark', 'pre', 'kbd'],
-                'List of element CSS selectors where translate="no" is added'
-                ]
+            "normalize": [False, "Normalize HTML"],
+            "add": [
+                ["code", "mark", "pre", "kbd"],
+                'List of element CSS selectors where translate="no" is added',
+            ],
         }
-        super(NoTranslateExtensions, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
 
     def extendMarkdown(self, md, md_globals):
         processor = NoTranslatePostprocessor(md)
         processor.config = self.getConfigs()
-        md.postprocessors.add('translate_no', processor, '_end')
+        md.postprocessors.add("translate_no", processor, "_end")
         # md.registerExtension(self)
 
 

@@ -1,24 +1,20 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
 
 # Based on https://github.com/glushchenko/micropress/
 
-from __future__ import absolute_import
-from __future__ import print_function
-import re, json
-from pathlib import Path
-
-from markdown import Extension
-from markdown.extensions import attr_list
-from markdown.blockprocessors import BlockProcessor
+import io
+import json
+import re
 import xml.etree.ElementTree as etree
-import PIL, PIL.Image
-import imageio.v3 as iio
-import filetype
-
 # from urlparse import urlparse
-from os.path import splitext, basename, exists, realpath
-import requests, io
+from os.path import exists
+
+import filetype
+import imageio.v3 as iio
+import requests
+from markdown import Extension
+from markdown.blockprocessors import BlockProcessor
+from markdown.extensions import attr_list
 
 
 class MDXSmartImageProcessor(BlockProcessor):
@@ -43,8 +39,8 @@ class MDXSmartImageProcessor(BlockProcessor):
     IMAGE_REFERENCE_RE = r"\!" + BRK + r"\s?\[([^\]]*)\]"
 
     FIGURES = [
-        "^\s*" + IMAGE_LINK_RE + "(\{\:?([^\}]*)\})?" + "\s*$",
-        "^\s*" + IMAGE_REFERENCE_RE + "\s*$",
+        r"^\s*" + IMAGE_LINK_RE + r"(\{\:?([^\}]*)\})?" + r"\s*$",
+        r"^\s*" + IMAGE_REFERENCE_RE + r"\s*$",
     ]
     INLINE_LINK_RE = re.compile(r"\[([^\]]*)\]\(([^)]+)\)(\{\:?([^\}]*)\})?")
     FIGURES_RE = re.compile("|".join(f for f in FIGURES))
@@ -52,7 +48,7 @@ class MDXSmartImageProcessor(BlockProcessor):
     SVG_VIEWBOX_RE = re.compile(r'viewBox="(\d*?) (\d*?) (\d*?) (\d*?)"')
 
     def __init__(self, md, config):
-        super(MDXSmartImageProcessor, self).__init__(md)
+        super().__init__(md)
         self.config = config
 
     def test(self, parent, block):
@@ -129,18 +125,18 @@ class MDXSmartImageProcessor(BlockProcessor):
                 else:
                     guess = filetype.guess_mime(imbytes)
                     if guess:
-                        media = guess.split("/")[0].replace('image', 'img')
+                        media = guess.split("/")[0].replace("image", "img")
                 try:
                     imbytesio.seek(0)
-                    if media in ('video'):
+                    if media in ("video"):
                         frames = iio.imread(imbytesio, plugin="pyav", index=None)
                         if frames.any():
                             width = frames.shape[1]
                             height = frames.shape[2]
-                    elif media in ('img'):
+                    elif media in ("img"):
                         immeta = iio.immeta(imbytesio)
                         if immeta:
-                            width, height = immeta.get('shape', (None, None))
+                            width, height = immeta.get("shape", (None, None))
                 except:
                     print(f"{filepath} is not a valid video, image or SVG")
                 imbytesio.close()
@@ -169,7 +165,6 @@ class MDXSmartImageProcessor(BlockProcessor):
             height = int(image_size.get("height", height))
             scale = float(image_size.get("scale", scale))
             title = image_size.get("title", title)
-
 
         htmlcls = img.get("class", "")
         if htmlcls:
@@ -247,7 +242,7 @@ class MDXSmartImageProcessor(BlockProcessor):
                         image_size["scale"] = 1.0
                     htmlcls = img.get("class")
                     if htmlcls:
-                        img.set("class", "%s %s" % (htmlcls, v))
+                        img.set("class", f"{htmlcls} {v}")
                     else:
                         img.set("class", v)
                 else:
@@ -279,10 +274,10 @@ class MDXSmartImageExtension(Extension):
             "cache": ["", "cache JSON file to speed up processing"],
             "lazy": [False, 'Add loading="lazy" attribute to images'],
         }
-        super(MDXSmartImageExtension, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
 
     def extendMarkdown(self, md):
-        config = self.getConfigs()
+        self.getConfigs()
         smartImage = MDXSmartImageProcessor(md.parser, self.getConfigs())
         md.parser.blockprocessors.add("smartImage", smartImage, "<ulist")
 

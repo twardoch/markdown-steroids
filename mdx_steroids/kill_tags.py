@@ -1,6 +1,5 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
-u"""
+"""
 # mdx_steroids.kill_tags
 
 The `mdx_steroids.kill_tags` removes requested HTML elements from final HTML output.
@@ -136,19 +135,17 @@ Copyright (c) 2017 Adam Twardoch <adam+github@twardoch.com>
 License: [BSD 3-clause](https://opensource.org/licenses/BSD-3-Clause)
 """
 
-from __future__ import absolute_import
-from __future__ import unicode_literals
 from future.utils import bytes_to_native_str as n
-import six
-__version__ = '0.5.4'
 
-from markdown import Extension
-from markdown.postprocessors import Postprocessor
+__version__ = "0.5.4"
+
+import lxml.cssselect as cssselect
+import lxml.etree as et
 import lxml.html
 import lxml.html.soupparser
-import lxml.cssselect as cssselect
 from bs4 import BeautifulSoup
-import lxml.etree as et
+from markdown import Extension
+from markdown.postprocessors import Postprocessor
 
 
 class KillTagsPostprocessor(Postprocessor):
@@ -160,7 +157,9 @@ class KillTagsPostprocessor(Postprocessor):
     def _preserve_tail_before_delete(self, node):
         if node.tail:  # preserve the tail
             previous = node.getprevious()
-            if previous is not None:  # if there is a previous sibling it will get the tail
+            if (
+                previous is not None
+            ):  # if there is a previous sibling it will get the tail
                 if previous.tail is None:
                     previous.tail = node.tail
                 else:
@@ -174,18 +173,18 @@ class KillTagsPostprocessor(Postprocessor):
 
     def normalize_html(self):
         out = BeautifulSoup(self.html, "html5lib")
-        self.html = six.text_type(out)
+        self.html = str(out)
 
     def known_selectors(self):
         return [
             "//pre[@class and contains(concat(' ', normalize-space(@class), ' '), ' highlight ') and code[@class and "
-             "contains(concat(' ', normalize-space(@class), ' '), ' language-del ')]]",
+            "contains(concat(' ', normalize-space(@class), ' '), ' language-del ')]]",
             "descendant-or-self::del",
         ]
 
     def parse_selector(self, selector):
         cx = cssselect.LxmlHTMLTranslator()
-        if selector[:1] == '!':  # direct XPath selector
+        if selector[:1] == "!":  # direct XPath selector
             xpath_sel = selector[1:]
         else:
             xpath_sel = cx.css_to_xpath(selector)  # CSS selector
@@ -198,44 +197,46 @@ class KillTagsPostprocessor(Postprocessor):
                 self.remove_keeping_tail(el)
         for kill_empty_selector in self.kill_empty:
             for el in tree.xpath(
-                    '//{}['
-                    'not(descendant-or-self::*/text()[normalize-space()])'
-                    ' and not(descendant-or-self::*/attribute::*)'
-                    ']'.format(kill_empty_selector)):
+                "//{}["
+                "not(descendant-or-self::*/text()[normalize-space()])"
+                " and not(descendant-or-self::*/attribute::*)"
+                "]".format(kill_empty_selector)
+            ):
                 self.remove_keeping_tail(el)
         out = n(et.tostring(tree, pretty_print=False))
-        self.html = six.text_type(out)
+        self.html = str(out)
 
     def run(self, html):
         self.html = html
-        self.kill = [self.parse_selector(sel) for sel in self.config.get('kill', [])]
-        if self.config.get('kill_known', False):
+        self.kill = [self.parse_selector(sel) for sel in self.config.get("kill", [])]
+        if self.config.get("kill_known", False):
             self.kill += self.known_selectors()
-        self.kill_empty = self.config.get('kill_empty', [])
-        if self.config.get('normalize', False):
+        self.kill_empty = self.config.get("kill_empty", [])
+        if self.config.get("normalize", False):
             self.normalize_html()
         self.kill_selectors()
-        if self.config.get('normalize', False):
+        if self.config.get("normalize", False):
             self.normalize_html()
-        return six.text_type(self.html)
+        return str(self.html)
 
 
 class KillTagsExtension(Extension):
     def __init__(self, *args, **kwargs):
         self.config = {
-            'normalize' : [False, 'Normalize HTML before processing'],
-            'kill'      : [[], 'List of element CSS selectors to be removed, with contents'],
-            'kill_known': [False, 'Also remove some "known" selectors, with contents'],
-            'kill_empty': [
-                ['p', 'div', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'pre'],
-                'List of HTML tags to be removed if they are empty'],
+            "normalize": [False, "Normalize HTML before processing"],
+            "kill": [[], "List of element CSS selectors to be removed, with contents"],
+            "kill_known": [False, 'Also remove some "known" selectors, with contents'],
+            "kill_empty": [
+                ["p", "div", "h1", "h2", "h3", "h4", "h5", "h6", "pre"],
+                "List of HTML tags to be removed if they are empty",
+            ],
         }
-        super(KillTagsExtension, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
 
     def extendMarkdown(self, md, md_globals):
         processor = KillTagsPostprocessor(md)
         processor.config = self.getConfigs()
-        md.postprocessors.add('kill_tags', processor, '_end')
+        md.postprocessors.add("kill_tags", processor, "_end")
         # md.registerExtension(self)
 
 

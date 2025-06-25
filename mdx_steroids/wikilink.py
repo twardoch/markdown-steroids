@@ -1,24 +1,23 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
 """
 # mdx_steroids.wikilink
 
-The `mdx_steroids.wikilink` extension parses wikilinks in the style of 
-the  [Gollum](https://github.com/gollum/gollum) wiki and 
-the [Github Wiki system](https://help.github.com/articles/about-github-wikis/). 
-It will convert links such as `[[Page name]]` to `[Page name](/Page-name/)`. 
+The `mdx_steroids.wikilink` extension parses wikilinks in the style of
+the [Gollum](https://github.com/gollum/gollum) wiki and
+the [Github Wiki system](https://help.github.com/articles/about-github-wikis/).
+It will convert links such as `[[Page name]]` to `[Page name](/Page-name/)`.
 You can specify the start, end and separator strings.
 
-This is now rewritten as a preprocessor, so [[Wiki Link]] turns into 
-[Wiki Link](/Wiki-Link/) and can be processed further. 
+This is now rewritten as a preprocessor, so [[Wiki Link]] turns into
+[Wiki Link](/Wiki-Link/) and can be processed further.
 
 `html_class` is currently not used.
 
 ### Installation
 
-```bash
+
 pip install --user --upgrade git+https://github.com/twardoch/markdown-steroids.git
-```
+
 
 ### Docs
 
@@ -26,13 +25,12 @@ pip install --user --upgrade git+https://github.com/twardoch/markdown-steroids.g
 
 ### Options
 
-```yaml
   steroids.wikilink:
     base_url       : '/'                  # String to append to beginning or URL.
     end_url        : '/'                  # String to append to end of URL.
     html_class     : 'wikilink'           # CSS hook. Leave blank for none.
     space_sep      : '-'                  # String that replaces the space, "-" by default.
-```
+
 
 ### Example
 
@@ -40,17 +38,17 @@ pip install --user --upgrade git+https://github.com/twardoch/markdown-steroids.g
 
 This is a [[Wiki Link]] of some sorts.
 
-```markdown
-This is a [[Wiki Link]] of some sorts. 
-```
+
+This is a [[Wiki Link]] of some sorts.
+
 
 #### Output HTML
 
 <p>This is a <a class="wikilink" href="/Wiki-Link/">Wiki Link</a> of some sorts.</p>
 
-```html
+
 <p>This is a <a class="wikilink" href="/Wiki-Link/">Wiki Link</a> of some sorts.</p>
-```
+
 
 Copyright (c) 2018 Adam Twardoch <adam+github@twardoch.com>
 Based on original code
@@ -59,56 +57,59 @@ Copyright (c) 2008-2014 The Python Markdown Project
 License: [BSD 3-clause](https://opensource.org/licenses/BSD-3-Clause)
 """
 
-from __future__ import absolute_import
-from __future__ import unicode_literals
+from __future__ import annotations
 
-from __future__ import print_function
 import re
+from re import Pattern
 
 from markdown import Extension
 from markdown.preprocessors import Preprocessor
-try: 
+
+try:
     from pymdownx.slugs import uslugify_cased_encoded as slugify
-except ImportError: 
-    print("Install pymdownx: pip install --user pymdown-extensions")
+except ImportError:
+    from loguru import logger
 
-__version__ = '0.5.0'
+    logger.warning("Install pymdownx: pip install --user pymdown-extensions")
 
-reWikiLink = re.compile(r'\[\[([\w0-9_ -]+)\]\]')
+    def slugify(text: str, separator: str = "-") -> str:
+        return text.lower().replace(" ", separator)
 
-class MDXWikiLinksProcessor(Preprocessor):
-    def __init__(self, md, config):
-        super(MDXWikiLinksProcessor, self).__init__(md)
+
+__version__ = "0.5.0"
+
+WIKI_LINK_RE: Pattern[str] = re.compile(r"\[\[([\w0-9_ -]+)\]\]")
+
+
+class WikiLinksProcessor(Preprocessor):
+    def __init__(self, md: markdown.Markdown, config: dict[str, list[str]]) -> None:
+        super().__init__(md)
         self.config = config
 
-    def build_url(self, matcho):
-        return '[%s](%s%s%s)' % (
-            matcho.group(1), 
-            self.config.get('base_url', [''])[0], 
-            slugify(matcho.group(1), self.config.get('space_sep', ['-'])[0]), 
-            self.config.get('end_url', [''])[0]
-        )
+    def build_url(self, match: re.Match[str]) -> str:
+        base_url = self.config.get("base_url", [""])[0]
+        end_url = self.config.get("end_url", [""])[0]
+        space_sep = self.config.get("space_sep", ["-"])[0]
+        return f"[{match.group(1)}]({base_url}{slugify(match.group(1), space_sep)}{end_url})"
 
-    def run(self, lines):
-        return [reWikiLink.sub(self.build_url, line) for line in lines]
+    def run(self, lines: list[str]) -> list[str]:
+        return [WIKI_LINK_RE.sub(self.build_url, line) for line in lines]
 
-class MDXWikiLinkExtension(Extension):
-    def __init__(self, *args, **kwargs):
+
+class WikiLinkExtension(Extension):
+    def __init__(self, *args, **kwargs) -> None:
         self.config = {
-            'base_url'  : ['/', 'String to append to beginning or URL.'],
-            'end_url'   : ['/', 'String to append to end of URL.'],
-            'html_class': ['wikilink', 'CSS hook. Leave blank for none.'],
-            'space_sep': ['-', 'String that replaces the space, "-" by default.'],
+            "base_url": ["/", "String to append to beginning or URL."],
+            "end_url": ["/", "String to append to end of URL."],
+            "html_class": ["wikilink", "CSS hook. Leave blank for none."],
+            "space_sep": ["-", 'String that replaces the space, "-" by default.'],
         }
+        super().__init__(*args, **kwargs)
 
-        super(MDXWikiLinkExtension, self).__init__(*args, **kwargs)
-
-    def extendMarkdown(self, md, md_globals):
-        self.md = md
+    def extendMarkdown(self, md: markdown.Markdown) -> None:
         md.registerExtension(self)
-        md.preprocessors.register(
-            MDXWikiLinksProcessor(md, self.config), "wikilink", 4
-        )
+        md.preprocessors.register(WikiLinksProcessor(md, self.config), "wikilink", 4)
 
-def makeExtension(*args, **kwargs):
-    return MDXWikiLinkExtension(*args, **kwargs)
+
+def makeExtension(*args, **kwargs) -> WikiLinkExtension:
+    return WikiLinkExtension(*args, **kwargs)
