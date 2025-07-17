@@ -8,12 +8,34 @@ if os.path.exists(readmepath):
     with open(readmepath, encoding="utf-8") as f:
         long_description = f.read()
 
+# Get version from git tags
+def get_version():
+    try:
+        from mdx_steroids._version import __version__
+        return __version__
+    except ImportError:
+        # Fallback for source distributions
+        import subprocess
+        try:
+            result = subprocess.run(
+                ["git", "describe", "--tags", "--abbrev=0"],
+                capture_output=True,
+                text=True,
+                cwd=os.path.dirname(os.path.abspath(__file__))
+            )
+            if result.returncode == 0:
+                tag = result.stdout.strip()
+                return tag[1:] if tag.startswith('v') else tag
+        except:
+            pass
+        return "0.0.0.dev0"
+
 setup(
     name="mdx_steroids",
     # Versions should comply with PEP440.  For a discussion on single-sourcing
     # the version across setup.py and the project code, see
     # https://packaging.python.org/en/latest/single_source_version.html
-    version="0.7.0",
+    version=get_version(),
     description="Small collection of Python Markdown extensions",
     long_description=long_description,
     # The project's main homepage.

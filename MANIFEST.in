@@ -1,0 +1,16 @@
+# this_file: MANIFEST.in
+include README.md
+include LICENSE
+include CHANGELOG.md
+include py-requirements.txt
+include pytest.ini
+include tox.ini
+include pyproject.toml
+include .flake8
+include ruff.toml
+recursive-include tests *.py
+recursive-include scripts *.sh
+recursive-include .github *.yml
+recursive-exclude * __pycache__
+recursive-exclude * *.py[co]
+recursive-exclude * .DS_Store

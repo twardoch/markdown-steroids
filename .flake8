@@ -1,23 +1,20 @@
+# this_file: .flake8
 [flake8]
-# Ignores from default + black compatibility
-# Default ignore list: E121,E123,E126,E133,E226,E241,E242,E704,W503,W504
-# E203: whitespace before ':' (black style)
-# E501: line too long (black will handle this, but good to have a sensible limit)
-# W503: line break before binary operator (handled by black)
-ignore = E121,E123,E126,E133,E226,E241,E242,E704,W504,E203,W503
 max-line-length = 88
-exclude =
+extend-ignore = 
+    E203,  # whitespace before ':'
+    W503,  # line break before binary operator
+    E501,  # line too long (handled by black)
+    F401,  # imported but unused (handled by ruff)
+exclude = 
     .git,
     __pycache__,
-    docs/,
-    build/,
-    dist/,
-    .tox,
-    .dccache,
-    # Exclude vendored/external code if any
-    # path/to/vendored/
-# Enable select flake8 plugins if added later
-# select = B,C,E,F,W,T4,B9
-# Per-file ignores can be useful for specific cases
-# per-file-ignores =
-#    */__init__.py:F401
+    .venv,
+    .eggs,
+    *.egg,
+    build,
+    dist,
+    docs,
+    .tox
+per-file-ignores =
+    __init__.py:F401
