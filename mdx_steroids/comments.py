@@ -66,12 +66,12 @@ class CommentsExtension(Extension):
         """Initialize."""
         super().__init__(*args, **kwargs)
 
-    def extendMarkdown(self, md, md_globals):
+    def extendMarkdown(self, md, md_globals=None):
         md.registerExtension(self)
-        md.preprocessors.add("comment_munger", CommentMunger(md), "<html_block")
-        md.preprocessors.add("comment_remover", CommentRemover(md), ">html_block")
-        md.postprocessors.add(
-            "raw_comment_replacer", RawCommentReplacer(md), ">raw_html"
+        md.preprocessors.register(CommentMunger(md), "comment_munger", 25)
+        md.preprocessors.register(CommentRemover(md), "comment_remover", 15)
+        md.postprocessors.register(
+            RawCommentReplacer(md), "raw_comment_replacer", 5
         )
 
 
