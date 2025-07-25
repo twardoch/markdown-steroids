@@ -1,0 +1,122 @@
+# this_file: src_docs/mkdocs.yml
+site_name: Markdown Toolset
+site_description: A collection of Python-based Markdown processing extensions
+site_url: https://github.com/twardoch/markdown-toolset
+repo_url: https://github.com/twardoch/markdown-toolset
+repo_name: twardoch/markdown-toolset
+
+theme:
+  name: material
+  features:
+    - navigation.tabs
+    - navigation.sections
+    - navigation.path
+    - navigation.top
+    - search.suggest
+    - search.highlight
+    - content.tabs.link
+    - content.code.copy
+    - content.code.annotate
+    - toc.follow
+  palette:
+    - scheme: default
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+    - scheme: slate
+      primary: black
+      accent: amber
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
+  icon:
+    repo: fontawesome/brands/github
+
+plugins:
+  - search
+  - mkdocstrings:
+      handlers:
+        python:
+          options:
+            show_root_heading: true
+            show_source: true
+            heading_level: 2
+            docstring_style: google
+            members_order: source
+            show_signature: true
+            show_signature_annotations: true
+            separate_signature: true
+            unwrap_annotated: true
+            show_symbol_type_heading: true
+            show_symbol_type_toc: true
+  - mike:
+      canonical_version: latest
+
+markdown_extensions:
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.superfences
+  - pymdownx.tabbed:
+      alternate_style: true
+  - pymdownx.details
+  - pymdownx.arithmatex:
+      generic: true
+  - pymdownx.critic
+  - pymdownx.caret
+  - pymdownx.keys
+  - pymdownx.mark
+  - pymdownx.tilde
+  - admonition
+  - footnotes
+  - attr_list
+  - md_in_html
+  - toc:
+      permalink: true
+
+extra:
+  version:
+    provider: mike
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/twardoch
+
+extra_css:
+  - style/custom.css
+
+nav:
+  - Home: index.md
+  - Getting Started:
+    - Installation: getting-started/installation.md
+    - Quick Start: getting-started/quickstart.md
+    - Configuration: getting-started/configuration.md
+  - Extensions:
+    - Overview: extensions/index.md
+    - absimgsrc: extensions/absimgsrc.md
+    - figcap: extensions/figcap.md
+    - keys: extensions/keys.md
+    - kill_tags: extensions/kill_tags.md
+    - md_mako: extensions/md_mako.md
+    - meta_yaml: extensions/meta_yaml.md
+    - replimgsrc: extensions/replimgsrc.md
+    - wikilink: extensions/wikilink.md
+  - API Reference:
+    - Overview: api/index.md
+    - Extensions API: api/extensions.md
+    - Utilities: api/utilities.md
+  - Development:
+    - Contributing: development/contributing.md
+    - Testing: development/testing.md
+    - Architecture: development/architecture.md
+  - About:
+    - License: about/license.md
+    - Credits: about/credits.md
+    - Changelog: about/changelog.md
+
+watch:
+  - ../src
