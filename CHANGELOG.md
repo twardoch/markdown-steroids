@@ -22,7 +22,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Comprehensive configuration guide
   - Extensions overview and selection guide
   - Detailed absimgsrc extension documentation
-- GitHub Actions workflow for automatic documentation deployment
+- Prepared documentation deployment infrastructure (GitHub Actions workflow template available)
 
 #### Testing
 - New comprehensive test suites:
